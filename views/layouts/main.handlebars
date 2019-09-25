@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html  lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Geofencing Application</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7"
+        crossorigin="anonymous">
+    <link rel="stylesheet" href="/public/css/site.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>     
+</head>
+
+<body>
+    <main class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                {{{body}}}
+            </div>
+            <div class="col-sm-12">
+                <br>
+                {{#if logoutOption}}
+                    <a class="btn btn-primary btn-lg" href="/logout" role="button">Logout</a>
+                {{/if}}
+            </div>
+        </div>
+    </main>
+
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
+        crossorigin="anonymous"></script>
+    <script src="/public/js/signupform.js"></script>
+    <script src='/public/js/loginPageForm.js'></script>
+
+</body>
+
+</html>

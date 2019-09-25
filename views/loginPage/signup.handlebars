@@ -1,0 +1,54 @@
+<div class="signupbox">
+  <h1>Geofencing Application</h1>
+  <div class = "signupform">
+    <form id="signup-form" method="post" action="/aftersignup">
+      <div class="form-userName">
+          <label for="username">Enter username:</label>
+          <input type="text" class="form-control" id="username" name="userName" placeholder="Enter Text" value="{{username}}" required>
+        </div>
+        <div class="usererror" id="usererror" hidden></div>
+      {{#if hasError}}
+        <p class = "logineError">{{error}}</p>
+      {{/if}}
+    <div class="form-email">
+          <label for="email">Enter email id:</label>
+          <input class="form-control" id="email" name="email" placeholder="Enter Text" type="email" value="{{email}}" required>
+        </div>
+        <div class="emailerror" id="emailerror" hidden></div>
+
+    <div class="form-password">
+          <label for="password">Enter password:</label>
+          <input type="password" class="form-control" id="password" name="password" placeholder="Enter Text" value="{{password}}" required>
+        </div>
+        <div class="passworderror" id="passworderror" hidden></div>
+
+    <div class="form-confirmpassword">
+          <label for="confirmpassword">Confirm password:</label>
+          <input type="password" class="form-control" id="confirmpassword" name="confirmpassword" placeholder="Enter Text" value="{{confirmpassword}}" required>
+        </div>
+        <div class="confirmpassworderror" id="confirmpassworderror" hidden></div>
+
+    <div class="form-firstName">
+          <label for="firstName">Enter first name:</label>
+          <input type="text" class="form-control" id="firstName" name="firstName" placeholder="Enter Text" value="{{firstName}}" required>
+        </div>
+        <div class="firstNameerror" id="firstNameerror" hidden></div>
+
+    <div class="form-lastName">
+          <label for="lastName">Enter last name:</label>
+          <input type="text" class="form-control" id="lastName" name="lastName" placeholder="Enter Text" value="{{lastName}}" required>
+        </div>
+        <div class="lastNameerror" id="lastNameerror" hidden></div>
+
+    <div class="form-phoneNumber">
+          <label for="phoneNumber">Enter phone Number:</label>
+          <input type='tel' pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" class="form-control" id="phoneNumber" name="phoneNumber" placeholder="000-000-0000" value="{{phoneNumber}}" required>
+        </div>
+        <div class="phoneNumbererror" id="phoneNumbererror" hidden></div>
+
+    <div class="form-group">
+            <button type="submit" class="btn-submit" id = "submitbutton">Submit</button>
+        </div>
+    </form>
+  </div>
+</div>
