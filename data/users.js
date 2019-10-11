@@ -6,12 +6,11 @@ const { ObjectId } = require('mongodb');
 module.exports ={
     /**
      * stores the signup information into a mongoDB
-     * @param {*} type employer or applicant
      * @param {*} username username they set 
      * @param {*} email validated email
      * @param {*} password password they set, 
      */
-    async signup(type, username, email, password, firstName, lastName, phoneNumber){
+    async signup(username, email, password, firstName, lastName, phoneNumber){
         if ((!username) || (typeof username !== "string")){
             throw `Error: ${username} is invalid`;
         }
@@ -32,7 +31,6 @@ module.exports ={
         }
         const person = await users();
         let newPerson = {
-            type,
             username,
             email,
             //this will bcrypt the password so it is harder to decrypt
