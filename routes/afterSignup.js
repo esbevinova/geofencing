@@ -9,18 +9,10 @@ isAuthJobSeeker = (req, res, next) => {
   if (req.session.authority == undefined || req.session.authority == false) {
       res.status(401).render('errorPage', { e: { statusCode: "401", error: "You are not logged in, please login", redirect: "/" } })
   }
-  else if (req.session.userType === 'Recruiter') {
-      res.status(403).render('errorPage', { e: { statusCode: "403", error: "Forbidden", redirect: "/" } })
-  }
   else {
       next();
   }
 };
-
-// router.use(isAuthJobSeeker)
-
-
-
 
 router.post("/", async (req, res) => {
 
