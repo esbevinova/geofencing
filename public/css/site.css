@@ -1,0 +1,81 @@
+
+body{
+    background-image: url(/public/css/background/1920px-Sunset_in_The_Trossachs,_Scotland.jpg); 
+}
+
+.submitApplicationContainer{
+    background-image: url(/1920px-Sunset_in_The_Trossachs,_Scotland.jpg); 
+}
+
+.loginbox{
+    width: 480px;
+    background: #fff;
+    margin: 100px auto 0; 
+    border-radius: 4px;
+    padding: 0 70px;
+    border: 1px solid #eee;
+    font-size: 12px;
+    color: #0000FF;
+}
+
+.loginbox h1{
+    font-size: 18px;
+    margin-top: 30px;
+    margin-bottom:40px;
+    text-align: center;
+}
+
+.loginbox h3{
+    font-size: 18px;
+    text-align: center;
+    margin: 36px auto;
+}
+
+
+.btn-register{
+    background: #fff;
+    color:  #0000FF;
+    border: 1px solid #CECDD2;
+    width: 338px;
+    height: 34px;
+    line-height: 34px;
+    text-align: center;
+    cursor: pointer;
+    font-size: 14px;
+    margin-bottom: 40px
+}
+
+
+.loginform label{
+    margin-bottom: 20px;
+    width: 50%;
+    float: left;
+}
+
+
+.loginform .text{
+    width: 338px;
+    height: 34px; 
+    padding: 0 12px;
+    border: 1px solid #F1F1F1;
+    margin-bottom: 20px;
+}
+
+
+.btn-login{
+    background: #0000FF;
+    color: #fff;
+    border: 1px solid #0000FF;
+    margin-top: 20px;
+    width: 338px;
+    height: 34px;
+    line-height: 34px;
+    text-align: center;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+
+.loginPageOr{
+    text-align: center;
+}
