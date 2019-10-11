@@ -3,6 +3,7 @@ const router = express.Router();
 const data = require("../data");
 const users = data.usersData;
 
+
 router.get("/", async (req, res) => {
     if(req.session.authority == true)
     {
@@ -11,14 +12,15 @@ router.get("/", async (req, res) => {
         if(userResult == null){
             userResult = ["Does not apply any job! Right Now"]
         }
-        res.status(200).render("homepage",
+        res.status(200).render("geofence",
         {
             userResult : userResult
         })
-        return
+        return  
     }
  
     res.status(401).render('errorPage', { e: { statusCode: "401", error: "You are not logged in, please login", redirect: "/" } })
-  });
+});
+    
   
   module.exports = router;
