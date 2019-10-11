@@ -13,7 +13,6 @@ router.post("/", async (req, res, next) => {
   var requestBody = req.body
   var userName= requestBody.userName
   var password = requestBody.password
-  var userType = requestBody.radioButton
 
   try{
     if(userName === ""){
@@ -37,12 +36,11 @@ router.post("/", async (req, res, next) => {
         return;
     }
     const compareResult = await bcrypt.compare(password,result.password);
-    if(result != null && compareResult==true && userType==result.type){
+    if(result != null && compareResult==true){
       req.session.authority = true
       req.session.userID = result._id
       req.session.userName = result.username
-      req.session.userType = result.type
-      res.status(305).redirect("/")
+      res.status(305).redirect("/homepage")
       return;
     }
 
