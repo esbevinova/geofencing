@@ -4,11 +4,47 @@
     <ul class="menu-area">
       <li><a href="/homepage">Home</a></li>
       <li><a href="/geofence">Geofence</a></li>
-      <li><a href="#">Account</a></li>
-      <li><a href="#">Logout</a></li>
+      <li><a href="/account">Account</a></li>
+      <li><a href="/logout">Logout</a></li>
     </ul>
   </nav>
 </div>
+
+
+
+<div class="geofence-form">
+<!--
+  <form method = "post" action="/geofence">
+    <div class="form-location">
+          <label for="location">Enter location</label>
+          <input type="text" class="form-control" id="geofenceLcn" name="geofenceLcn" placeholder="Enter Text" value="{{geofenceLcn}}" required>
+        </div>
+-->       
+        <div class="container"></div>
+        <h2 id="text-center">Enter Location: </h2>
+        <form id="location-form" method="post" action="/geofence">
+          <input type="text" id="location-input" class="form-control form-control-lg">
+          <br>
+          <button type="submit" class="btn btn-primary btn-block">Submit</button>
+        </form>
+        <div id="formatted-address"></div>
+        <div id="geometry"></div>
+        </div>
+    <div class="form-radius">
+          <label for="radius">Enter radius(in feet):</label>
+          <input type="number" class="form-control" id="radius" name="radius" placeholder="Enter Radius" value="{{radius}}" required>
+        </div>
+    <div class="form-child">
+          <label for="childName">Enter Child's First Name:</label>
+          <input type="text" class="form-control" id="childFirstName" name="ChildFirstName" placeholder="Enter Text" value="{{childFirstName}}" required>
+        </div>
+    </div>
+    <button type="submit" class="btn-submit" id = "submitbutton">Submit</button>
+  </form>
+</div>
+
+
+<!--
   <div class="container">
     <h2 id="text-center">Enter Location: </h2>
     <form id="location-form">
@@ -70,3 +106,4 @@
       });
     }
   </script>
+  -->
