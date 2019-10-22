@@ -3,6 +3,7 @@ const  users= mongoCollections.users;
 const bcrypt = require("bcrypt");
 const { ObjectId } = require('mongodb');
 const children = mongoCollections.children;
+const geofences = mongoCollections.geofences;
 
 module.exports ={
     /**
@@ -39,7 +40,8 @@ module.exports ={
             firstName,
             lastName,
             phoneNumber,
-            children: []
+            children: [],
+            geofences: []
         };
         const insert = await person.insertOne(newPerson);
         if(insert.insertedCount === 0){
@@ -64,7 +66,7 @@ module.exports ={
      * @returns the person from the database
      */
     async get(id){
-        //getting animal by id
+        //getting person by id
        
             if (!id && typeof id !== "string") throw "You must provide an id to search for";
             try{
@@ -98,7 +100,7 @@ module.exports ={
         return findPerson;
     },
 
-    async addChildToUser(id, childId, childFirstName, childLastName) {
+    async addChildToUser(id, childId, childFirstName, childLastName, childPhoneNumber) {
         //adding a child to user
         console.log(id)
         console.log(childFirstName)
@@ -111,8 +113,33 @@ module.exports ={
               $addToSet: {
                 children: {
                   id: childId,
-                  ChildFirstName: childFirstName,
-                  childLastName: childLastName
+                  childFirstName: childFirstName,
+                  childLastName: childLastName,
+                  childPhoneNumber: childPhoneNumber
+                }
+              }
+            }
+          );
+        });
+      },
+
+      async addGeofenceToUser(id, geofenceId, geofenceName, formattedAddress, lat, lng, radius) {
+        //adding a geofence to user
+       
+        let parsedId = ObjectId(id);
+        const usersCollection = await users();
+        return this.get(parsedId).then(currentUser => {
+          return usersCollection.updateOne(
+            { _id: parsedId },
+            {
+              $addToSet: {
+                geofences: {
+                  geofenceId: geofenceId,
+                  geofenceName: geofenceName,
+                  formattedAddress: formattedAddress,
+                  lat: lat, 
+                  lng: lng,
+                  radius: radius
                 }
               }
             }

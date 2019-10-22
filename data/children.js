@@ -2,26 +2,32 @@ const mongoCollections = require("./collection");
 const  children = mongoCollections.children;
 const users = mongoCollections.users;
 const { ObjectId } = require('mongodb');
+const geofences = mongoCollections.geofences
 
 
 module.exports ={
     
-    async addChild(userId, firstN, lastN){
-        if ((!userId) || (typeof userId !== "string")){
+    async addChild(parentId, firstN, lastN, childPhoneNumber){
+        if ((!parentId) || (typeof parentId !== "string")){
             throw `Error: ${userId} is invalid`;
         }
         if ((!firstN) || (typeof firstN !== "string")){
             throw `Error: ${firstN} is invalid`;
         }
         if ((!lastN) || (typeof lastN !== "string")){
-            throw `Error: ${password} is invalid`;
+            throw `Error: ${lastN} is invalid`;
+        }
+        if ((!childPhoneNumber) || (typeof childPhoneNumber !== "string")){
+            throw 'Error: ${childPhoneNumber} is invalid';
         }
         
         const child = await children();
         let newChild = {
-            userId,
+            parentId,
             firstN,
-            lastN
+            lastN,
+            childPhoneNumber,
+            geofences: []
         };
         const insert = await child.insertOne(newChild);
         if(insert.insertedCount === 0){
@@ -63,15 +69,15 @@ module.exports ={
 
 
 
-    async getUserbyname(userName){
-        if(!userName)
+    async getChildbyPhoneNumber(childPhoneNumber){
+        if(!childPhoneNumber)
         {
-            throw "User name not provided"
+            throw "Phone number not provided"
         }
 
-        const person = await users();
-        const findPerson = await person.findOne({username:userName});
-        return findPerson;
+        const child = await children();
+        const findChild = await child.findOne({childPhoneNumber:childPhoneNumber});
+        return findChild;
     }
 
 }

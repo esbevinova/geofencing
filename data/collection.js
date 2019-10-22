@@ -17,5 +17,6 @@ const getCollectionFn = collection => {
 /*list all the collections here */
 module.exports = {
     users: getCollectionFn("users"),
-    children: getCollectionFn('children')
+    children: getCollectionFn('children'),
+    geofences: getCollectionFn('geofences')
 };

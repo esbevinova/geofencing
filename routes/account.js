@@ -31,10 +31,10 @@ router.get("/", async (req, res) => {
           if(typeof(req.body.lastN) !== "string"){
             res.status(400).json({message : "NO LAST NAME"})
           }
-        var createdChild = await children.addChild(currentUser, childData.firstN, childData.lastN);
+        var createdChild = await children.addChild(currentUser, childData.firstN, childData.lastN, childData.childPhoneNumber);
         console.log(createdChild)
         //var childId = await createdChild._id 
-        var addChildToParent = await users.addChildToUser(req.session.userID, createdChild._id, createdChild.firstN, createdChild.lastN)
+        var addChildToParent = await users.addChildToUser(req.session.userID, createdChild._id, createdChild.firstN, createdChild.lastN, createdChild.childPhoneNumber)
         //var updatedUserr = users.updateUser(currentUser, createdChild)
 
         res.redirect('/childAdded');//need to add where to redirect after child is added

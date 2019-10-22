@@ -2,7 +2,8 @@ const express = require("express");
 const router = express.Router();
 const data = require("../data");
 const users = data.usersData;
-
+const geofences = data.geofences
+const children = data.childrenData
 
 router.get("/", async (req, res) => {
     if(req.session.authority == true)
@@ -10,20 +11,16 @@ router.get("/", async (req, res) => {
         var userID = req.session.userID;
         var userResult = await users.get(userID);
         if(userResult == null){
-            userResult = ["None"]
+            userResult = ["NA"]
         }
-        res.status(200).render("geofence",
+        res.status(200).render("geofenceCreated",
         {
             userResult : userResult
         })
-        return  
+        return
     }
  
     res.status(401).render('errorPage', { e: { statusCode: "401", error: "You are not logged in, please login", redirect: "/" } })
-});
-
-/*
-This is where we need to list all of the existing Geofences
-*/
+  });
   
   module.exports = router;
