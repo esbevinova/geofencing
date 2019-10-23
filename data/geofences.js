@@ -25,7 +25,8 @@ module.exports ={
             lat,
             lng,
             radius,
-            registeredChildren: []
+            registeredChildren: [],
+            CreatedAt: new Date()
         };
         const insert = await geofence.insertOne(newGeofence);
         if(insert.insertedCount === 0){

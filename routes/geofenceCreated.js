@@ -12,7 +12,7 @@ router.get("/", async (req, res) => {
         var userResult = await users.get(userID);
         if(userResult == null){
             userResult = ["NA"]
-        }
+        }   
         res.status(200).render("geofenceCreated",
         {
             userResult : userResult

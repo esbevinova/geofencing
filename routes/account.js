@@ -45,5 +45,15 @@ router.get("/", async (req, res) => {
         }
   });
 
+  //outputs specific parent's information in json format
+  router.get("/:id", async (req, res) => {
+    try {
+      const parent = await users.get(req.params.id);
+      res.json(parent);
+    } catch (e) {
+      res.status(404).json({ error: "Parent not found" });
+    }
+  });
+
 module.exports = router;
   
