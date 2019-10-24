@@ -1,0 +1,42 @@
+<div>
+    <h2>Account</h2>
+</div>
+<div class="custom-padding">
+  <nav>
+    <ul class="menu-area">
+      <li><a href="/homepage">Home</a></li>
+      <li><a href="/geofence">Geofence</a></li>
+      <li><a href="/account">Account</a></li>
+      <li><a href="/logout">Logout</a></li>
+    </ul>
+  </nav>
+  <div>Username: {{userResult.username}}</div>
+  <div>First Name: {{userResult.firstName}}</div>
+  <div>Last Name: {{userResult.lastName}}</div>
+  <div>Email: {{userResult.email}}</div>
+  <div>Phone Number: {{userResult.phoneNumber}}</div>
+  <div>Children: {{userResult.children.length}}</div>
+  <div>Notification Settings:</div>
+
+
+  <div class='addNewChild'>
+    <h1>Add Child</h1>
+    <form id='addChild' method="POST" action = "/account">
+        <table class='table table-striped'>
+            <tr>
+                <th><label>Child First Name</label></th>
+                <td><input class='form-control' type='text' name='firstN' required></td>
+            </tr>
+            <tr>
+                <th><label>Child Last Name:</label></th>
+                <td><input class='form-control' type='text' name='lastN' required></td>
+            </tr>
+            <tr>
+                <th><label>Child Phone Number:</label></th>
+                <td><input type='tel' pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" class="form-control" name="childPhoneNumber" placeholder="000-000-0000" required></div></td>
+            </tr>
+        </table>
+        <hr>
+        <input type="submit" class="btn btn-primary btn-lg" name='addAChild'>
+    </form>
+</div>

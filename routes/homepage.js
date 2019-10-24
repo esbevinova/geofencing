@@ -6,15 +6,11 @@ const users = data.usersData;
 router.get("/", async (req, res) => {
     if(req.session.authority == true)
     {
-        //console.log(result)
-        //console.log(req.session)
         var userID = req.session.userID;
         var userResult = await users.get(userID);
-        console.log(userResult)
         if(userResult == null){
             userResult = ["Does not apply any job! Right Now"]
         }
-        //console.log(userResult);
         res.status(200).render("homepage",
         {
             userResult : userResult
