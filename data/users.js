@@ -78,12 +78,7 @@ module.exports ={
         
             const user = await userCollection.findOne(parseID);
             if (user === null) throw "No user with that id";
-            
-           const childrenCollection = await children();
-          
-           const child = await childrenCollection.find({ "userId": id}, { projection: { _id: 1, title: 1 } }).toArray();
-        
-        user.children = child;
+           
         return user;
       },
 

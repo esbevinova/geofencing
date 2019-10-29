@@ -7,6 +7,7 @@ const account = require("./account")
 const childAddedRoute = require("./childAdded")
 const logoutRoute = require("./logout")
 const addGeofenceRoute = require("./addGeofence")
+const viewChildrenRoute = require("./viewChildren")
 
 
 const constructorMethod = app => {
@@ -20,6 +21,7 @@ const constructorMethod = app => {
     app.use("/childadded", childAddedRoute)
     app.use("/logout", logoutRoute)
     app.use("/addGeofence", addGeofenceRoute)
+    app.use("/viewChildren", viewChildrenRoute)
     app.use("*", (req, res) => {
       res.status(200).json({message:"no route there"})
         // return res.redirect("/");
