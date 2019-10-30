@@ -2,12 +2,12 @@ const express = require("express");
 const router = express.Router();
 const data = require("../data");
 const users = data.usersData;
-const geofences = data.geofences;
+const geofences = data.geofencesData;
 const children = data.childrenData
 const xss = require ('xss');
 
 router.get("/", async (req, res) => {
-    if(req.session.authority == true)
+    if(req.session.authority == true) //checks if user logged in
     {
         var userID = req.session.userID;
         var userResult = await users.get(userID);
@@ -25,8 +25,8 @@ router.get("/", async (req, res) => {
     res.status(401).render('errorPage', { e: { statusCode: "401", error: "You are not logged in, please login", redirect: "/" } })
   });
 
-
-  router.get("/:id", async (req, res) => {
+  //responds with child's information in json format
+  router.post("/:id", async (req, res) => {
     try {
       const child = await children.get(req.params.id);
       res.json(child);

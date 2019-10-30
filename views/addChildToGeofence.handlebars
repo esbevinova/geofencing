@@ -1,0 +1,23 @@
+<div class = "addChildToGeofenceBox">
+  <h1>Assign Geofence To Registered Child</h1>
+  <div class = "addChildToGeofenceForm">
+    <form id="addChildToGeofence-form" method="post" action="/addChildToGeofence">
+        <div class="form-GeoName">
+            <label for="geofencesName">Enter Geofence Name:</label>
+            <input type="text" class="form-control" id="geofencesName" name="geofencesName" placeholder="Enter Text" required>
+            </div>
+            <div class="noGeofenceError" id="noGeofenceError" hidden></div>
+
+        <div class="form-childsPhoneNumber">
+            <label for="childsPhoneNumber">Enter Child's Phone Number:</label>
+            <input type='tel' pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" id="childsPhoneNumber" name="childsPhoneNumber" placeholder="000-000-0000" required>
+            </div>
+            <div class="phoneNumberError" id="phoneNumberError" hidden></div>
+
+        <div class="form-group">
+                <button type="submit" class="btn-submit" id = "submitbutton">Submit</button>
+        </div>
+    </form>
+  </div>
+
+</div>

@@ -1,8 +1,9 @@
 const mongoCollections = require("./collection");
+const { ObjectId } = require('mongodb');
 const  users= mongoCollections.users;
 const children = mongoCollections.children;
 const geofences = mongoCollections.geofences;
-const { ObjectId } = require('mongodb');
+
 
 module.exports ={
     
@@ -16,6 +17,9 @@ module.exports ={
         if ((!formattedAddress) || (typeof formattedAddress !== "string")){
             throw `Error: ${formattedAddress} is invalid`;
         }
+        if (radius){
+            intRadius = parseInt(radius)
+        }
        
         const geofence = await geofences();
         let newGeofence = {
@@ -24,7 +28,7 @@ module.exports ={
             formattedAddress,
             lat,
             lng,
-            radius,
+            radius: intRadius,
             registeredChildren: [],
             CreatedAt: new Date()
         };
@@ -58,7 +62,7 @@ module.exports ={
 
         var targetID = ObjectId.createFromHexString(id.toString());
         const geofence = await geofences();
-        console.log(geofence)
+        //console.log(geofence)
         const findGeofence = await geofence.findOne({_id: targetID});
         if(findGeofence === null){
             throw "No geofence was found with that id";
@@ -77,6 +81,46 @@ module.exports ={
         const geofence = await geofences();
         const findGeofence = await geofence.findOne({geofenceName:geofenceName});
         return findGeofence;
-    }
+    },
+
+
+
+    async addTheChildToGeofence(geofencesName, childsPhoneNumber) {
+        //adding a child to geofence
+        childCollection = await children()
+        childFound = await childCollection.findOne({childPhoneNumber:childsPhoneNumber}, { projection: { _id: 1 } })
+        let childId = childFound._id
+        let parsedChildId = ObjectId(childId)
+        geofenceCollection = await geofences()
+        geofenceFound = await geofenceCollection.findOne({geofenceName: geofencesName})
+        let geofencesId = geofenceFound._id
+        console.log(geofencesId)
+        //stringedGeofencesId = ObjectId(geofencesId).toString()
+       
+        //console.log(stringedGeofencesId)
+        console.log("LOOK AT ME")
+        let parsedGeofencesId = ObjectId(geofencesId)
+        //console.log(parsedGeofencesId)
+        let geofencingName = geofenceFound.geofenceName
+        let geofenceAddress = geofenceFound.formattedAddress
+        let foundLat = geofenceFound.lat
+        let foundLng = geofenceFound.lng
+        let foundRadius = geofenceFound.radius
+        
+        return this.get(parsedGeofencesId).then(currentUser => {
+          return geofenceCollection.updateOne(
+            { _id: parsedGeofencesId },
+            {
+              $addToSet: {
+                registeredChildren: {
+                  childId: childId,
+                  AddedAt: new Date()
+                }
+              }
+            }
+          );
+        });
+      }
+   
 
 }

@@ -17,20 +17,6 @@
   <div>Phone Number: {{userResult.phoneNumber}}</div>
   <div>Children: {{userResult.children.length}}</div>
   <div><a href="/viewChildren">View Children</a></div>
-  <div class=viewChildrenBox>
-    <ul class ="children-list">
-        {{#each userResult.children}}
-        <li>
-          <!--
-            <form action="/employer/viewApplications/getApplicantNames?JobId={{JobId}}" method="POST" id={{JobId}} class="{{JobId}}form">
-            <label for="{{JobId}}btn" >Job Name:{{Name}}-------------Number of applications:{{Count}}</label>
-            <button type="submit" form={{JobId}} value="Submit" id="{{JobId}}btn"> View</button>    
-            </form>
-            -->
-        </li>
-        {{/each}}
-    </ul>
-</div>
   <div>Notification Settings:</div>
 
 

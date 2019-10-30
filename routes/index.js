@@ -8,6 +8,7 @@ const childAddedRoute = require("./childAdded")
 const logoutRoute = require("./logout")
 const addGeofenceRoute = require("./addGeofence")
 const viewChildrenRoute = require("./viewChildren")
+const addchildToGeofenceRoute = require("./addChildToGeofence")
 
 
 const constructorMethod = app => {
@@ -18,10 +19,11 @@ const constructorMethod = app => {
     app.use("/homepage", homepageRoutes)
     app.use("/geofence", geofenceRoutes)
     app.use("/account", account)
-    app.use("/childadded", childAddedRoute)
+    app.use("/childAdded", childAddedRoute)
     app.use("/logout", logoutRoute)
     app.use("/addGeofence", addGeofenceRoute)
     app.use("/viewChildren", viewChildrenRoute)
+    app.use("/addChildToGeofence", addchildToGeofenceRoute)
     app.use("*", (req, res) => {
       res.status(200).json({message:"no route there"})
         // return res.redirect("/");

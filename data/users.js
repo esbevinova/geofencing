@@ -134,7 +134,7 @@ module.exports ={
                   formattedAddress: formattedAddress,
                   lat: lat, 
                   lng: lng,
-                  radius: radius
+                  radius: parseInt(radius)
                 }
               }
             }

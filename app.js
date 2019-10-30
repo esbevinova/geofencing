@@ -51,7 +51,7 @@ app.set("views", viewPath);
 
 app.use(session({
   name: "AuthCookie",
-  secret: "RMS project",
+  secret: "Project",
   resave: false,
   saveUninitialized: true
 

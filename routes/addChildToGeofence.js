@@ -1,8 +1,9 @@
 const express = require("express");
 const router = express.Router();
 const data = require("../data");
+const children = data.childrenData
 const users = data.usersData;
-const geofences = data.geofences
+const geofences = data.geofences;
 
 
 router.get("/", async (req, res) => {
@@ -13,7 +14,7 @@ router.get("/", async (req, res) => {
         if(userResult == null){
             userResult = ["None"]
         }
-        res.status(200).render("geofence",
+        res.status(200).render("addChildToGeofence",
         {
             userResult : userResult
         })
@@ -23,18 +24,14 @@ router.get("/", async (req, res) => {
     res.status(401).render('errorPage', { e: { statusCode: "401", error: "You are not logged in, please login", redirect: "/" } })
 });
 
-  //outputs specific parent's information in json format
-  router.post("/:id", async (req, res) => {
-    try {
-      const geofence = await geofences.get(req.params.id);
-      res.json(geofence);
-    } catch (e) {
-      res.status(404).json({ error: "Geofence not found" });
-    }
-  });
+router.post("/", async (req, res) => {
 
-/*
-This is where we need to list all of the existing Geofences
-*/
-  
-  module.exports = router;
+    var addedGeofenceToChild = await children.addGeofenceToChild(req.body.geofencesName, req.body.childsPhoneNumber);
+    var addedChildtoGeofence = await geofences.addTheChildToGeofence(req.body.geofencesName, req.body.childsPhoneNumber);
+    res.status(200).render("geofenceAdded", {});
+
+
+});
+
+module.exports = router;
+
