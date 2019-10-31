@@ -4,6 +4,13 @@ const app = express();
 const static = express.static(__dirname + "/public");
 const session = require("express-session")
 const configRoutes = require("./routes");
+const data = require("./data");
+const users = data.usersData;
+const { ObjectId } = require('mongodb');
+const bcrypt = require("bcrypt")
+const children = data.childrenData
+
+
 
 const exphbs = require("express-handlebars");
 
@@ -57,7 +64,80 @@ app.use(session({
 
 }))
 
+
+// app.post("/welcome", async (req, res) => {
+//   res.json(req.body.id);
+// });
+
+
+//returns parent's information
+app.post("/parentData", async (req, res) => {
+  try {
+    var user_id = req.body.id
+    console.log(user_id)
+    let parsedId = ObjectId(user_id)
+    console.log(parsedId)
+
+    const parent = await users.get(parsedId);
+    
+    res.json(parent);
+  } catch (e) {
+    console.log(e)
+    res.json("Parent not found");
+  }
+});
+//returns child's information
+app.post("/childData", async (req, res) => {
+  try {
+    var child_id = req.body.id
+    console.log(child_id)
+    let parsedId = ObjectId(child_id)
+    console.log(parsedId)
+
+    const child = await children.get(parsedId);
+    
+    res.json(child);
+  } catch (e) {
+    console.log(e)
+    res.json("Child not found");
+  }
+});
+
+
+//authenticates parent
+app.post("/authenticateParent", async (req, res) => {
+  try {
+    var parent_username = req.body.username
+    var parent_password = req.body.password
+    const result = await users.getUserbyname(parent_username)
+    if( result === null){
+      res.json("fail")
+    }
+    //return parent's ID with the response when successful
+    const compareResult = await bcrypt.compare(parent_password,result.password);
+    if(result != null && compareResult==true){
+      req.session.userName = result.username
+      res.json("success")
+      //send parent id isntead of success
+      return;
+    }else{
+      res.json("fail")
+    }
+  } catch (e) {
+    console.log(e)
+    res.json("fail");
+  }
+});
+
+
+
+//exactly the same for child but add phone number for authentication
+
+
+
 configRoutes(app);
+
+
 
 app.listen(3000, () => {
   console.log("We've now got a server!");
