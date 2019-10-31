@@ -1,7 +1,43 @@
+body {
+    background-color: rgb(128, 161, 196);
+    background-image: url("https://www.transparenttextures.com/patterns/3px-tile.png");
+}
+
+#cordon {
+    color: white;
+    font-size: 75px;
+    font: bold;
+    text-shadow: 10px 15px 20px rgba(0, 0, 0, 0.5);
+    -webkit-text-stroke: 3px #D12E23;
+}
+
+#links {
+    color: white;
+    font-size: 25px;
+}
+
+#main-menu {
+    color: white;
+    font-size: 25px;
+}
+
+#afterSignup {
+    color: white;
+    font-size: 25px;
+}
+
+#logOut {
+    color: white;
+    font-size: 25px;
+}
+
+#loginLink {
+    font-size: 25px;
+    color: blue;
+}
 
 .menu-area li{
     display: inline;
-
 }
 
 .loginbox{
@@ -76,3 +112,77 @@
 .loginPageOr{
     text-align: center;
 }
+
+#ch-name {
+    color: black;
+    font-size: 25px;
+}
+
+#child-name {
+    color: white;
+    font-size: 35px;
+    -webkit-text-stroke: 0.5px  #D12E23;
+}
+
+#all-children {
+    width: 300px;
+    height: 100px;
+    border: 0.5px solid black;
+    background-color: white;
+    padding: 15px;
+    margin: 20px;
+    text-align: center;
+    font-size: 30px;
+    font-weight: bold;
+    color:rgba(255, 0, 0, 0.8);
+}
+
+#mapid{   
+    position: relative;
+    border: 5px solid black;
+    height: 750px;  
+    width: 100%;        
+}
+
+#boxshadow {
+    position: relative;
+    -moz-box-shadow: 1px 2px 4px rgba(0, 0, 0,0.5);
+    -webkit-box-shadow: 1px 2px 4px rgba(0, 0, 0, .5);
+    box-shadow: 1px 2px 4px rgba(0, 0, 0, .5);
+    padding: 10px;
+    background: white;
+}
+
+/* Make the image fit the box */
+#boxshadow #mapid {
+    width: 100%;
+    border: 1px solid #8a4419;
+    border-style: inset;
+}
+
+#boxshadow::after {
+    content: '';
+    position: absolute;
+    z-index: -1; /* hide shadow behind image */
+    -webkit-box-shadow: 10px 15px 20px rgba(0, 0, 0, 0.6);
+    -moz-box-shadow: 10px 15px 20px rgba(0, 0, 0, 0.6);
+    box-shadow: 10px 15px 20px rgba(0, 0, 0, 0.6);        
+    width: 99%; 
+  
+    height: 100%;
+    bottom: 0;
+}
+
+#user-info {
+    font-size: 25px;
+    color: black;
+}
+
+#viewChildren {
+    font-size: 25px;
+    color: blue;
+}
+
+
+
+

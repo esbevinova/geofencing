@@ -1,15 +1,221 @@
-<h1>Geofencing</h1>
-<div class="custom-padding">
-  <nav>
-    <ul class="menu-area">
-      <li><a href="/homepage">Home</a></li>
-      <li><a href="/geofence">Geofence</a></li>
-      <li><a href="/account">Account</a></li>
-      <li><a href="/logout">Logout</a></li>
-    </ul>
-  </nav>
-</div>
+<!-- Page Content -->
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"
+  integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+  crossorigin=""/>
 
-<div>List of Geofences Goes Here with delete/edit buttons</div>
-<div><a href="/addGeofence">Add New Geofence</a></div>
-<div><a href="/addChildToGeofence">Add Child to Geofence</a></div>
+  <link rel="stylesheet" href="/css/{{this}}">
+
+  <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"
+  integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og=="
+  crossorigin="">
+  </script>
+</head>
+
+<style>
+  .collapsible {
+    background-color: white;
+    color:rgba(255, 0, 0, 0.8);
+    z-index: -1;
+    box-shadow: 10px 15px 20px rgba(0, 0, 0, 0.5);
+    -webkit-text-stroke: 0.25px black;
+    cursor: pointer;
+    padding: 10px;
+    width: 100%;
+    text-align: left;
+    outline: none;
+    font-size: 30px;
+    font-weight: bold;
+  }
+
+  .active, .collapsible:hover {
+    background-color: #D12E23;
+    color: white;
+  }
+
+  .collapsible:after {
+    content: '\002B';
+    color: white;
+    font-weight: bold;
+    float: right;
+    margin-left: 5px;
+  }
+
+  .active:after {
+    content: "\2212";
+}
+
+.content {
+  padding: 0 18px;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.2s ease-out;
+  background-color: rgba(255, 0, 0, 0.5);
+  z-index: -1;
+  box-shadow: 10px 15px 20px rgba(0, 0, 0, 0.5); 
+  color: white;
+  font-size: 25px;
+}
+</style>
+
+<body>
+  <div class="container">
+
+  <h1 id="cordon">Cordon</h1>
+  <div class="custom-padding"></div>
+    <nav>
+      <ul class="menu-area">
+        <li><a href="/homepage" id="main-menu">Home</a></li>
+        <li><a href="/geofence" id="main-menu">Geofence</a></li>
+        <li><a href="/account" id="main-menu">Account</a></li>
+        <li><a href="/logout" id="main-menu">Logout</a></li>
+      </ul>
+    </nav>
+  </div>
+
+  <div><a href="/addGeofence" id="links">Add New Geofence</a></div>
+  <div><a href="/addChildToGeofence" id="links">Add Child to Geofence</a></div>
+
+    <!-- Child's name Heading -->
+  <h3 class="my-4" id="ch-name">Child Name:
+    <large id="child-name">Molly</large>
+  </h3>
+
+    <!-- Geofences Item Row -->
+    <div class="row">
+
+      <div class="col-md-8" id="boxshadow">
+        <div id="mapid"> </div>
+      </div>
+    
+
+      <div class="col-md-4">
+        <button type="button" class="collapsible">Geofence Name: {{userResult.geofences.length}}</button>
+        <div class="content">
+            <p>Geofence address:</p>
+            <p>Geofence radius:</p>
+            <p>Geofence duration:</p>
+        </div>
+        <button type="button" class="collapsible">Geofence Name: {{userResult.geofences.length}}</button>
+        <div class="content">
+            <p>Geofence address:</p>
+            <p>Geofence radius:</p>
+            <p>Geofence duration:</p>
+        </div>
+        <button type="button" class="collapsible">Geofence Name: {{userResult.geofences.length}}</button>
+        <div class="content">
+            <p>Geofence address:</p>
+            <p>Geofence radius:</p>
+            <p>Geofence duration:</p>
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+
+  
+  <div class="col-md-4" id="all-children">
+    <h2>All Children</h2>
+  </div>
+  
+    <!-- /.row -->
+
+    <!-- Related Projects Row 
+    <h3 class="my-3">Related Projects</h3>
+
+    <div class="row">
+
+      <div class="col-md-3 col-sm-6 mb-4">
+        <a href="#">
+          <img class="img-fluid" src="http://placehold.it/500x300" alt="">
+        </a>
+      </div>
+
+      <div class="col-md-3 col-sm-6 mb-4">
+        <a href="#">
+          <img class="img-fluid" src="http://placehold.it/500x300" alt="">
+        </a>
+      </div>
+
+      <div class="col-md-3 col-sm-6 mb-4">
+        <a href="#">
+          <img class="img-fluid" src="http://placehold.it/500x300" alt="">
+        </a>
+      </div>
+
+      <div class="col-md-3 col-sm-6 mb-4">
+        <a href="#">
+          <img class="img-fluid" src="http://placehold.it/500x300" alt="">
+        </a>
+      </div>
+
+    </div>
+  -->
+
+  </div>
+  <!-- /.container -->
+
+
+
+  <script>
+
+      var mymap = L.map('mapid').setView([40.606271, -73.9739118], 13);
+
+  </script>
+
+  <script>
+  L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+    maxZoom: 18,
+    id: 'mapbox.streets',
+    accessToken: 'pk.eyJ1IjoibmFkaWExMTIyMyIsImEiOiJjazJjbHF6cWQzbWNlM2htbDg3NWhyYmZnIn0.r89FeYzodALRhefDXK7fHw'
+  }).addTo(mymap); 
+
+  var marker = L.marker([51.5, -0.09]).addTo(mymap);
+
+  var circle = L.circle([40.606271, -73.9739118], {
+    color: 'red',
+    fillColor: '#f03',
+    fillOpacity: 0.5,
+    radius: 500
+  }).addTo(mymap);
+
+  var circle2 = L.circle([40.585110, -73.969660], {
+    color: 'red',
+    fillColor: '#f03',
+    fillOpacity: 0.5,
+    radius: 200
+  }).addTo(mymap);
+
+  var circle2 = L.circle([40.595110, -73.950660], {
+    color: 'red',
+    fillColor: '#f03',
+    fillOpacity: 0.5,
+    radius: 200
+  }).addTo(mymap);
+  </script>
+
+
+  <script>
+    var coll = document.getElementsByClassName("collapsible");
+    var i;
+
+    for (i = 0; i < coll.length; i++) {
+      coll[i].addEventListener("click", function() {
+        this.classList.toggle("active");
+        var content = this.nextElementSibling;
+        if (content.style.maxHeight){
+          content.style.maxHeight = null;
+        } else {
+          content.style.maxHeight = content.scrollHeight + "px";
+        } 
+      });
+    }
+  </script>
+
+</body>
+</html>

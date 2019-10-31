@@ -1,23 +1,38 @@
-<div>
-    <h2>Account</h2>
-</div>
-<div class="custom-padding">
-  <nav>
-    <ul class="menu-area">
-      <li><a href="/homepage">Home</a></li>
-      <li><a href="/geofence">Geofence</a></li>
-      <li><a href="/account">Account</a></li>
-      <li><a href="/logout">Logout</a></li>
-    </ul>
-  </nav>
-  <div>Username: {{userResult.username}}</div>
-  <div>First Name: {{userResult.firstName}}</div>
-  <div>Last Name: {{userResult.lastName}}</div>
-  <div>Email: {{userResult.email}}</div>
-  <div>Phone Number: {{userResult.phoneNumber}}</div>
-  <div>Children: {{userResult.children.length}}</div>
-  <div><a href="/viewChildren">View Children</a></div>
-  <div>Notification Settings:</div>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="/css/{{this}}">
+</head>
+
+<body>
+
+    <div class="container">
+        <h1 id="cordon">Cordon</h1>
+    </div>
+
+    <div class=afterLogIn>
+        <h1>Account</h1>
+    </div>
+
+    <div class="custom-padding"></div>
+    <nav>
+        <ul class="menu-area">
+            <li><a href="/homepage" id="main-menu">Home</a></li>
+            <li><a href="/geofence" id="main-menu">Geofence</a></li>
+            <li><a href="/account" id="main-menu">Account</a></li>
+            <li><a href="/logout" id="main-menu">Logout</a></li>
+        </ul>
+    </nav>
+
+    <div class="userInfo" id="user-info"></div>
+        <div id="user-info">Username: {{userResult.username}}</div>
+        <div id="user-info">First Name: {{userResult.firstName}}</div>
+        <div id="user-info">Last Name: {{userResult.lastName}}</div>
+        <div id="user-info">Email: {{userResult.email}}</div>
+        <div id="user-info">Phone Number: {{userResult.phoneNumber}}</div>
+        <div id="user-info">Children: {{userResult.children.length}}</div>
+        <div><a href="/viewChildren" id="viewChildren">View Children</a></div>
+        <div id="user-info">Notification Settings:</div>
+    </div>
 
 
   <div class='addNewChild'>
@@ -41,3 +56,5 @@
         <input type="submit" class="btn btn-primary btn-lg" name='addAChild'>
     </form>
 </div>
+
+</body>
