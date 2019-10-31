@@ -1,20 +1,34 @@
-<div class=afterLogIn>
-    <h1>Welcome {{userResult.email}} !</h1>
-</div>
-<div class="custom-padding">
-  <nav>
-    <ul class="menu-area">
-      <li><a href="/homepage">Home</a></li>
-      <li><a href="/geofence">Geofence</a></li>
-      <li><a href="/account">Account</a></li>
-      <li><a href="/logout">Logout</a></li>
-    </ul>
-  </nav>
-</div>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="/css/{{this}}">
 
-<div>
-    <h2>Recent Notifications</h2>
-</div>
-<!--
-<div><iframe width="600" height="450" frameborder="0" style="border:0" src="https://www.google.com/maps/embed/v1/view?key=AIzaSyDAvtiMO_fBipcjY_VBJF-1px9GVBfSLiQ&zoom=17&center=40.7503%2C-73.9877" allowfullscreen></iframe></div>
+</head>
+
+<body>
+
+  <div class="container">
+
+    <h1 id="cordon">Cordon</h1>
+
+    <div class=afterLogIn>
+        <h1>Welcome {{userResult.email}} !</h1>
+    </div>
+
+    <div class="custom-padding"></div>
+      <nav>
+        <ul class="menu-area">
+          <li><a href="/homepage" id="main-menu">Home</a></li>
+          <li><a href="/geofence" id="main-menu">Geofence</a></li>
+          <li><a href="/account" id="main-menu">Account</a></li>
+          <li><a href="/logout" id="main-menu">Logout</a></li>
+        </ul>
+      </nav>
+    </div>
+
+  <div>
+      <h2>Recent Notifications</h2>
+  </div>
+  <!--
+  <div><iframe width="600" height="450" frameborder="0" style="border:0" src="https://www.google.com/maps/embed/v1/view?key=AIzaSyDAvtiMO_fBipcjY_VBJF-1px9GVBfSLiQ&zoom=17&center=40.7503%2C-73.9877" allowfullscreen></iframe></div>
 -->
+</body>
