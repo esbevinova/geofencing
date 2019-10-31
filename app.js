@@ -113,12 +113,10 @@ app.post("/authenticateParent", async (req, res) => {
     if( result === null){
       res.json("fail")
     }
-    //return parent's ID with the response when successful
     const compareResult = await bcrypt.compare(parent_password,result.password);
     if(result != null && compareResult==true){
       req.session.userName = result.username
-      res.json("success")
-      //send parent id isntead of success
+      res.json(result._id)
       return;
     }else{
       res.json("fail")
@@ -130,8 +128,35 @@ app.post("/authenticateParent", async (req, res) => {
 });
 
 
-
-//exactly the same for child but add phone number for authentication
+//authenticate a child by checking username, password, phone number
+app.post("/authenticateChild", async (req, res) => {
+  try {
+    var parent_username = req.body.username
+    var parent_password = req.body.password
+    var child_phoneNumber = req.body.childPhoneNumber
+    const result = await users.getUserbyname(parent_username)
+    if( result === null){
+      res.json("fail")
+    }
+    const childResult = await children.getChildbyPhoneNumber(child_phoneNumber)
+    if (result === null){
+      res.json("fail")
+    }
+    const compareResult = await bcrypt.compare(parent_password, result.password);
+    const compareResultPhoneNumber = await compare(child_phoneNumber, childResult.childPhoneNumber)
+    if(result != null && childResult != null && compareResult==true && compareResultPhoneNumber == true){
+      req.session.userName = result.username
+      res.json(childResult._id)
+      return;
+    }else{
+      res.json("fail")
+    }
+    
+  } catch (e) {
+    console.log(e)
+    res.json("fail");
+  }
+});
 
 
 
