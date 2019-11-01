@@ -7,6 +7,7 @@ const children = data.children
 const axios = require("axios")
 
 router.get("/", async (req, res) => {
+//check if user logged in. If not show 401 error otherwise render /addGeofence page
     if(req.session.authority == true)
     {
         var userID = req.session.userID;
@@ -25,11 +26,9 @@ router.get("/", async (req, res) => {
 });
 
 router.post("/", async (req, res) => {
-
+//adds geofence to geofences collection and to user's geofences array
     const usersData = req.body;
-    // console.log(usersData)
-
-
+    //google API
     axios.get('https://maps.googleapis.com/maps/api/geocode/json',{
         params:{
           address:req.body.geofenceAddress,
@@ -37,7 +36,6 @@ router.post("/", async (req, res) => {
         }
       })
       .then(async function(response){
-
         // Formatted Address
         formattedAddress = response.data.results[0].formatted_address;
         // Geometry
@@ -47,11 +45,8 @@ router.post("/", async (req, res) => {
         var userID = req.session.userID;    
         var createdGeofence = await geofences.addGeofence(userID, req.body.geofenceName, formattedAddress, lat, lng, req.body.radius);
         var addGeofenceToParent = await users.addGeofenceToUser(userID, createdGeofence._id, req.body.geofenceName, formattedAddress, lat, lng, req.body.radius)
-        res.status(200).render("geofenceCreated", {});
-        
+        res.status(200).render("geofenceCreated", {});     
       });
-   
-
   });
 
   module.exports = router;

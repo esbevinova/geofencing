@@ -8,6 +8,7 @@ const xss = require ('xss');
 router.get("/", async (req, res) => {
   res.render("loginPage/loginPage", {});
 });
+
 router.post("/", async (req, res, next) => {
   xss(req.body);
   var requestBody = req.body
@@ -35,6 +36,7 @@ router.post("/", async (req, res, next) => {
         error : "Invalid user name or password!"});
         return;
     }
+    //compares provided password of the username provided. If successful, renders /homepage.
     const compareResult = await bcrypt.compare(password,result.password);
     if(result != null && compareResult==true){
       req.session.authority = true
@@ -48,7 +50,6 @@ router.post("/", async (req, res, next) => {
       { hasError : true,
         error : "Invalid user name or password!"});
         return;
-
   }
   catch(error)
   {

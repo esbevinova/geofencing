@@ -12,6 +12,7 @@ isAuth = (req, res, next) => {
 
 router.use(isAuth);
 
+//destroys the session upon logout. If successful renders logout successfully
 router.get('/', async (req, res) => {
     req.session.destroy((err) => {
         if(err) {

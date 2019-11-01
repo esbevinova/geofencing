@@ -9,13 +9,8 @@ const users = data.usersData;
 const { ObjectId } = require('mongodb');
 const bcrypt = require("bcrypt")
 const children = data.childrenData
-
-
-
 const exphbs = require("express-handlebars");
-
 const Handlebars = require("handlebars");
-
 var path = require ("path");
 const viewPath = path.join(__dirname, "/views");
 
@@ -34,14 +29,10 @@ const handlebarsInstance = exphbs.create({
 });
 
 const rewriteUnsupportedBrowserMethods = (req, res, next) => {
-  // If the user posts to the server with a property called _method, rewrite the request's method
-  // To be that method; so if they post _method=PUT you can now allow browsers to POST to a route that gets
-  // rewritten in this middleware to a PUT route
   if (req.body && req.body._method) {
     req.method = req.body._method;
     delete req.body._method;
   }
-
   // let the next middleware run:
   next();
 };
@@ -52,9 +43,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(rewriteUnsupportedBrowserMethods);
 app.engine("handlebars", handlebarsInstance.engine);
 app.set("view engine", "handlebars");
-
 app.set("views", viewPath);
-
 
 app.use(session({
   name: "AuthCookie",
@@ -64,11 +53,7 @@ app.use(session({
 
 }))
 
-
-// app.post("/welcome", async (req, res) => {
-//   res.json(req.body.id);
-// });
-
+//Post Requests for Mobile Application
 
 //returns parent's information
 app.post("/parentData", async (req, res) => {
@@ -83,9 +68,10 @@ app.post("/parentData", async (req, res) => {
     res.json(parent);
   } catch (e) {
     console.log(e)
-    res.json("Parent not found");
+    res.send("fail");
   }
 });
+
 //returns child's information
 app.post("/childData", async (req, res) => {
   try {
@@ -99,10 +85,9 @@ app.post("/childData", async (req, res) => {
     res.json(child);
   } catch (e) {
     console.log(e)
-    res.json("Child not found");
+    res.send("fail");
   }
 });
-
 
 //authenticates parent
 app.post("/authenticateParent", async (req, res) => {
@@ -111,24 +96,24 @@ app.post("/authenticateParent", async (req, res) => {
     var parent_password = req.body.password
     const result = await users.getUserbyname(parent_username)
     if( result === null){
-      res.json("fail")
+      res.send("fail")
     }
     const compareResult = await bcrypt.compare(parent_password,result.password);
     if(result != null && compareResult==true){
       req.session.userName = result.username
-      res.json(result._id)
+      stringied_id = result._id.toString()
+      res.send(stringied_id)
       return;
     }else{
-      res.json("fail")
+      res.send("fail")
     }
   } catch (e) {
     console.log(e)
-    res.json("fail");
+    res.send("fail");
   }
 });
 
-
-//authenticate a child by checking username, password, phone number
+//authenticates child by checking username, password, phone number
 app.post("/authenticateChild", async (req, res) => {
   try {
     var parent_username = req.body.username
@@ -136,32 +121,29 @@ app.post("/authenticateChild", async (req, res) => {
     var child_phoneNumber = req.body.childPhoneNumber
     const result = await users.getUserbyname(parent_username)
     if( result === null){
-      res.json("fail")
+      res.send("fail")
     }
     const childResult = await children.getChildbyPhoneNumber(child_phoneNumber)
     if (result === null){
-      res.json("fail")
+      res.send("fail")
     }
     const compareResult = await bcrypt.compare(parent_password, result.password);
-    const compareResultPhoneNumber = await compare(child_phoneNumber, childResult.childPhoneNumber)
-    if(result != null && childResult != null && compareResult==true && compareResultPhoneNumber == true){
+    if(result != null && childResult != null && compareResult==true && child_phoneNumber==childResult.childPhoneNumber){
       req.session.userName = result.username
-      res.json(childResult._id)
+      res.send(childResult._id)
       return;
     }else{
-      res.json("fail")
+      res.send("fail")
     }
     
   } catch (e) {
     console.log(e)
-    res.json("fail");
+    res.send("fail");
   }
 });
 
 
-
 configRoutes(app);
-
 
 
 app.listen(3000, () => {

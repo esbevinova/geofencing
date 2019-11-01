@@ -1,3 +1,5 @@
+//This file connects to MongoDB
+
 const MongoClient = require("mongodb").MongoClient;
 const settings = {
     mongoConfig: {

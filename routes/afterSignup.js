@@ -2,10 +2,8 @@ const express = require("express");
 const router = express.Router();
 const data = require("../data");
 const  usersDataHandler = data.usersData;
-//const signupCurrent = signupCurrent.signup;
 
 isAuthUser = (req, res, next) => {
-  // console.log(req.session.authority)
   if (req.session.authority == undefined || req.session.authority == false) {
       res.status(401).render('errorPage', { e: { statusCode: "401", error: "You are not logged in, please login", redirect: "/" } })
   }
@@ -15,9 +13,7 @@ isAuthUser = (req, res, next) => {
 };
 
 router.post("/", async (req, res) => {
-
   const usersData = req.body;
-  // console.log(usersData)
   try{
     if(req.body === undefined){
       res.status(400).json({message : "There isn't body in the request"})

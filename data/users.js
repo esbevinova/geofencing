@@ -1,3 +1,6 @@
+/*
+This is the file that includes all of the functions that can manipulate users collection.
+*/
 const mongoCollections = require("./collection");
 const  users= mongoCollections.users;
 const bcrypt = require("bcrypt");
@@ -53,7 +56,7 @@ module.exports ={
 
     /**
      *
-     * @returns an array of all the people who signed up in the collection
+     * @returns an array of all the users in the collection
      */
     async allPeople(){
         const people = await signup();
@@ -66,8 +69,6 @@ module.exports ={
      * @returns the person from the database
      */
     async get(id){
-        //getting person by id
-       
             if (!id && typeof id !== "string") throw "You must provide an id to search for";
             try{
                parseID = ObjectId(id)
@@ -82,8 +83,11 @@ module.exports ={
         return user;
       },
 
-
-
+    /**
+     * finds user by its username
+     * @param {string} userName 
+     * @returns found user from database
+     */
     async getUserbyname(userName){
         if(!userName)
         {
@@ -94,11 +98,15 @@ module.exports ={
         const findPerson = await person.findOne({username:userName});
         return findPerson;
     },
-
+    /**
+     * adds child to user's children array
+     * @param {objectId} id 
+     * @param {objectId} childId 
+     * @param {string} childFirstName 
+     * @param {string} childLastName 
+     * @param {string} childPhoneNumber 
+     */
     async addChildToUser(id, childId, childFirstName, childLastName, childPhoneNumber) {
-        //adding a child to user
-        console.log(id)
-        console.log(childFirstName)
         let parsedId = ObjectId(id);
         const usersCollection = await users();
         return this.get(parsedId).then(currentUser => {
@@ -118,9 +126,10 @@ module.exports ={
         });
       },
 
+      /**
+       * adds geofence to user's geofences array
+       */
       async addGeofenceToUser(id, geofenceId, geofenceName, formattedAddress, lat, lng, radius) {
-        //adding a geofence to user
-       
         let parsedId = ObjectId(id);
         const usersCollection = await users();
         return this.get(parsedId).then(currentUser => {
@@ -142,14 +151,10 @@ module.exports ={
         });
       },
 
+    //Updates user's children array in database
     async updateUser(id, childId){
-        //This function will update the name of an animal currently in the database.
-        //If no id is provided, the method should throw.
-        //If the animal cannot be updated (does not exist), the method should throw.
-        //If the update succeeds, return the animal as it is after it is updated.
-        
         if (!id) throw "You must provide an id to search for";
-        if (!newName || typeof newName != "string") throw "Invalid Input.";
+        if (!childId) throw "Invalid Input.";
         
         await this.get(id)
         const userCollection = await users();
@@ -162,6 +167,5 @@ module.exports ={
             throw "could not update successfully";
         }
         return await this.get(id);
-        
         }
 }
