@@ -76,9 +76,7 @@ app.post("/parentData", async (req, res) => {
 app.post("/childData", async (req, res) => {
   try {
     var child_id = req.body.id
-    console.log(child_id)
     let parsedId = ObjectId(child_id)
-    console.log(parsedId)
 
     const child = await children.get(parsedId);
     
@@ -142,6 +140,33 @@ app.post("/authenticateChild", async (req, res) => {
   }
 });
 
+
+/*Create post request /childDeviceUpdate
+  Find child in the collection by provided i
+  update the child record by inserting lastKnownLat, lastKnownLng, fcmToken (need to check if fcm should be updated separately)
+*/
+
+app.post("/childDeviceUpdate", async (req, res) => {
+  try {
+    var child_id = req.body.id
+    let parsedId = ObjectId(child_id)
+    var child_lastKnownLat = req.body.lastKnownLat
+    var child_lastKnownLng = req.body.lastKnownLng
+    var child_fcmToken = req.body.fcmToken
+    const result = await children.updateChild(id, childId, lastKnownLat, lastKnownLng, fcmToken)
+    if( result === null){
+      res.send("fail")
+    }
+    
+  } catch (e) {
+    console.log(e)
+    res.send("fail");
+  }
+});
+
+/*create post request /parentDeviceUpdate
+  to update fcmToken field in the parent's document in Mongodb
+*/
 
 configRoutes(app);
 

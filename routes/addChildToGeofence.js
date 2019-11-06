@@ -25,9 +25,12 @@ router.get("/", async (req, res) => {
 });
 
 router.post("/", async (req, res) => {
+    var userId = req.session.userID;
     //updates both collections, children and geofences then renders /geofenceAdded page if successful
     var addedGeofenceToChild = await children.addGeofenceToChild(req.body.geofencesName, req.body.childsPhoneNumber);
     var addedChildtoGeofence = await geofences.addTheChildToGeofence(req.body.geofencesName, req.body.childsPhoneNumber);
+    var addedGeofenceToChildArray = await users.addGeofenceToChildArray(userId, req.body.geofencesName, req.body.childsPhoneNumber)
+    //add to User's Children Array
     res.status(200).render("geofenceAdded", {});
 });
 

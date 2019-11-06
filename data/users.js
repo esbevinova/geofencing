@@ -98,6 +98,20 @@ module.exports ={
         const findPerson = await person.findOne({username:userName});
         return findPerson;
     },
+
+    async getUserbyfirstName(personEmail){
+      if(!personEmail)
+      {
+          throw "Email not provided"
+      }
+
+      const person = await users();
+      const foundPerson = await person.findOne({email:personEmail}, { projection: { _id: 1 } });
+      const foundPersonId = foundPerson._id
+      stringedFoundPersonId = foundPersonId.toString()      
+      return stringedFoundPersonId;
+  },
+
     /**
      * adds child to user's children array
      * @param {objectId} id 
@@ -129,43 +143,80 @@ module.exports ={
       /**
        * adds geofence to user's geofences array
        */
-      async addGeofenceToUser(id, geofenceId, geofenceName, formattedAddress, lat, lng, radius) {
-        let parsedId = ObjectId(id);
-        const usersCollection = await users();
-        return this.get(parsedId).then(currentUser => {
-          return usersCollection.updateOne(
-            { _id: parsedId },
+    async addGeofenceToUser(id, geofenceId, geofenceName, formattedAddress, lat, lng, radius) {
+      let parsedId = ObjectId(id);
+      const usersCollection = await users();
+      return this.get(parsedId).then(currentUser => {
+        return usersCollection.updateOne(
+          { _id: parsedId },
+          {
+            $addToSet: {
+              geofences: {
+                geofenceId: geofenceId,
+                geofenceName: geofenceName,
+                formattedAddress: formattedAddress,
+                lat: lat, 
+                lng: lng,
+                radius: parseInt(radius)
+              }
+            }
+          }
+        );
+      });
+    },
+
+  //Updates user's children array in database
+  async updateUser(id, childId){
+      if (!id) throw "You must provide an id to search for";
+      if (!childId) throw "Invalid Input.";
+      
+      await this.get(id)
+      const userCollection = await users();
+      const updatedUser = {
+          children: childId
+      };
+      
+      const updatedInfo = await userCollection.updateOne({ _id: id }, {$set:updatedUser});
+      if (updatedInfo.modifiedCount === 0) {
+          throw "could not update successfully";
+      }
+      return await this.get(id);
+      },
+      
+    //add geofences to children
+    async addGeofenceToChildArray(userId, geofencesName, childsPhoneNumber) {
+      childCollection = await children()
+      childFound = await childCollection.findOne({childPhoneNumber:childsPhoneNumber}, { projection: { _id: 1 } })
+      let childId = childFound._id
+      geofenceCollection = await geofences()
+      geofenceFound = await geofenceCollection.findOne({geofenceName: geofencesName})
+      let geofencesId = geofenceFound._id
+      usersCollection = await users()
+    
+      let geofencingName = geofenceFound.geofenceName
+      let geofenceAddress = geofenceFound.formattedAddress
+      let foundLat = geofenceFound.lat
+      let foundLng = geofenceFound.lng
+      let foundRadius = geofenceFound.radius
+      
+      
+      return this.get(userId).then(currentUser => {
+        return usersCollection.updateOne(
+          { 'children.id': childId },
             {
-              $addToSet: {
-                geofences: {
-                  geofenceId: geofenceId,
-                  geofenceName: geofenceName,
-                  formattedAddress: formattedAddress,
-                  lat: lat, 
-                  lng: lng,
-                  radius: parseInt(radius)
+              $push: {
+                'children.$.registeredGeofences': {
+                  geofenceId: geofencesId,
+                  geofenceName: geofencingName,
+                  formattedAddress: geofenceAddress,
+                  lat: foundLat, 
+                  lng: foundLng,
+                  radius: parseInt(foundRadius),
+                  CreatedAt: new Date()
                 }
               }
             }
-          );
-        });
-      },
-
-    //Updates user's children array in database
-    async updateUser(id, childId){
-        if (!id) throw "You must provide an id to search for";
-        if (!childId) throw "Invalid Input.";
-        
-        await this.get(id)
-        const userCollection = await users();
-        const updatedUser = {
-            children: childId
-        };
-        
-        const updatedInfo = await userCollection.updateOne({ _id: id }, {$set:updatedUser});
-        if (updatedInfo.modifiedCount === 0) {
-            throw "could not update successfully";
-        }
-        return await this.get(id);
-        }
+            );
+      });
+    }
 }

@@ -124,5 +124,31 @@ module.exports ={
             }
           );
         });
-      }
+      },
+
+
+      //Updates children's lastKnownLat, lastKnownLng, fcmToken
+    async updateChild(id, childId, lastKnownLat, lastKnownLng, fcmToken){
+        if (!id) throw "You must provide an id to search for";
+        if (!childId) throw "Invalid Input.";
+        if (!lastKnownLat) throw "You must provide lattitude";
+        if (!lastKnownLng) throw "You must provide longtitude";
+        if (!fcmToken) throw "No token provided";
+        
+        await this.get(childId)
+        const childrenCollection = await children();
+        const updatedChild = {
+            lastKnownLat: lastKnownLat,
+            lastKnownLng: lastKnownLng,
+            fcmToken: fcmToken,
+            lastUpdated: new Date()
+        };
+        
+        const updatedInfo = await childrenCollection.updateOne({ _id: id }, {$addToSet:updatedChild});
+       
+        if (updatedInfo.modifiedCount === 0) {
+            throw "could not update successfully";
+        }
+        return await this.get(id);
+        }
 }
