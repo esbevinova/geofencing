@@ -13,6 +13,18 @@ const exphbs = require("express-handlebars");
 const Handlebars = require("handlebars");
 var path = require ("path");
 const viewPath = path.join(__dirname, "/views");
+var admin = require("firebase-admin");
+
+
+var serviceAccount = require("./serviceAccountKey.json")
+
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: "https://safe-child-8e016.firebaseio.com"
+});
+
+
 
 
 const handlebarsInstance = exphbs.create({
@@ -90,6 +102,7 @@ app.post("/childData", async (req, res) => {
 //authenticates parent
 app.post("/authenticateParent", async (req, res) => {
   try {
+
     var parent_username = req.body.username
     var parent_password = req.body.password
     const result = await users.getUserbyname(parent_username)
@@ -110,6 +123,22 @@ app.post("/authenticateParent", async (req, res) => {
     res.send("fail");
   }
 });
+
+//separate POST request for just fcmToken
+app.post("/parentFCMTokenUpdate", async (req, res) =>{
+  try{
+      var parentFcmToken = req.body.fcmToken
+      var parent_id = req.body.id
+      //find and update fcmToken
+      var foundUser = await users.updateParentFCMToken(parent_id, parentFcmToken)
+      res.send("Successfully updated parent's FCM Token: " + parent_id)
+
+  }catch (e){
+    console.log(e)
+    res.send("fail")
+  }
+})
+
 
 //authenticates child by checking username, password, phone number
 app.post("/authenticateChild", async (req, res) => {
@@ -146,7 +175,7 @@ app.post("/authenticateChild", async (req, res) => {
   update the child record by inserting lastKnownLat, lastKnownLng, fcmToken (need to check if fcm should be updated separately)
 */
 
-app.post("/childDeviceUpdate", async (req, res) => {
+app.post("/childLocationUpdate", async (req, res) => {
   try {
     var child_id = req.body.id
     let parsedId = ObjectId(child_id)
@@ -167,6 +196,51 @@ app.post("/childDeviceUpdate", async (req, res) => {
 /*create post request /parentDeviceUpdate
   to update fcmToken field in the parent's document in Mongodb
 */
+// app.post("/parentTokenUpdate", async (req, res) => {
+//   try {
+//     // var child_id = req.body.id
+//     // let parsedId = ObjectId(child_id)
+//     // var child_lastKnownLat = req.body.lastKnownLat
+//     // var child_lastKnownLng = req.body.lastKnownLng
+//     // var child_fcmToken = req.body.fcmToken
+//     // const result = await children.updateChild(id, childId, lastKnownLat, lastKnownLng, fcmToken)
+//     var parent_id = req.body.id
+//     let parsedId = ObjectId(parent_id)
+//     var last_known_token = req.body.fcmToken
+//     var found_parent = users.findOne(parsedId)
+
+//     if ()
+//     if( result === null){
+//       res.send("fail")
+//     }
+    
+//   } catch (e) {
+//     console.log(e)
+//     res.send("fail");
+//   }
+// });
+
+
+//Notification Post Request
+app.post("/geofenceEventTriggerNotification", async (req, res) => {
+  //ashish will send child and geofence ids, and then i'll have all the information that i can display 
+  //child_id = req.body.id
+  //geofence_id = req.body.
+  const payload = {
+    notification: {
+      title: 'Geofence Triggered',
+      body: 'AHAHAHAHAHAHAHAHAHA'
+    }
+  }
+
+  const options = {
+    priority: 'high',
+    timeToLive: 60 * 60 * 24, // 1 day
+  };
+  const firebaseToken = 'fjOUmPdab48:APA91bG2Ykz_PXKHVM-oxZ9iGj_DpWAhVQ-cfJ_A94LzbkxDK4frv5bmvaVrYa31-B4v4mhiJt3UsR8EVqEGBduHjKF3iBAKUXMp5WJcg5MbGF-1PZQF2M8-tJxzWQClOk-3rzkTNhWJ'
+  admin.messaging().sendToDevice(firebaseToken, payload, options);
+ 
+});
 
 configRoutes(app);
 

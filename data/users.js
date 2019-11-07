@@ -43,6 +43,7 @@ module.exports ={
             firstName,
             lastName,
             phoneNumber,
+            fcmToken: '',
             children: [],
             geofences: []
         };
@@ -182,7 +183,31 @@ module.exports ={
       }
       return await this.get(id);
       },
-      
+
+
+//ITS NOT WORKING!!!!!!!!!!
+  //updating an existing parent fcmToken
+  async updateParentFCMToken(parent_id, parentToken){
+    if (!parent_id) throw "NO ID";
+    if (!parentToken) throw "NO TOKEN";
+    // const parsedId = ObjectId(parent_id);
+    const found_parent = await this.get(parent_id)
+    const found_id = found_parent._id
+    //console.log(found_parent)
+    
+    const usersCollection = await users();
+    const updatedUser = {
+      fcmToken: parentToken
+    };
+
+    const updatedInfo = await usersCollection.updateOne({_id: found_id}, {$set:updatedUser});
+    if (updatedInfo.modifiedCount === 0) {
+      throw "could not update successfully";
+  }
+  return await this.get(parsedId);
+  },
+
+
     //add geofences to children
     async addGeofenceToChildArray(userId, geofencesName, childsPhoneNumber) {
       childCollection = await children()

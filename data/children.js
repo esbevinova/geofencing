@@ -30,28 +30,28 @@ module.exports ={
             firstN,
             lastN,
             childPhoneNumber,
+            fcmToken: '',
             geofences: []
         };
         const insert = await child.insertOne(newChild);
         if(insert.insertedCount === 0){
-            throw "Could not add person";
+            throw "Could not add child";
         }
         const newId = insert.insertedId;
         return await this.get(newId);
     },
 
     
-    /**
-     * returns all existing children in children collection in an array format
-     */
-    async allChildren(){
-        const people = await signup();
-        return await people.find({}).toArray();
-    },
+    // /**
+    //  * returns all existing children in children collection in an array format
+    //  */
+    // async allChildren(){
+    //     const people = await signup();
+    //     return await people.find({}).toArray();
+    // },
 
     /**
      * get an already existing child from database by searching with Id
-     * @param {string} id
      * @returns the child from the database - object
      */
     async get(id){
