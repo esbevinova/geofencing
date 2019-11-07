@@ -1,5 +1,8 @@
 language: node_js
 node_js:
   - 10.15.0
+before_script:
+  - sleep 15
+  - mongo mydb_test --eval 'db.createUser({_id:"5db751c5eaa4f643e85bf023", email: "kat@gmail.com",roles:["readWrite"]});'
 services:
   - mongodb
