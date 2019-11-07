@@ -70,6 +70,21 @@ module.exports ={
         return findGeofence;
     },
 
+    //11.03
+    async getMyGeofences(id){
+        //given id, return the user from the database
+        if(!id){
+            throw "Error: no id was provided";
+        }
+        var targetID = id.toString();
+        const geofence = await geofences();
+        const myGeofences = await geofence.find({parentId : targetID}).toArray();
+        console.log("PASS")
+        return myGeofences;
+    },
+
+  
+    //11.03.end
 
 
     async getGeofenceByName(geofenceName){
@@ -82,6 +97,7 @@ module.exports ={
         const findGeofence = await geofence.findOne({geofenceName:geofenceName});
         return findGeofence;
     },
+
 
 
 

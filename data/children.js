@@ -74,7 +74,7 @@ module.exports ={
         }
 
         const child = await children();
-        const founndChild = await child.findOne({childPhoneNumber:childPhoneNumber});
+        const foundChild = await child.findOne({childPhoneNumber:childPhoneNumber});
         return foundChild;
     },
 
