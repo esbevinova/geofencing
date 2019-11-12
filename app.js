@@ -122,14 +122,24 @@ app.post("/authenticateParent", async (req, res) => {
   }
 });
 
+
+// /parentFCMTokenUpdate and /childFCMTokenUpdate were failing because the existing token was the same as the one that was passed.
+//might have to create a separate post request that checks FCMToken and if differ from the one saved, THEN send post request to update it.
+//need to verify if the fcmToken is passed always different or we have to check internally? If we need to check then, pass the comparison into the updateParentFCMToken() function
 //separate POST request for just fcmToken
 app.post("/parentFCMTokenUpdate", async (req, res) =>{
   try{
       var parentFcmToken = req.body.fcmToken
       var parent_id = req.body.id
-      //find and update fcmToken
-      var foundUser = await users.updateParentFCMToken(parent_id, parentFcmToken)
-      res.send("Successfully updated parent's FCM Token: " + parent_id)
+      foundUser = await users.get(parent_id)
+      if (foundUser.fcmToken != Null || foundUser.fcmToken != parentFcmToken){
+        //find and update fcmToken
+        var foundUser = await users.updateParentFCMToken(parent_id, parentFcmToken)
+        res.send("Successfully updated parent's FCM Token")
+      }
+      else{
+        res.send("the token is the same")
+      }
 
   }catch (e){
     console.log(e)
@@ -221,7 +231,6 @@ app.post("/safeGeofenceEventTriggerNotification", async (req, res) => {
     res.send("fail")
   }
 })
-
 
 //Notification Post Request
 app.post("/geofenceEventTriggerNotification", async (req, res) => {

@@ -9,12 +9,15 @@ const logoutRoute = require("./logout")
 const addGeofenceRoute = require("./addGeofence")
 const viewChildrenRoute = require("./viewChildren")
 const addchildToGeofenceRoute = require("./addChildToGeofence")
+const cordonRoute = require("./cordon")
 
 
 const constructorMethod = app => {
     app.use("/signup", signupRoutes);
     app.use("/login", loginRoutes)
-    app.use("/", loginRoutes);
+    //app.use("/", loginRoutes);
+    app.use("/", cordonRoute)
+    app.use("/cordon", cordonRoute)
     app.use("/aftersignup", afterSignupRoutes)
     app.use("/homepage", homepageRoutes)
     app.use("/geofence", geofenceRoutes)

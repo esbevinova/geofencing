@@ -185,7 +185,6 @@ module.exports ={
       },
 
 
-//ITS NOT WORKING!!!!!!!!!!
   //updating an existing parent fcmToken
   async updateParentFCMToken(parent_id, parentToken){
     if (!parent_id) throw "NO ID";
