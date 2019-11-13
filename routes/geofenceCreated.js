@@ -2,8 +2,6 @@ const express = require("express");
 const router = express.Router();
 const data = require("../data");
 const users = data.usersData;
-const geofences = data.geofences
-const children = data.childrenData
 
 router.get("/", async (req, res) => {
     if(req.session.authority == true)

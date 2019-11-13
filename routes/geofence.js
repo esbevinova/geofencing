@@ -6,6 +6,7 @@ const geofences = data.geofences
 
 
 router.get("/", async (req, res) => {
+  //check if user logged in. If not, show 401 error otherwise render /geofence page
     if(req.session.authority == true)
     {
         var userID = req.session.userID;

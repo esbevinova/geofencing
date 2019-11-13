@@ -5,11 +5,11 @@ const users = data.usersData;
 const children = data.childrenData
 
 router.get("/", async (req, res) => {
+//if autherization successful, render account page and if not give status 401 error
     if(req.session.authority == true)
     {
         var userID = req.session.userID;
         var userResult = await users.get(userID);
-        console.log(userResult)
         if(userResult == null){
             userResult = ["None"]
         }
@@ -21,39 +21,27 @@ router.get("/", async (req, res) => {
     }
     res.status(401).render('errorPage', { e: { statusCode: "401", error: "You are not logged in, please login", redirect: "/" } })
   });
-  router.post("/", async (req, res) => {
-      try{
-        const currentUser = req.session.userID;
-        const childData = req.body;
-        if(typeof(req.body.firstN) !== "string"){
-            res.status(400).json({message : "NO FIRST NAME"})
-          }
-          if(typeof(req.body.lastN) !== "string"){
-            res.status(400).json({message : "NO LAST NAME"})
-          }
-        var createdChild = await children.addChild(currentUser, childData.firstN, childData.lastN, childData.childPhoneNumber);
-        console.log(createdChild)
-        //var childId = await createdChild._id 
-        var addChildToParent = await users.addChildToUser(req.session.userID, createdChild._id, createdChild.firstN, createdChild.lastN, createdChild.childPhoneNumber)
-        //var updatedUserr = users.updateUser(currentUser, createdChild)
 
-        res.redirect('/childAdded');//need to add where to redirect after child is added
-      }
-      catch(error)
-        {
-        res.status(404).json({message:error})
+router.post("/", async (req, res) => {
+//add child in children collection and in children array under parent, then redirect to /childAdded page if successful
+    try{
+      const currentUser = req.session.userID;
+      const childData = req.body;
+      if(typeof(req.body.firstN) !== "string"){
+          res.status(400).json({message : "NO FIRST NAME"})
         }
-  });
+        if(typeof(req.body.lastN) !== "string"){
+          res.status(400).json({message : "NO LAST NAME"})
+        }
+      var createdChild = await children.addChild(currentUser, childData.firstN, childData.lastN, childData.childPhoneNumber);
+      var addChildToParent = await users.addChildToUser(req.session.userID, createdChild._id, createdChild.firstN, createdChild.lastN, createdChild.childPhoneNumber)
 
-  //outputs specific parent's information in json format
-  router.get("/:id", async (req, res) => {
-    try {
-      const parent = await users.get(req.params.id);
-      res.json(parent);
-    } catch (e) {
-      res.status(404).json({ error: "Parent not found" });
+      res.redirect('/childAdded');
     }
-  });
-
+    catch(error)
+      {
+      res.status(404).json({message:error})
+      }
+});
 module.exports = router;
   

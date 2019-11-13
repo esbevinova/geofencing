@@ -1,3 +1,4 @@
+//This file establishes the collections to be created in MongoDB
 const dbConnection = require("./connection")
 
 

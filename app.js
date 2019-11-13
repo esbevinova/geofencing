@@ -9,15 +9,23 @@ const users = data.usersData;
 const { ObjectId } = require('mongodb');
 const bcrypt = require("bcrypt")
 const children = data.childrenData
-
-
-
 const exphbs = require("express-handlebars");
-
 const Handlebars = require("handlebars");
-
+const bootstrap = require('bootstrap'); 
 var path = require ("path");
 const viewPath = path.join(__dirname, "/views");
+var admin = require("firebase-admin");
+
+
+var serviceAccount = require("./serviceAccountKey.json")
+
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: "https://safe-child-8e016.firebaseio.com"
+});
+
+
 
 
 const handlebarsInstance = exphbs.create({
@@ -34,14 +42,10 @@ const handlebarsInstance = exphbs.create({
 });
 
 const rewriteUnsupportedBrowserMethods = (req, res, next) => {
-  // If the user posts to the server with a property called _method, rewrite the request's method
-  // To be that method; so if they post _method=PUT you can now allow browsers to POST to a route that gets
-  // rewritten in this middleware to a PUT route
   if (req.body && req.body._method) {
     req.method = req.body._method;
     delete req.body._method;
   }
-
   // let the next middleware run:
   next();
 };
@@ -52,9 +56,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(rewriteUnsupportedBrowserMethods);
 app.engine("handlebars", handlebarsInstance.engine);
 app.set("view engine", "handlebars");
-
 app.set("views", viewPath);
-
 
 app.use(session({
   name: "AuthCookie",
@@ -64,11 +66,7 @@ app.use(session({
 
 }))
 
-
-// app.post("/welcome", async (req, res) => {
-//   res.json(req.body.id);
-// });
-
+//Post Requests for Mobile Application
 
 //returns parent's information
 app.post("/parentData", async (req, res) => {
@@ -83,73 +81,67 @@ app.post("/parentData", async (req, res) => {
     res.json(parent);
   } catch (e) {
     console.log(e)
-    res.json("Parent not found");
+    res.send("fail");
   }
 });
+
 //returns child's information
 app.post("/childData", async (req, res) => {
   try {
     var child_id = req.body.id
-    console.log(child_id)
     let parsedId = ObjectId(child_id)
-    console.log(parsedId)
 
     const child = await children.get(parsedId);
     
     res.json(child);
   } catch (e) {
     console.log(e)
-    res.json("Child not found");
+    res.send("fail");
   }
 });
-
-//11.04
-//returns geofence information
-// app.post("/geofences", async (req, res) => {
-//   try {
-//     var geofence_id = req.body.id
-//     console.log(geofence_id)
-//     let parsedId = ObjectId(geofence_id)
-//     console.log(parsedId)
-
-//     const geofence = await geofences.get(parsedId);
-    
-//     res.json(geofence);
-//   } catch (e) {
-//     console.log(e)
-//     res.json("Geofence not found");
-//   }
-// });
-//11.04.end
-
-
-
 
 //authenticates parent
 app.post("/authenticateParent", async (req, res) => {
   try {
+
     var parent_username = req.body.username
     var parent_password = req.body.password
     const result = await users.getUserbyname(parent_username)
     if( result === null){
-      res.json("fail")
+      res.send("fail")
     }
     const compareResult = await bcrypt.compare(parent_password,result.password);
     if(result != null && compareResult==true){
       req.session.userName = result.username
-      res.json(result._id)
+      stringied_id = result._id.toString()
+      res.send(stringied_id)
       return;
     }else{
-      res.json("fail")
+      res.send("fail")
     }
   } catch (e) {
     console.log(e)
-    res.json("fail");
+    res.send("fail");
   }
 });
 
+//separate POST request for just fcmToken
+app.post("/parentFCMTokenUpdate", async (req, res) =>{
+  try{
+      var parentFcmToken = req.body.fcmToken
+      var parent_id = req.body.id
+      //find and update fcmToken
+      var foundUser = await users.updateParentFCMToken(parent_id, parentFcmToken)
+      res.send("Successfully updated parent's FCM Token: " + parent_id)
 
-//authenticate a child by checking username, password, phone number
+  }catch (e){
+    console.log(e)
+    res.send("fail")
+  }
+})
+
+
+//authenticates child by checking username, password, phone number
 app.post("/authenticateChild", async (req, res) => {
   try {
     var parent_username = req.body.username
@@ -157,32 +149,101 @@ app.post("/authenticateChild", async (req, res) => {
     var child_phoneNumber = req.body.childPhoneNumber
     const result = await users.getUserbyname(parent_username)
     if( result === null){
-      res.json("fail")
+      res.send("fail")
     }
     const childResult = await children.getChildbyPhoneNumber(child_phoneNumber)
     if (result === null){
-      res.json("fail")
+      res.send("fail")
     }
     const compareResult = await bcrypt.compare(parent_password, result.password);
-    const compareResultPhoneNumber = await compare(child_phoneNumber, childResult.childPhoneNumber)
-    if(result != null && childResult != null && compareResult==true && compareResultPhoneNumber == true){
+    if(result != null && childResult != null && compareResult==true && child_phoneNumber==childResult.childPhoneNumber){
       req.session.userName = result.username
-      res.json(childResult._id)
+      res.send(childResult._id)
       return;
     }else{
-      res.json("fail")
+      res.send("fail")
     }
     
   } catch (e) {
     console.log(e)
-    res.json("fail");
+    res.send("fail");
   }
 });
 
 
+/*Create post request /childDeviceUpdate
+  Find child in the collection by provided i
+  update the child record by inserting lastKnownLat, lastKnownLng, fcmToken (need to check if fcm should be updated separately)
+*/
+
+app.post("/childLocationUpdate", async (req, res) => {
+  try {
+    var child_id = req.body.id
+    let parsedId = ObjectId(child_id)
+    var child_lastKnownLat = req.body.lastKnownLat
+    var child_lastKnownLng = req.body.lastKnownLng
+    var child_fcmToken = req.body.fcmToken
+    const result = await children.updateChild(id, childId, lastKnownLat, lastKnownLng, fcmToken)
+    if( result === null){
+      res.send("fail")
+    }
+    
+  } catch (e) {
+    console.log(e)
+    res.send("fail");
+  }
+});
+
+/*create post request /parentDeviceUpdate
+  to update fcmToken field in the parent's document in Mongodb
+*/
+// app.post("/parentTokenUpdate", async (req, res) => {
+//   try {
+//     // var child_id = req.body.id
+//     // let parsedId = ObjectId(child_id)
+//     // var child_lastKnownLat = req.body.lastKnownLat
+//     // var child_lastKnownLng = req.body.lastKnownLng
+//     // var child_fcmToken = req.body.fcmToken
+//     // const result = await children.updateChild(id, childId, lastKnownLat, lastKnownLng, fcmToken)
+//     var parent_id = req.body.id
+//     let parsedId = ObjectId(parent_id)
+//     var last_known_token = req.body.fcmToken
+//     var found_parent = users.findOne(parsedId)
+
+//     if ()
+//     if( result === null){
+//       res.send("fail")
+//     }
+    
+//   } catch (e) {
+//     console.log(e)
+//     res.send("fail");
+//   }
+// });
+
+
+//Notification Post Request
+app.post("/geofenceEventTriggerNotification", async (req, res) => {
+  //ashish will send child and geofence ids, and then i'll have all the information that i can display 
+  //child_id = req.body.id
+  //geofence_id = req.body.
+  const payload = {
+    notification: {
+      title: 'Geofence Triggered',
+      body: 'AHAHAHAHAHAHAHAHAHA'
+    }
+  }
+
+  const options = {
+    priority: 'high',
+    timeToLive: 60 * 60 * 24, // 1 day
+  };
+  const firebaseToken = 'fjOUmPdab48:APA91bG2Ykz_PXKHVM-oxZ9iGj_DpWAhVQ-cfJ_A94LzbkxDK4frv5bmvaVrYa31-B4v4mhiJt3UsR8EVqEGBduHjKF3iBAKUXMp5WJcg5MbGF-1PZQF2M8-tJxzWQClOk-3rzkTNhWJ'
+  admin.messaging().sendToDevice(firebaseToken, payload, options);
+ 
+});
 
 configRoutes(app);
-
 
 
 app.listen(3000, () => {
