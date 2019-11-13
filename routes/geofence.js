@@ -35,7 +35,6 @@ router.get("/", async (req, res) => {
     res.status(401).render('errorPage', { e: { statusCode: "401", error: "You are not logged in, please login", redirect: "/" } })
 });
 
-<<<<<<< HEAD
 
 
   //outputs specific parent's information in json format
@@ -54,51 +53,7 @@ router.get("/", async (req, res) => {
   */
  
 
-  //11.03
-
-//   router.get('/geofence', async (req, res) => {
-//     res.render('geofence', { myGeofences: myGeofences })
-//   })
-
-
   
-  // router.get("/geofence", async (req, res) => {
-  //   try {
-  //     console.log("BEFORE")
-  //     const myUser = userResult._id;
-  //     getMyGeofences(myUser);
-  //     res.render("geofence", {myGeofences});
-  //     console.log("its working")
-  //   } catch (e) {
-  //     res.status(404).json({ error: "Geofence not found" });
-  //   }
-  //   //var fences = ["hello", "Molly", "!"];
-  //   //document.getElementById("myfences").innerHTML = fences;
-  //   fences = JSON.parse(myGeofences);
-  //   return fences
-    
-    // var fences, text;
-    // fences = ["hello", "Molly", "!"];
-
-    // text = "<ul>";
-    // fences.forEach(myFunction);
-    // text += "</ul>";
-    // document.getElementById("myfences").innerHTML = text;
-
-    // function myFunction(value) {
-    // text += "<li>" + value + "</li>";
-    // } 
-
-    //document.getElementById("myfences").innerHTML = fences;
-  //});
-  //11.03.end
-
-=======
-/*
-This is where we need to list all of the existing Geofences
-*/
->>>>>>> c02bba47e52f95470dd7dc125fe94482bad7d08d
-
 
   
   module.exports = router;

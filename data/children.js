@@ -3,7 +3,7 @@ This is the file that includes all of the functions that can manipulate children
 */
 const mongoCollections = require("./collection");
 const { ObjectId } = require('mongodb');
-const  children = mongoCollections.children;
+const children = mongoCollections.children;
 const users = mongoCollections.users;
 const geofences = mongoCollections.geofences
 
@@ -41,8 +41,16 @@ module.exports ={
         return await this.get(newId);
     },
 
-<<<<<<< HEAD
-    
+    async getMyChildren(id){
+        //given id, return the user from the database
+        if(!id){
+            throw "Error: no id was provided";
+        }
+        var targetID = id.toString();
+        const child = await children();
+        const myChildren = await child.find({parentId : targetID}).toArray();
+        return myChildren;
+    },
     // /**
     //  * returns all existing children in children collection in an array format
     //  */
@@ -51,8 +59,6 @@ module.exports ={
     //     return await people.find({}).toArray();
     // },
 
-=======
->>>>>>> c02bba47e52f95470dd7dc125fe94482bad7d08d
     /**
      * get an already existing child from database by searching with Id
      * @returns the child from the database - object

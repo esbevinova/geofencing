@@ -11,10 +11,6 @@ const bcrypt = require("bcrypt")
 const children = data.childrenData
 const exphbs = require("express-handlebars");
 const Handlebars = require("handlebars");
-<<<<<<< HEAD
-const bootstrap = require('bootstrap'); 
-=======
->>>>>>> c02bba47e52f95470dd7dc125fe94482bad7d08d
 var path = require ("path");
 const viewPath = path.join(__dirname, "/views");
 var admin = require("firebase-admin");
@@ -27,11 +23,6 @@ admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
   databaseURL: "https://safe-child-8e016.firebaseio.com"
 });
-<<<<<<< HEAD
-
-
-=======
->>>>>>> c02bba47e52f95470dd7dc125fe94482bad7d08d
 
 
 const handlebarsInstance = exphbs.create({
@@ -232,7 +223,6 @@ app.post("/childLocationUpdate", async (req, res) => {
   }
 });
 
-<<<<<<< HEAD
 /*Create post request /childDeviceUpdate
   Find child in the collection by provided i
   update the child record by inserting lastKnownLat, lastKnownLng, fcmToken (need to check if fcm should be updated separately)
@@ -293,10 +283,11 @@ app.post("/geofenceEventTriggerNotification", async (req, res) => {
     notification: {
       title: 'Geofence Triggered',
       body: 'AHAHAHAHAHAHAHAHAHA'
-=======
 //POST REQUEST SAFE EVENT GEOFENCE DATA
 //save notifications under each child - childId, geofenceId
 //latitude, longitude, accuracy, speed, altitude, bearing, timestamp, id
+    }}
+    });
 app.post("/safeGeofenceEventTriggerNotification", async (req, res) => {
   try{
     var child_id = req.body.childId
@@ -318,30 +309,29 @@ app.post("/safeGeofenceEventTriggerNotification", async (req, res) => {
 })
 
 //Notification Post Request
-app.post("/geofenceEventTriggerNotification", async (req, res) => {
-  //ashish will send child and geofence ids
-  child_id = req.body.id
-  found_child = children.get(child_id)
+// app.post("/geofenceEventTriggerNotification", async (req, res) => {
+//   //ashish will send child and geofence ids
+//   child_id = req.body.id
+//   found_child = children.get(child_id)
 
-  geofence_id = req.body.geofenceId
-  found_geofence = geofences.get(geofence_id) 
+//   geofence_id = req.body.geofenceId
+//   found_geofence = geofences.get(geofence_id) 
 
-  const payload = {
-    notification: {
-      title: 'Geofence' + found_geofence.geofenceName + 'Triggered',
-      body: found_child.name + "has crossed" + found_geofence.geofenceName + 'geofence.'
->>>>>>> c02bba47e52f95470dd7dc125fe94482bad7d08d
-    }
-  }
+//   const payload = {
+//     notification: {
+//       title: 'Geofence' + found_geofence.geofenceName + 'Triggered',
+//       body: found_child.name + "has crossed" + found_geofence.geofenceName + 'geofence.'
+//     }
+//   }
 
-  const options = {
-    priority: 'high',
-    timeToLive: 60 * 60 * 24, // 1 day
-  };
-  const firebaseToken = 'fjOUmPdab48:APA91bG2Ykz_PXKHVM-oxZ9iGj_DpWAhVQ-cfJ_A94LzbkxDK4frv5bmvaVrYa31-B4v4mhiJt3UsR8EVqEGBduHjKF3iBAKUXMp5WJcg5MbGF-1PZQF2M8-tJxzWQClOk-3rzkTNhWJ'
-  admin.messaging().sendToDevice(firebaseToken, payload, options);
+//   const options = {
+//     priority: 'high',
+//     timeToLive: 60 * 60 * 24, // 1 day
+//   };
+//   const firebaseToken = 'fjOUmPdab48:APA91bG2Ykz_PXKHVM-oxZ9iGj_DpWAhVQ-cfJ_A94LzbkxDK4frv5bmvaVrYa31-B4v4mhiJt3UsR8EVqEGBduHjKF3iBAKUXMp5WJcg5MbGF-1PZQF2M8-tJxzWQClOk-3rzkTNhWJ'
+//   admin.messaging().sendToDevice(firebaseToken, payload, options);
  
-});
+// });
 
 configRoutes(app);
 

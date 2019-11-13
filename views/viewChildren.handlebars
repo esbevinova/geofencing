@@ -18,8 +18,11 @@
   </div>
 
 
-<div>{{userResult.children.length}}</div>
-<h1>AAAAAAAAAAAA  </h1>
+<ul id="mychildren">
+  {{#each myChildren}}
+    <li>{{this}}</li>
+  {{/each}}
+</ul>
 
 <table border="1">
 
