@@ -41,6 +41,7 @@ module.exports ={
         return await this.get(newId);
     },
 
+<<<<<<< HEAD
     
     // /**
     //  * returns all existing children in children collection in an array format
@@ -50,6 +51,8 @@ module.exports ={
     //     return await people.find({}).toArray();
     // },
 
+=======
+>>>>>>> c02bba47e52f95470dd7dc125fe94482bad7d08d
     /**
      * get an already existing child from database by searching with Id
      * @returns the child from the database - object
@@ -128,19 +131,17 @@ module.exports ={
 
 
       //Updates children's lastKnownLat, lastKnownLng, fcmToken
-    async updateChild(id, childId, lastKnownLat, lastKnownLng, fcmToken){
+    async updateChild(childId, lastKnownLat, lastKnownLng){
         if (!id) throw "You must provide an id to search for";
         if (!childId) throw "Invalid Input.";
         if (!lastKnownLat) throw "You must provide lattitude";
         if (!lastKnownLng) throw "You must provide longtitude";
-        if (!fcmToken) throw "No token provided";
         
         await this.get(childId)
         const childrenCollection = await children();
         const updatedChild = {
             lastKnownLat: lastKnownLat,
             lastKnownLng: lastKnownLng,
-            fcmToken: fcmToken,
             lastUpdated: new Date()
         };
         
@@ -150,5 +151,54 @@ module.exports ={
             throw "could not update successfully";
         }
         return await this.get(id);
+        },
+
+     //updating an existing child fcmToken
+    async updateChildFCMToken(child_id, childToken){
+        if (!child_id) throw "NO ID";
+        if (!childToken) throw "NO TOKEN";
+        const parsedId = ObjectId(child_id);
+        const found_child = await this.get(parsedId) //possibly change this to children?
+        const found_id = found_child._id
+        
+        const childrenCollection = await children();
+        const updatedUser = {
+        fcmToken: childToken
+        };
+
+        const updatedInfo = await childrenCollection.updateOne({_id: found_id}, {$set:updatedUser});
+        if (updatedInfo.modifiedCount === 0) {
+        throw "could not update successfully";
+    }
+        return await this.get(parsedId);
+    },
+
+    async addGeofenceAlerts(child_id, geofence_id, latitude, longtitude, accuracy, speed, altitude, bearing, timestamp){
+        childCollection = await children()
+        childFound = await childCollection.findOne({_id:child_id}, { projection: { _id: 1 } })
+        let childId = childFound._id
+        geofenceCollection = await geofences()
+        geofenceFound = await geofenceCollection.findOne({_id: geofence_id}, { projection: { _id: 1 } })
+        let geofencesId = geofenceFound._id
+        
+        return this.get(childId).then(currentUser => {
+        return childCollection.updateOne(
+            { _id: childId },
+            {
+            $addToSet: {
+                alerts: {
+                geofenceId: geofencesId,
+                latitude: latitude,
+                longtitude: longtitude,
+                accuracy: accuracy,
+                speed: speed,
+                altitude: altitude,
+                bearing: bearing,
+                timestamp: timestamp,
+                addedAt: new Date()
+            }
         }
+    });
+});
+}
 }

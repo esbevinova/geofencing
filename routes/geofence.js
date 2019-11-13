@@ -35,6 +35,7 @@ router.get("/", async (req, res) => {
     res.status(401).render('errorPage', { e: { statusCode: "401", error: "You are not logged in, please login", redirect: "/" } })
 });
 
+<<<<<<< HEAD
 
 
   //outputs specific parent's information in json format
@@ -92,6 +93,11 @@ router.get("/", async (req, res) => {
   //});
   //11.03.end
 
+=======
+/*
+This is where we need to list all of the existing Geofences
+*/
+>>>>>>> c02bba47e52f95470dd7dc125fe94482bad7d08d
 
 
   

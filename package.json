@@ -10,6 +10,7 @@
   "author": "Katya Bevinova",
   "license": "ISC",
   "dependencies": {
+    "@fortawesome/fontawesome-free": "^5.11.2",
     "axios": "^0.19.0",
     "bcrypt": "^3.0.6",
     "body-parser": "^1.19.0",
@@ -18,9 +19,15 @@
     "express-handlebars": "^3.1.0",
     "express-session": "^1.16.2",
     "firebase-admin": "^8.7.0",
+<<<<<<< HEAD
+=======
+    "jquery": "^3.4.1",
+>>>>>>> c02bba47e52f95470dd7dc125fe94482bad7d08d
     "mongodb": "^3.3.2",
     "multer": "^1.4.2",
     "node-geocoder": "^3.24.0",
+    "scss": "^0.2.4",
+    "simple-line-icons": "^2.4.1",
     "xss": "^1.0.6"
   },
   "devDependencies": {

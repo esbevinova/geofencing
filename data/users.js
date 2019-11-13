@@ -185,30 +185,27 @@ module.exports ={
       },
 
 
-//ITS NOT WORKING!!!!!!!!!!
   //updating an existing parent fcmToken
-  // async updateParentFCMToken(parent_id, parentToken){
-  //   if (!parent_id) throw "NO ID";
-  //   if (!parentToken) throw "NO TOKEN";
-  //   // const parsedId = ObjectId(parent_id);
-  //   const found_parent = await this.get(parent_id)
-  //   const found_id = found_parent._id
-  //   //console.log(found_parent)
+  async updateParentFCMToken(parent_id, parentToken){
+    if (!parent_id) throw "NO ID";
+    if (!parentToken) throw "NO TOKEN";
+    const parsedId = ObjectId(parent_id);
+    const found_parent = await this.get(parsedId)
+    const found_id = found_parent._id
     
-  //   const usersCollection = await users();
-  //   const updatedUser = {
-  //     fcmToken: parentToken
-  //   };
+    const usersCollection = await users();
+    const updatedUser = {
+      fcmToken: parentToken
+    };
 
-  //   const updatedInfo = await usersCollection.updateOne({_id: found_id}, {$set:updatedUser});
-  //   if (updatedInfo.modifiedCount === 0) {
-  //     throw "could not update successfully";
-  // }
-  // return await this.get(parsedId);
-  // },
+    const updatedInfo = await usersCollection.updateOne({_id: found_id}, {$set:updatedUser});
+    if (updatedInfo.modifiedCount === 0) {
+      throw "could not update successfully";
+  }
+  return await this.get(parsedId);
+  },
 
-
-    //add geofences to children
+    //add geofences to children array
     async addGeofenceToChildArray(userId, geofencesName, childsPhoneNumber) {
       childCollection = await children()
       childFound = await childCollection.findOne({childPhoneNumber:childsPhoneNumber}, { projection: { _id: 1 } })

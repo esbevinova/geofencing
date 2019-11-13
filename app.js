@@ -11,7 +11,10 @@ const bcrypt = require("bcrypt")
 const children = data.childrenData
 const exphbs = require("express-handlebars");
 const Handlebars = require("handlebars");
+<<<<<<< HEAD
 const bootstrap = require('bootstrap'); 
+=======
+>>>>>>> c02bba47e52f95470dd7dc125fe94482bad7d08d
 var path = require ("path");
 const viewPath = path.join(__dirname, "/views");
 var admin = require("firebase-admin");
@@ -24,8 +27,11 @@ admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
   databaseURL: "https://safe-child-8e016.firebaseio.com"
 });
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> c02bba47e52f95470dd7dc125fe94482bad7d08d
 
 
 const handlebarsInstance = exphbs.create({
@@ -140,6 +146,42 @@ app.post("/parentFCMTokenUpdate", async (req, res) =>{
   }
 })
 
+// /parentFCMTokenUpdate and /childFCMTokenUpdate were failing because the existing token was the same as the one that was passed.
+//might have to create a separate post request that checks FCMToken and if differ from the one saved, THEN send post request to update it.
+//need to verify if the fcmToken is passed always different or we have to check internally? If we need to check then, pass the comparison into the updateParentFCMToken() function
+//separate POST request for just fcmToken
+app.post("/parentFCMTokenUpdate", async (req, res) =>{
+  try{
+      var parentFcmToken = req.body.fcmToken
+      var parent_id = req.body.id
+      foundUser = await users.get(parent_id)
+      if (foundUser.fcmToken != Null || foundUser.fcmToken != parentFcmToken){
+        //find and update fcmToken
+        var foundUser = await users.updateParentFCMToken(parent_id, parentFcmToken)
+        res.send("Successfully updated parent's FCM Token")
+      }
+      else{
+        res.send("the token is the same")
+      }
+
+  }catch (e){
+    console.log(e)
+    res.send("fail")
+  }
+});
+
+app.post("./childFCMTokenUpdate", async (req, res) =>{
+  try{
+    var childFcmToken = req.body.fcmToken
+    var child_id = req.body.id
+    var foundChild = await children.updateChildFCMToken(child_id, childFcmToken)
+    res.send("Successfully updated child's FCM Token: " + child_id)
+  } catch (e){
+    console.log(e)
+    res.send("fail")
+  }
+});
+
 
 //authenticates child by checking username, password, phone number
 app.post("/authenticateChild", async (req, res) => {
@@ -170,7 +212,27 @@ app.post("/authenticateChild", async (req, res) => {
   }
 });
 
+// Find child in the collection by provided id
+// update the child record by inserting lastKnownLat, lastKnownLng
+app.post("/childLocationUpdate", async (req, res) => {
+  try {
+    var child_id = req.body.id
+    let parsedId = ObjectId(child_id)
+    var child_lastKnownLat = req.body.lastKnownLat
+    var child_lastKnownLng = req.body.lastKnownLng
+  
+    const result = await children.updateChild(parsedId, child_lastKnownLat, child_lastKnownLng)
+    if( result === null){
+      res.send("fail")
+    }
+    
+  } catch (e) {
+    console.log(e)
+    res.send("fail");
+  }
+});
 
+<<<<<<< HEAD
 /*Create post request /childDeviceUpdate
   Find child in the collection by provided i
   update the child record by inserting lastKnownLat, lastKnownLng, fcmToken (need to check if fcm should be updated separately)
@@ -231,6 +293,44 @@ app.post("/geofenceEventTriggerNotification", async (req, res) => {
     notification: {
       title: 'Geofence Triggered',
       body: 'AHAHAHAHAHAHAHAHAHA'
+=======
+//POST REQUEST SAFE EVENT GEOFENCE DATA
+//save notifications under each child - childId, geofenceId
+//latitude, longitude, accuracy, speed, altitude, bearing, timestamp, id
+app.post("/safeGeofenceEventTriggerNotification", async (req, res) => {
+  try{
+    var child_id = req.body.childId
+    var geofence_id = req.body.geofenceId
+    var latitude = req.body.latitude
+    var longtitude = req.body.longtitude
+    var accuracy = req.body.accuracy
+    var speed = req.body.speed
+    var altitude = req.body.altitude
+    var bearing = req.body.bearing
+    var timestamp = req.body.timestamp
+
+    const savedAlert = await children.addGeofenceAlerts(child_id, geofence_id, latitude, longtitude, accuracy, speed, altitude, bearing, timestamp)
+    res.send("successfully saved an alert")
+  } catch (e){
+    console.log(e)
+    res.send("fail")
+  }
+})
+
+//Notification Post Request
+app.post("/geofenceEventTriggerNotification", async (req, res) => {
+  //ashish will send child and geofence ids
+  child_id = req.body.id
+  found_child = children.get(child_id)
+
+  geofence_id = req.body.geofenceId
+  found_geofence = geofences.get(geofence_id) 
+
+  const payload = {
+    notification: {
+      title: 'Geofence' + found_geofence.geofenceName + 'Triggered',
+      body: found_child.name + "has crossed" + found_geofence.geofenceName + 'geofence.'
+>>>>>>> c02bba47e52f95470dd7dc125fe94482bad7d08d
     }
   }
 
