@@ -3,6 +3,10 @@ body {
     background-image: url("https://www.transparenttextures.com/patterns/3px-tile.png");
 }
 
+/* .navbar { 
+    background-color: lightgreen; 
+} */
+
 #cordon {
     color: white;
     font-size: 75px;

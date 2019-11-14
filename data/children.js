@@ -2,10 +2,10 @@
 This is the file that includes all of the functions that can manipulate children collection.
 */
 const mongoCollections = require("./collection");
-const { ObjectId } = require('mongodb');
-const children = mongoCollections.children;
+const  children = mongoCollections.children;
 const users = mongoCollections.users;
 const geofences = mongoCollections.geofences
+const { ObjectId } = require('mongodb');
 
 
 module.exports ={
@@ -64,19 +64,31 @@ module.exports ={
      * @returns the child from the database - object
      */
     async get(id){
-        //given id, return the user from the database
-        if(!id){
-            throw "Error: no id was provided";
-        }
+        if (!id && typeof id !== "string") throw "You must provide an id to search for";
+            try{
+               parseID = ObjectId(id)
+            }catch(e){
+              throw "Not Object ID"
+            }
+            const childrenCollection = await children();
+        
+            const child = await childrenCollection.findOne(parseID);
+            if (child === null) throw "No user with that id";
+           
+        return child;
+        // //given id, return the user from the database
+        // if(!id){
+        //     throw "Error: no id was provided";
+        // }
 
-        var targetID = ObjectId.createFromHexString(id.toString());
-        const child = await children();
-        //console.log(child)
-        const findChild = await child.findOne({_id: targetID});
-        if(findChild === null){
-            throw "No child was found with that id";
-        }
-        return findChild;
+        // var targetID = ObjectId.createFromHexString(id.toString());
+        // const child = await children();
+        // //console.log(child)
+        // const findChild = await child.findOne({_id: targetID});
+        // if(findChild === null){
+        //     throw "No child was found with that id";
+        // }
+        // return findChild;
     },
 
     /** 
@@ -106,14 +118,12 @@ module.exports ={
         geofenceCollection = await geofences()
         geofenceFound = await geofenceCollection.findOne({geofenceName: geofencesName}, { projection: { _id: 1 } })
         let geofencesId = geofenceFound._id
-        /*
-        Decided to store only ID of geofence under child's geofences array
         let geofencingName = geofenceFound.geofenceName
         let geofenceAddress = geofenceFound.formattedAddress
         let foundLat = geofenceFound.lat
         let foundLng = geofenceFound.lng
         let foundRadius = geofenceFound.radius
-        */
+        
         
         return this.get(childId).then(currentUser => {
           return childCollection.updateOne(
@@ -122,11 +132,11 @@ module.exports ={
               $addToSet: {
                 geofences: {
                   geofenceId: geofencesId,
-                //   geofenceName: geofencingName,
-                //   formattedAddress: geofenceAddress,
-                //   lat: foundLat, 
-                //   lng: foundLng,
-                //   radius: parseInt(foundRadius),
+                  geofenceName: geofencingName,
+                  formattedAddress: geofenceAddress,
+                  lat: foundLat, 
+                  lng: foundLng,
+                  radius: parseInt(foundRadius),
                   CreatedAt: new Date()
                 }
               }
@@ -136,9 +146,8 @@ module.exports ={
       },
 
 
-      //Updates children's lastKnownLat, lastKnownLng, fcmToken
+      //Updates children's lastKnownLat, lastKnownLng
     async updateChild(childId, lastKnownLat, lastKnownLng){
-        if (!id) throw "You must provide an id to search for";
         if (!childId) throw "Invalid Input.";
         if (!lastKnownLat) throw "You must provide lattitude";
         if (!lastKnownLng) throw "You must provide longtitude";
@@ -181,10 +190,12 @@ module.exports ={
 
     async addGeofenceAlerts(child_id, geofence_id, latitude, longtitude, accuracy, speed, altitude, bearing, timestamp){
         childCollection = await children()
-        childFound = await childCollection.findOne({_id:child_id}, { projection: { _id: 1 } })
+        const parsedChildId = ObjectId(child_id)
+        childFound = await childCollection.findOne({_id:parsedChildId}, { projection: { _id: 1 } })
         let childId = childFound._id
         geofenceCollection = await geofences()
-        geofenceFound = await geofenceCollection.findOne({_id: geofence_id}, { projection: { _id: 1 } })
+        const parsedGeofenceId = ObjectId(geofence_id)
+        geofenceFound = await geofenceCollection.findOne({_id: parsedGeofenceId}, { projection: { _id: 1 } })
         let geofencesId = geofenceFound._id
         
         return this.get(childId).then(currentUser => {

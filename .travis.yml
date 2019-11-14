@@ -3,13 +3,6 @@ node_js:
   - 10.15.0
 services:
   - mongodb
-<<<<<<< HEAD
-# before_script:
-#   - sleep 15
-#   - mongo mydb_test --eval 'db.createUser({_id:"5db751c5eaa4f643e85bf023", email: "kat@gmail.com",roles:["readWrite"]});'
-#
-=======
 before_script:
   - sleep 15
   - mongo mydb_test --eval 'db.createUser({user:"kat",pwd:"kat",roles:["readWrite"]});'
->>>>>>> c02bba47e52f95470dd7dc125fe94482bad7d08d
