@@ -13,13 +13,7 @@ router.get("/", async (req, res) => {
         if(userResult == null){
             userResult = ["None"]
         }
-        var myKids = await children.getMyChildren(userID);
-        //List of geofences for a given user
-        var myChildren = [];
-        var i;
-        for (i = 0; i < myKids.length; i++) {
-            myChildren.push([myKids[i].firstN, myKids[i].lastN]);
-        }
+        var myChildren = await children.getMyChildren(userID);
         res.status(200).render("viewChildren",
         {
             userResult : userResult,

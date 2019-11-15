@@ -56,7 +56,7 @@ module.exports ={
      * @param {string} id
      * @returns the geofence from the database
      */
-    async get(id){
+    async getGeofence(id){
         //given id, return the user from the database
         if(!id){
             throw "Error: no id was provided";
@@ -80,7 +80,6 @@ module.exports ={
         var targetID = id.toString();
         const geofence = await geofences();
         const myGeofences = await geofence.find({parentId : targetID}).toArray();
-        console.log("PASS")
         return myGeofences;
     },
 

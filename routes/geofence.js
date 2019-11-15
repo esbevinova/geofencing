@@ -1,4 +1,5 @@
 const express = require("express");
+const { ObjectId } = require('mongodb');
 const router = express.Router();
 const data = require("../data");
 const users = data.usersData;
@@ -16,17 +17,21 @@ router.get("/", async (req, res) => {
         }
         var myGeofences = await geofences.getMyGeofences(userID);
         //List of geofences for a given user
-        var myFences = [];
-        console.log(myGeofences)
-        var i;
-        for (i = 0; i < myGeofences.length; i++) {
-            myFences.push(myGeofences[i].geofenceName);
-        }
-        console.log(myFences)
+        // var myFences = [];
+        // console.log(myGeofences)
+        // var i;
+        // for (i = 0; i < myGeofences.length; i++) {
+        //     myFences.push(myGeofences[i].geofenceName);
+        console.log('myGeofences', myGeofences)
+        // var i;
+        // for (i = 0; i < myGeofences.length; i++) {
+        //   var f = myGeofences[i]._id;    
+        // }
+        // var fence = await geofences.getGeofence(f)
         res.status(200).render("geofence",
         {
             userResult : userResult,
-            myFences: myFences
+            myGeofences : myGeofences    
         })
 
         return  

@@ -1,7 +1,13 @@
-body {
-    background-color: rgb(128, 161, 196);
-    background-image: url("https://www.transparenttextures.com/patterns/3px-tile.png");
+html {
+    background-repeat: no-repeat;
 }
+#Header_wrapper {
+    background-color: #fe6969;
+}
+body {
+    background-image: linear-gradient(rgb(254, 105, 105), white);
+}
+
 
 #cordon {
     color: white;

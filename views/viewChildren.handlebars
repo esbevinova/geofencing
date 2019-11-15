@@ -17,10 +17,11 @@
     </nav>
   </div>
 
-
 <ul id="mychildren">
-  {{#each myChildren}}
-    <li>{{this}}</li>
+  {{#each myChildren as |child|}}
+  {{#with child}}
+    <li>{{child.firstN}} {{child.lastN}}</li>
+  {{/with}}
   {{/each}}
 </ul>
 
