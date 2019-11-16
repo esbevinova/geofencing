@@ -1,3 +1,41 @@
+<link href="public/css/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js" integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o" crossorigin="anonymous"></script>
+
+<!-- Navigation -->
+<nav class="navbar navbar-expand-lg static-top" id="header_wrapper">
+  <div class="container">
+    <a class="navbar-brand" href="#">
+          <img src="http://placehold.it/150x50?text=Logo" alt="">
+        </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+    <div class="collapse navbar-collapse" id="navbarResponsive">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item active">
+          <a class="nav-link" id="header_wrapper" href="/homepage">Home
+                <span class="sr-only">(current)</span>
+              </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="header_wrapper" href="/geofence">Geofence</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="header_wrapper" href="/viewChildren">Children</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="header_wrapper" href="/account">Account</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="header_wrapper" href="/logout">Logout</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="/css/{{this}}">
@@ -10,25 +48,42 @@
 
     <h1 id="cordon">Cordon</h1>
 
-    <div class=afterLogIn>
-        <h1>Welcome {{userResult.email}} !</h1>
+    
+
+    <div class=afterLogIn id="welcome">
+      <h1>Welcome</h1>
+      <h1> {{userResult.email}} </h1>
     </div>
 
-    <div class="custom-padding"></div>
-      <nav>
-        <ul class="menu-area">
-          <li><a href="/homepage" id="main-menu">Home</a></li>
-          <li><a href="/geofence" id="main-menu">Geofence</a></li>
-          <li><a href="/account" id="main-menu">Account</a></li>
-          <li><a href="/logout" id="main-menu">Logout</a></li>
-        </ul>
-      </nav>
-    </div>
+
 
   <div>
       <h2>Recent Notifications</h2>
   </div>
-  <!--
+  <footer id="Footer" class="clearfix">
+  <div class="widgets_wrapper">
+    <div class="container">
+      <div class="column one-half">
+        <aside id="custom_html-6" class="widget_text widget widget_custom_html">
+          <div class="textwidget custom-html-widget">
+            <ul>
+              <li style="margin-bottom: 10px;"><span style="color: #fe6969; margin-right: 10px;">→</span> <a href="#">About</a></li>
+            </ul>
+          </div>
+        </aside>
+      </div>
+    <div class="column one-half">
+      <aside id="custom_html-6" class="widget_text widget widget_custom_html">
+        <div class="textwidget custom-html-widget">
+          <ul>
+            <li style="margin-bottom: 10px;"><span style="color: #fe6969; margin-right: 10px;">→</span> <a href="#">Contact Us</a></li>
+          </ul>
+        </div>
+      </aside>
+    </div>
+  </div>
+  </footer>
+    <!--
   <div><iframe width="600" height="450" frameborder="0" style="border:0" src="https://www.google.com/maps/embed/v1/view?key=AIzaSyDAvtiMO_fBipcjY_VBJF-1px9GVBfSLiQ&zoom=17&center=40.7503%2C-73.9877" allowfullscreen></iframe></div>
 -->
 </body>

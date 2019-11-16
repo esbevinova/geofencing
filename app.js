@@ -90,7 +90,7 @@ app.post("/childData", async (req, res) => {
 
     const child = await children.get(parsedId);
     
-    res.json(child);
+    res.json(child.geofences);//SHOULD I HAVE RETURN JUST GEOFENCES OR ALL INFORMATION ABOUT CHILD
   } catch (e) {
     console.log(e)
     res.send("fail");
@@ -122,33 +122,20 @@ app.post("/authenticateParent", async (req, res) => {
   }
 });
 
-//separate POST request for just fcmToken
 app.post("/parentFCMTokenUpdate", async (req, res) =>{
   try{
       var parentFcmToken = req.body.fcmToken
       var parent_id = req.body.id
-      //find and update fcmToken
-      var foundUser = await users.updateParentFCMToken(parent_id, parentFcmToken)
-      res.send("Successfully updated parent's FCM Token: " + parent_id)
-
-  }catch (e){
-    console.log(e)
-    res.send("fail")
-  }
-})
-
-// /parentFCMTokenUpdate and /childFCMTokenUpdate were failing because the existing token was the same as the one that was passed.
-//might have to create a separate post request that checks FCMToken and if differ from the one saved, THEN send post request to update it.
-//need to verify if the fcmToken is passed always different or we have to check internally? If we need to check then, pass the comparison into the updateParentFCMToken() function
-//separate POST request for just fcmToken
-app.post("/parentFCMTokenUpdate", async (req, res) =>{
-  try{
-      var parentFcmToken = req.body.fcmToken
-      var parent_id = req.body.id
-      foundUser = await users.get(parent_id)
-      if (foundUser.fcmToken != Null || foundUser.fcmToken != parentFcmToken){
+      //var oldFCMToken = req.body.oldFCMToken
+      //check the received id and old and new token ID. If  
+      
+      const foundUser = await users.get(parent_id)//if old tokens match, then execute the rest of the code
+     
+      if (foundUser != null && (foundUser.fcmToken === "" || foundUser.fcmToken != parentFcmToken)){
+  
         //find and update fcmToken
-        var foundUser = await users.updateParentFCMToken(parent_id, parentFcmToken)
+        var parsed_parent_id = ObjectId(parent_id)
+        var foundParent = await users.updateParentFCMToken(parsed_parent_id, parentFcmToken)
         res.send("Successfully updated parent's FCM Token")
       }
       else{
@@ -161,18 +148,28 @@ app.post("/parentFCMTokenUpdate", async (req, res) =>{
   }
 });
 
-app.post("./childFCMTokenUpdate", async (req, res) =>{
+//NOT WORKING!!!!!!!!!
+app.post("/childFCMTokenUpdate", async (req, res) =>{
   try{
     var childFcmToken = req.body.fcmToken
     var child_id = req.body.id
-    var foundChild = await children.updateChildFCMToken(child_id, childFcmToken)
-    res.send("Successfully updated child's FCM Token: " + child_id)
+
+    const foundChild = await children.get(child_id)//if old tokens match, then execute the rest of the code
+    
+
+    if (foundChild != null && (foundChild.fcmToken === "" || foundChild.fcmToken != childFcmToken)){
+      var parsed_child_id = ObjectId(child_id)
+      var foundChildToken = await children.updateChildFCMToken(parsed_child_id, childFcmToken)
+      res.send("Successfully updated child's FCM Token")
+    }
+    else{
+      res.send("the token is the same")
+    }
   } catch (e){
     console.log(e)
     res.send("fail")
   }
 });
-
 
 //authenticates child by checking username, password, phone number
 app.post("/authenticateChild", async (req, res) => {
@@ -203,18 +200,24 @@ app.post("/authenticateChild", async (req, res) => {
   }
 });
 
-// Find child in the collection by provided id
 // update the child record by inserting lastKnownLat, lastKnownLng
 app.post("/childLocationUpdate", async (req, res) => {
   try {
     var child_id = req.body.id
     let parsedId = ObjectId(child_id)
+    var receivedFCMToken = req.body.fcmToken
+    var findChild = await children.findOne(parsedId)
+    var existingFCMToken = findChild.fcmToken
     var child_lastKnownLat = req.body.lastKnownLat
     var child_lastKnownLng = req.body.lastKnownLng
-  
-    const result = await children.updateChild(parsedId, child_lastKnownLat, child_lastKnownLng)
-    if( result === null){
-      res.send("fail")
+
+    if(receivedFCMToken == existingFCMToken){
+        const result = await children.updateChild(parsedId, child_lastKnownLat, child_lastKnownLng)
+        if( result === null){
+          res.send("fail")
+        }
+    } else{
+      res.send("fcm does not match")
     }
     
   } catch (e) {
@@ -223,71 +226,26 @@ app.post("/childLocationUpdate", async (req, res) => {
   }
 });
 
-/*Create post request /childDeviceUpdate
-  Find child in the collection by provided i
-  update the child record by inserting lastKnownLat, lastKnownLng, fcmToken (need to check if fcm should be updated separately)
-*/
-
-app.post("/childLocationUpdate", async (req, res) => {
-  try {
-    var child_id = req.body.id
-    let parsedId = ObjectId(child_id)
-    var child_lastKnownLat = req.body.lastKnownLat
-    var child_lastKnownLng = req.body.lastKnownLng
-    var child_fcmToken = req.body.fcmToken
-    const result = await children.updateChild(id, childId, lastKnownLat, lastKnownLng, fcmToken)
-    if( result === null){
-      res.send("fail")
+app.post("/sendLastKnowLocationToParent", async (req, res) =>{
+  try{
+    const receivedChildId = req.body.childId //receive child ID
+    const receivedParentId = req.body.parentId //receive parent ID
+    const found_child = await children.get(receivedChildId) //find the child in children collection
+    const parentIdFound = found_child.parentId //get parent Id from the found child
+    if (parentIdFound == receivedParentId){
+      const lastKnownLatFound = found_child.lastKnownLat
+      const lastKnownLngFound = found_child.lastKnownLng
+      res.json(lastKnownLatFound, lastKnownLngFound)
+    } else {
+      res.send("not a parent")
     }
-    
-  } catch (e) {
+  }catch(e){
     console.log(e)
-    res.send("fail");
+    res.send("fail")
   }
-});
+})
 
-/*create post request /parentDeviceUpdate
-  to update fcmToken field in the parent's document in Mongodb
-*/
-// app.post("/parentTokenUpdate", async (req, res) => {
-//   try {
-//     // var child_id = req.body.id
-//     // let parsedId = ObjectId(child_id)
-//     // var child_lastKnownLat = req.body.lastKnownLat
-//     // var child_lastKnownLng = req.body.lastKnownLng
-//     // var child_fcmToken = req.body.fcmToken
-//     // const result = await children.updateChild(id, childId, lastKnownLat, lastKnownLng, fcmToken)
-//     var parent_id = req.body.id
-//     let parsedId = ObjectId(parent_id)
-//     var last_known_token = req.body.fcmToken
-//     var found_parent = users.findOne(parsedId)
-
-//     if ()
-//     if( result === null){
-//       res.send("fail")
-//     }
-    
-//   } catch (e) {
-//     console.log(e)
-//     res.send("fail");
-//   }
-// });
-
-
-//Notification Post Request
-app.post("/geofenceEventTriggerNotification", async (req, res) => {
-  //ashish will send child and geofence ids, and then i'll have all the information that i can display 
-  //child_id = req.body.id
-  //geofence_id = req.body.
-  const payload = {
-    notification: {
-      title: 'Geofence Triggered',
-      body: 'AHAHAHAHAHAHAHAHAHA'
-//POST REQUEST SAFE EVENT GEOFENCE DATA
-//save notifications under each child - childId, geofenceId
-//latitude, longitude, accuracy, speed, altitude, bearing, timestamp, id
-    }}
-    });
+//safe the geofence trigger alert
 app.post("/safeGeofenceEventTriggerNotification", async (req, res) => {
   try{
     var child_id = req.body.childId
@@ -306,32 +264,111 @@ app.post("/safeGeofenceEventTriggerNotification", async (req, res) => {
     console.log(e)
     res.send("fail")
   }
-})
+});
+
+
+//return last 50 alerts as a json
+app.post("/returnAlertHistory", async (req, res) => {
+  try{
+    const receivedChildId = req.body.childId
+    const parsedReceivedChildId = ObjectId(receivedChildId)
+    const receivedParentId = req.body.parentId
+    const childFound = await children.get(receivedChildId) //find the child in children collection
+    const parentIdFound = found_child.parentId //get parent Id from the found child
+    
+    if (parentIdFound == receivedParentId){
+
+      // const foundAlerts = await children.find( { _id: parsedReceivedChildId }, { geofences: {$slice: 50 } } );
+      // res.json(foundAlerts)
+      const returnedAlertHistory = await children.aggregate(
+              { $match: {
+                  _id : parsedReceivedChildId
+              }},
+              // Expand the scores array into a stream of documents
+              { $unwind: '$geofences' },
+              // Sort in descending order
+              { $sort: {
+                  'geofences.timestamp': -1
+              }},
+              { $limit : 50 }
+          )
+      res.json(returnedAlertHistory)
+    } else {
+      res.send("not a parent")
+    }
+  } catch (e){
+    console.log(e)
+    res.send("fail")
+  }
+});
 
 //Notification Post Request
-// app.post("/geofenceEventTriggerNotification", async (req, res) => {
-//   //ashish will send child and geofence ids
-//   child_id = req.body.id
-//   found_child = children.get(child_id)
+app.post("/geofenceEventTriggerNotification", async (req, res) => {
+  try{
+    child_id = req.body.id //get child Id
+    const found_child = await children.get(child_id) //find the child in children collection
+    const parentIdFound = found_child.parentId //get parent Id from the found child
+    const findParent= await users.get(parentIdFound) //find parent in users collection
+    const foundFCMToken = findParent.fcmToken //get token from the found parent
 
-//   geofence_id = req.body.geofenceId
-//   found_geofence = geofences.get(geofence_id) 
+    geofence_id = req.body.geofenceId //get geofence ID
+    const found_geofence = await geofences.get(geofence_id)  //find geofence in geofence collection
 
-//   const payload = {
-//     notification: {
-//       title: 'Geofence' + found_geofence.geofenceName + 'Triggered',
-//       body: found_child.name + "has crossed" + found_geofence.geofenceName + 'geofence.'
-//     }
-//   }
+    const payload = {
+      notification: {
+        title: 'Geofence' + found_geofence.geofenceName + 'Triggered',
+        body: found_child.firstN + "has crossed" + found_geofence.geofenceName + 'geofence.'
+      }
+    }
 
-//   const options = {
-//     priority: 'high',
-//     timeToLive: 60 * 60 * 24, // 1 day
-//   };
-//   const firebaseToken = 'fjOUmPdab48:APA91bG2Ykz_PXKHVM-oxZ9iGj_DpWAhVQ-cfJ_A94LzbkxDK4frv5bmvaVrYa31-B4v4mhiJt3UsR8EVqEGBduHjKF3iBAKUXMp5WJcg5MbGF-1PZQF2M8-tJxzWQClOk-3rzkTNhWJ'
-//   admin.messaging().sendToDevice(firebaseToken, payload, options);
+    const options = {
+      priority: 'high',
+      timeToLive: 60 * 60 * 24, // 1 day
+    };
+    
+    admin.messaging().sendToDevice(foundFCMToken, payload, options);
+  }catch(e){
+    console.log(e)
+    res.send("fail")
+  }
  
-// });
+});
+
+
+//Notification Post Request for Child
+app.post("/childGeofenceEventTriggerNotification", async (req, res) => {
+  try{
+    const receivedChildId = req.body.id //get child Id
+    const receivedParentId = req.body.parentId
+    const receivedMessage = req.body.message
+    const found_child = await children.get(receivedChildId) //find the child in children collection
+    const foundChildFCMToken = found_child.fcmToken
+    const parentIdFound = found_child.parentId //get parent Id from the found child
+    
+    if (parentIdFound == receivedParentId){
+        //Do I need to check old and new fcmtoken?
+        const payload = {
+          notification: {
+            title: "location_request",
+            body: receivedMessage
+          }
+        }
+
+        const options = {
+          priority: 'high',
+          timeToLive: 60 * 60 * 24, // 1 day
+        };
+        
+        admin.messaging().sendToDevice(foundChildFCMToken, payload, options);
+      }
+    }catch (e){
+      console.log(e)
+      res.send("fail")
+    }
+});
+
+
+
 
 configRoutes(app);
 
