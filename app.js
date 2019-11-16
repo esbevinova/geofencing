@@ -6,6 +6,7 @@ const session = require("express-session")
 const configRoutes = require("./routes");
 const data = require("./data");
 const users = data.usersData;
+const geofences = data.geofences
 const { ObjectId } = require('mongodb');
 const bcrypt = require("bcrypt")
 const children = data.childrenData
@@ -90,7 +91,7 @@ app.post("/childData", async (req, res) => {
 
     const child = await children.get(parsedId);
     
-    res.json(child.geofences);//SHOULD I HAVE RETURN JUST GEOFENCES OR ALL INFORMATION ABOUT CHILD
+    res.json(child.geofences);
   } catch (e) {
     console.log(e)
     res.send("fail");
@@ -148,7 +149,7 @@ app.post("/parentFCMTokenUpdate", async (req, res) =>{
   }
 });
 
-//NOT WORKING!!!!!!!!!
+//checking the FCM Token for child
 app.post("/childFCMTokenUpdate", async (req, res) =>{
   try{
     var childFcmToken = req.body.fcmToken
@@ -188,7 +189,7 @@ app.post("/authenticateChild", async (req, res) => {
     const compareResult = await bcrypt.compare(parent_password, result.password);
     if(result != null && childResult != null && compareResult==true && child_phoneNumber==childResult.childPhoneNumber){
       req.session.userName = result.username
-      res.send(childResult._id)
+      res.send(childResult._id.toString())
       return;
     }else{
       res.send("fail")
@@ -205,8 +206,8 @@ app.post("/childLocationUpdate", async (req, res) => {
   try {
     var child_id = req.body.id
     let parsedId = ObjectId(child_id)
-    var receivedFCMToken = req.body.fcmToken
-    var findChild = await children.findOne(parsedId)
+    var receivedFCMToken = req.body.childFCMToken
+    var findChild = await children.get(parsedId)
     var existingFCMToken = findChild.fcmToken
     var child_lastKnownLat = req.body.lastKnownLat
     var child_lastKnownLng = req.body.lastKnownLng
@@ -216,8 +217,9 @@ app.post("/childLocationUpdate", async (req, res) => {
         if( result === null){
           res.send("fail")
         }
+        res.send("Location saved")
     } else{
-      res.send("fcm does not match")
+      res.send("authentication failed")
     }
     
   } catch (e) {
@@ -226,7 +228,7 @@ app.post("/childLocationUpdate", async (req, res) => {
   }
 });
 
-app.post("/sendLastKnowLocationToParent", async (req, res) =>{
+app.post("/sendLastKnownLocationToParent", async (req, res) =>{
   try{
     const receivedChildId = req.body.childId //receive child ID
     const receivedParentId = req.body.parentId //receive parent ID
@@ -235,7 +237,13 @@ app.post("/sendLastKnowLocationToParent", async (req, res) =>{
     if (parentIdFound == receivedParentId){
       const lastKnownLatFound = found_child.lastKnownLat
       const lastKnownLngFound = found_child.lastKnownLng
-      res.json(lastKnownLatFound, lastKnownLngFound)
+      const convertedLastKnownLng = parseFloat(lastKnownLngFound)
+      const convertedLastKnownLat = parseFloat(lastKnownLatFound)
+      // res.json({"lastknownLng": convertedLastKnownLng, "lastKnownLat": convertedLastKnownLat})
+      var convertedCoordinates = {};
+      convertedCoordinates["lastKnownLat"] = convertedLastKnownLat;
+      convertedCoordinates["lastKnownLng"] = convertedLastKnownLng
+      res.json(convertedCoordinates)
     } else {
       res.send("not a parent")
     }
@@ -248,17 +256,31 @@ app.post("/sendLastKnowLocationToParent", async (req, res) =>{
 //safe the geofence trigger alert
 app.post("/safeGeofenceEventTriggerNotification", async (req, res) => {
   try{
-    var child_id = req.body.childId
-    var geofence_id = req.body.geofenceId
-    var latitude = req.body.latitude
-    var longtitude = req.body.longtitude
-    var accuracy = req.body.accuracy
-    var speed = req.body.speed
-    var altitude = req.body.altitude
-    var bearing = req.body.bearing
-    var timestamp = req.body.timestamp
+    var receivedJson = req.body.geofenceAlert//NEED TO CHECK WHAT IM RECEIVING
+    parsedJson = JSON.parse(receivedJson);
 
-    const savedAlert = await children.addGeofenceAlerts(child_id, geofence_id, latitude, longtitude, accuracy, speed, altitude, bearing, timestamp)
+    var child_id = parsedJson.childId
+    var geofence_id = parsedJson.geofenceId
+    var latitude = parsedJson.latitude
+    var longtitude = parsedJson.longtitude
+    var accuracy = parsedJson.accuracy
+    var speed = parsedJson.speed
+    var altitude = parsedJson.altitude
+    var bearing = parsedJson.bearing
+    var timestamp = parsedJson.timestamp
+    var convertedTimestamp = Math.round(new Date(timestamp).getTime()/1000)
+
+    // var child_id = req.body.childId
+    // var geofence_id = req.body.geofenceId
+    // var latitude = req.body.latitude
+    // var longtitude = req.body.longtitude
+    // var accuracy = req.body.accuracy
+    // var speed = req.body.speed
+    // var altitude = req.body.altitude
+    // var bearing = req.body.bearing
+    // var timestamp = req.body.timestamp
+
+    const savedAlert = await children.addGeofenceAlerts(child_id, geofence_id, latitude, longtitude, accuracy, speed, altitude, bearing, convertedTimestamp)
     res.send("successfully saved an alert")
   } catch (e){
     console.log(e)
@@ -306,27 +328,37 @@ app.post("/returnAlertHistory", async (req, res) => {
 app.post("/geofenceEventTriggerNotification", async (req, res) => {
   try{
     child_id = req.body.id //get child Id
+    //Save and convert the date
+    // const eventDate = req.body.timestamp
+    // const convertedEventDate = Math.round(new Date(eventDate).getTime()/1000)
     const found_child = await children.get(child_id) //find the child in children collection
     const parentIdFound = found_child.parentId //get parent Id from the found child
     const findParent= await users.get(parentIdFound) //find parent in users collection
     const foundFCMToken = findParent.fcmToken //get token from the found parent
-
-    geofence_id = req.body.geofenceId //get geofence ID
-    const found_geofence = await geofences.get(geofence_id)  //find geofence in geofence collection
-
-    const payload = {
-      notification: {
-        title: 'Geofence' + found_geofence.geofenceName + 'Triggered',
-        body: found_child.firstN + "has crossed" + found_geofence.geofenceName + 'geofence.'
-      }
-    }
-
-    const options = {
-      priority: 'high',
-      timeToLive: 60 * 60 * 24, // 1 day
-    };
     
-    admin.messaging().sendToDevice(foundFCMToken, payload, options);
+    //add timestamp conversion
+    //add a check if fcm token exists or not
+    if (foundFCMToken != "" || foundFCMToken != null){
+
+        geofence_id = req.body.geofenceId //get geofence ID
+        const found_geofence = await geofences.get(geofence_id)  //find geofence in geofence collection
+
+        const payload = {
+          notification: {
+            title: 'Geofence ' + found_geofence.geofenceName + ' Triggered',
+            body: found_child.firstN + " has crossed " + found_geofence.geofenceName + ' geofence.'
+          }
+        }
+
+        const options = {
+          priority: 'high',
+          timeToLive: 60 * 60 * 24, // 1 day
+        };
+        
+        admin.messaging().sendToDevice(foundFCMToken, payload, options);
+    } else{
+      res.send("no FCM token is registered")
+    }
   }catch(e){
     console.log(e)
     res.send("fail")
@@ -336,11 +368,11 @@ app.post("/geofenceEventTriggerNotification", async (req, res) => {
 
 
 //Notification Post Request for Child
-app.post("/childGeofenceEventTriggerNotification", async (req, res) => {
+app.post("/childLocationRequestNotification", async (req, res) => {
   try{
     const receivedChildId = req.body.id //get child Id
     const receivedParentId = req.body.parentId
-    const receivedMessage = req.body.message
+    const receivedMessage = req.body.task
     const found_child = await children.get(receivedChildId) //find the child in children collection
     const foundChildFCMToken = found_child.fcmToken
     const parentIdFound = found_child.parentId //get parent Id from the found child
@@ -360,14 +392,15 @@ app.post("/childGeofenceEventTriggerNotification", async (req, res) => {
         };
         
         admin.messaging().sendToDevice(foundChildFCMToken, payload, options);
+        res.send(receivedMessage)
+      } else{
+        res.send("fail")
       }
     }catch (e){
       console.log(e)
       res.send("fail")
     }
 });
-
-
 
 
 configRoutes(app);
