@@ -2,8 +2,10 @@ const express = require("express");
 const { ObjectId } = require('mongodb');
 const router = express.Router();
 const data = require("../data");
+const axios = require("axios");
 const users = data.usersData;
 const geofences = data.geofences
+
 
 
 router.get("/", async (req, res) => {
@@ -16,49 +18,39 @@ router.get("/", async (req, res) => {
             userResult = ["None"]
         }
         var myGeofences = await geofences.getMyGeofences(userID);
-        //List of geofences for a given user
-        // var myFences = [];
-        // console.log(myGeofences)
-        // var i;
-        // for (i = 0; i < myGeofences.length; i++) {
-        //     myFences.push(myGeofences[i].geofenceName);
         console.log('myGeofences', myGeofences)
-        // var i;
-        // for (i = 0; i < myGeofences.length; i++) {
-        //   var f = myGeofences[i]._id;    
-        // }
-        // var fence = await geofences.getGeofence(f)
+
+        // axios.get('https://maps.googleapis.com/maps/api/js',{
+        //     params:{
+        //       key:'AIzaSyDAvtiMO_fBipcjY_VBJF-1px9GVBfSLiQ'
+        //     }
+        //   })
+
+        //   .then(async function(response){
+        //       var map;
+        //       function initMap() {
+        //           map = new google.maps.Map(document.getElementById('map'), {
+        //               center: {lat: -34.397, lng: 150.644},
+        //               zoom: 8
+        //             });
+                    // var marker = new google.maps.Marker({
+                    //     position: {lat: this.get(myGeofences).lat, lng: this.get(myGeofences).lng},
+                    //     map: map
+                    // });
+              
+            //     }
+            // })
         res.status(200).render("geofence",
         {
             userResult : userResult,
-            myGeofences : myGeofences    
+            myGeofences : myGeofences,   
         })
-
+        
         return  
-    }
- 
-    res.status(401).render('errorPage', { e: { statusCode: "401", error: "You are not logged in, please login", redirect: "/" } })
-});
+        }
+        
+        res.status(401).render('errorPage', { e: { statusCode: "401", error: "You are not logged in, please login", redirect: "/" } })
+    });
+    
 
-
-
-  //outputs specific parent's information in json format
-  // router.post("/:id", async (req, res) => {
-  //   try {
-  //     const geofence = await geofences.get(req.params.id);
-  //     res.json(geofence);
-  //   } catch (e) {
-  //     res.status(404).json({ error: "Geofence not found" });
-  //   }
-  // });
-
-  
-  /*
-  This is where we need to list all of the existing Geofences
-  */
- 
-
-  
-
-  
   module.exports = router;

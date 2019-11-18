@@ -1,180 +1,211 @@
 <!-- Page Content -->
 
-{{!-- <head>
+<head>
+
+
+  <meta name="viewport" content="initial-scale=1.0">
+  <meta charset="utf-8">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-</head> --}}
+  <link rel="stylesheet" href="/css/{{this}}">
+  <link rel="stylesheet" type="text/css" href="public/css/geofences.css">
+
+</head>
 
 
 <body>
 
 
+<!-- Navigation -->
+<nav class="navbar navbar-expand-lg static-top" id="header_wrapper">
   <div class="container">
-
-  <h1 id="cordon">Cordon</h1>
-  <div class="custom-padding"></div>
-    <nav>
-      <ul class="menu-area">
-        <li><a href="/homepage" id="main-menu">Home</a></li>
-        <li><a href="/geofence" id="main-menu">Geofence</a></li>
-        <li><a href="/account" id="main-menu">Account</a></li>
-        <li><a href="/logout" id="main-menu">Logout</a></li>
+    <a class="navbar-brand" href="#">
+          <img src="http://placehold.it/150x50?text=Logo" alt="">
+        </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+    <div class="collapse navbar-collapse" id="navbarResponsive">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item active">
+          <a class="nav-link" id="header_wrapper" href="/homepage">Home
+                <span class="sr-only">(current)</span>
+              </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="header_wrapper" href="/geofence">Geofence</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="header_wrapper" href="/viewChildren">Children</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="header_wrapper" href="/account">Account</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="header_wrapper" href="/logout">Logout</a>
+        </li>
       </ul>
-    </nav>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+
+  <!-- Logo -->
+  <h1 id="cordon">Cordon</h1>
+
+  <div id="myGeofences">
+    <h1>Geofences</h1>
   </div>
 
-  <div><a href="/addGeofence" id="links">Add New Geofence</a></div>
+<!-- Geofences -->
+<div class="box">
+  <ul id="myfences">
+    {{#each myGeofences as |geoFence|}}
+    {{#with geoFence}}
+      <h2>{{geoFence.geofenceName}}</h2>
+      <li>Address: {{geoFence.formattedAddress}}</li>
+      <li>Radius: {{geoFence.radius}}</li>
+      <a href="/addChildToGeofence" id="add_child_link">Add Child to Geofence</a>
+    {{/with}}
+    {{/each}}
+  </ul>
+</div> <!-- end class box -->
 
-   <ul id="myfences">
-  {{#each myGeofences as |geoFence|}}
-  {{#with geoFence}}
-    <li>Geofence Name: {{geoFence.geofenceName}}</li>
-    <li>Address: {{geoFence.formattedAddress}}</li>
-    <li>Radius: {{geoFence.radius}}</li>
-  {{/with}}
-  {{/each}}
-</ul>
+<div class="button-padding">
+  <button type="button" class="btn btn-outline-danger" id="add-geofence" href="/addGeofence">Add New Geofence</button>
+</div> <!-- end class button-padding -->
 
-{{!-- <div class="accordion" id="accordionExample">
-  <div class="card">
-    <div class="card-header" id="headingOne">
-      <h2 class="mb-0">
-        <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-          Collapsible Group Item #1
-        </button>
-      </h2>
+<!-- map-->
+<div  id="map_box_padding">
+  <div class="box" id="map_box">
+    <div id="map">
+    {{#each myGeofences as |geoFence|}}
+    {{#with geoFence}}
+    <div id="markers" data-lat={{geoFence.lat}} data-lng={{geoFence.lng}} data-radius={{geoFence.radius}}></div>
+    {{/with}}
+    {{/each}}
     </div>
+     <!-- JavaScript map --->
 
-    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
-      <div class="card-body">
-        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+
+
+    <script>
+    var map, infoWindow;
+    function initMap(){
+      var center = {
+        lat: parseFloat(document.getElementById('map').getAttribute("data-lat")), 
+        lng: parseFloat(document.getElementById('map').getAttribute("data-lng"))
+      };
+      var mapGeofence = {
+        lat: parseFloat(document.getElementById('markers').getAttribute("data-lat")), 
+        lng: parseFloat(document.getElementById('markers').getAttribute("data-lng")),
+        radius: parseFloat(document.getElementById('markers').getAttribute("data-radius"))
+      };
+      map = new google.maps.Map(document.getElementById('map'), {
+        center: mapGeofence,
+        zoom: 15
+      });
+
+      //marks
+      var marker = new google.maps.Marker({
+      position: mapGeofence,
+      map: map
+      });
+
+      gmarkers.push(marker);
+      bounds.extend(marker.getPosition());
+
+      marker.Circle = new google.maps.Circle({
+        center:marker.getPosition(),
+        radius: 100,
+        map: map
+      });
+      infoWindow = new google.maps.InfoWindow;
+
+      // Try HTML5 geolocation.
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+          var pos = {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude
+          };
+
+          infoWindow.setPosition(pos);
+          infoWindow.setContent('Location found.');
+          infoWindow.open(map);
+          map.setCenter(pos);
+        }, function() {
+          handleLocationError(true, infoWindow, map.getCenter());
+        });
+      } else {
+        // Browser doesn't support Geolocation
+        handleLocationError(false, infoWindow, map.getCenter());
+      }
+    }
+
+    function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+      infoWindow.setPosition(pos);
+      infoWindow.setContent(browserHasGeolocation ?
+                            'Error: The Geolocation service failed.' :
+                            'Error: Your browser doesn\'t support geolocation.');
+      infoWindow.open(map);
+    }
+
+    </script>
+
+    {{!-- <script>
+    var map;
+    function initMap(){
+        var center = {
+          lat: parseFloat(document.getElementById('map').getAttribute("data-lat")), 
+          lng: parseFloat(document.getElementById('map').getAttribute("data-lng"))
+        };
+        var mapGeofence = {
+          lat: parseFloat(document.getElementById('markers').getAttribute("data-lat")), 
+          lng: parseFloat(document.getElementById('markers').getAttribute("data-lng"))
+        };
+        map = new google.maps.Map(document.getElementById('map'), {
+          center: mapGeofence,
+          zoom: 15
+        });
+        var marker = new google.maps.Marker({
+          position: mapGeofence,
+          map: map
+          });
+      }
+    </script>  --}}
+    
+  </div> <!-- end class box -->
+</div> <!-- end class map_box_padding -->
+</div> <!-- end class container -->
+
+  <!-- Footer -->
+  <footer id="Footer" class="clearfix">
+  <div class="widgets_wrapper">
+    <div class="container">
+      <div class="column one-half">
+        <aside id="custom_html-6" class="widget_text widget widget_custom_html">
+          <div class="textwidget custom-html-widget">
+            <ul>
+              <li style="margin-bottom: 10px;"><span style="color: #fe6969; margin-right: 10px;">→</span> <a href="#">About</a></li>
+            </ul>
+          </div>
+        </aside>
       </div>
-    </div>
-  </div>
-  <div class="card">
-    <div class="card-header" id="headingTwo">
-      <h2 class="mb-0">
-        <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-          Collapsible Group Item #2
-        </button>
-      </h2>
-    </div>
-    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
-      <div class="card-body">
-        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-      </div>
-    </div>
-  </div>
-  <div class="card">
-    <div class="card-header" id="headingThree">
-      <h2 class="mb-0">
-        <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-          Collapsible Group Item #3
-        </button>
-      </h2>
-    </div>
-    <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
-      <div class="card-body">
-        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-      </div>
-    </div>
-  </div>
-</div>
- --}}
-
-
-
-  <h2>My Geofences</h2>
-    <div class="col-md-12">
-      <button type="button" class="collapsible-ch">Geofence Name: {{userResult.geofences.length}}</button>
-        <div class="content">
-            <p>Geofence address:</p>
-            <p>Geofence radius:</p>
-            <p>Geofence duration:</p>
-            <a href="/addChildToGeofence" id="links">Add Child to Geofence</a>
+    <div class="column one-half">
+      <aside id="custom_html-6" class="widget_text widget widget_custom_html">
+        <div class="textwidget custom-html-widget">
+          <ul>
+            <li style="margin-bottom: 10px;"><span style="color: #fe6969; margin-right: 10px;">→</span> <a href="#">Contact Us</a></li>
+          </ul>
         </div>
-      </div>
-
-    <!-- Child's name Heading -->
-  <h3 id="ch-name">Child Name:
-    <large id="child-name">Molly</large>
-  </h3>
-
-    <!-- Geofences Item Row 
-    <div class="row">
-
-      <div class="col-md-8" id="boxshadow">
-        <div id="mapid"> </div>
-      </div>
-    -->
-
-      <div class="col-md-4">
-        <button type="button" class="collapsible">Geofence Name: {{userResult.geofences.length}}</button>
-        <div class="content">
-            <p>Geofence address:</p>
-            <p>Geofence radius:</p>
-            <p>Geofence duration:</p>
-        </div>
-        <button type="button" class="collapsible">Geofence Name: {{userResult.geofences.length}}</button>
-        <div class="content">
-            <p>Geofence address:</p>
-            <p>Geofence radius:</p>
-            <p>Geofence duration:</p>
-        </div>
-        <button type="button" class="collapsible">Geofence Name: {{userResult.geofences.length}}</button>
-        <div class="content">
-            <p>Geofence address:</p>
-            <p>Geofence radius:</p>
-            <p>Geofence duration:</p>
-        </div>
-      </div>
+      </aside>
     </div>
-
-
   </div>
+  </footer>
 
-  
-  <div class="col-md-4" id="all-children">
-    <h2>All Children</h2>
-  </div>
-  
-    <!-- /.row -->
-
-    <!-- Related Projects Row 
-    <h3 class="my-3">Related Projects</h3>
-
-    <div class="row">
-
-      <div class="col-md-3 col-sm-6 mb-4">
-        <a href="#">
-          <img class="img-fluid" src="http://placehold.it/500x300" alt="">
-        </a>
-      </div>
-
-      <div class="col-md-3 col-sm-6 mb-4">
-        <a href="#">
-          <img class="img-fluid" src="http://placehold.it/500x300" alt="">
-        </a>
-      </div>
-
-      <div class="col-md-3 col-sm-6 mb-4">
-        <a href="#">
-          <img class="img-fluid" src="http://placehold.it/500x300" alt="">
-        </a>
-      </div>
-
-      <div class="col-md-3 col-sm-6 mb-4">
-        <a href="#">
-          <img class="img-fluid" src="http://placehold.it/500x300" alt="">
-        </a>
-      </div>
-
-    </div>
-  -->
-
-  </div>
-  <!-- /.container -->
-
-
-
+<!-- Google map API -->
+<script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDAvtiMO_fBipcjY_VBJF-1px9GVBfSLiQ&callback=initMap" async defer></script>
  
 </body>

@@ -1,0 +1,103 @@
+#myGeofences {
+    padding: 40px;
+}
+
+#myGeofences h1 {
+    font: inherit;
+    text-indent: 0em;
+    pointer-events: auto;
+    box-sizing: border-box;
+    outline: none !important;
+    position: relative;
+    display: block;
+    -webkit-font-smoothing: antialiased !important;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    z-index: 5;
+    font-family: "Source Serif Pro";
+    visibility: visible;
+    text-align: center;
+    line-height: 41px;
+    letter-spacing: 1px;
+    font-weight: 600;
+    font-size: 51px;
+    border-color: rgb(98, 98, 98);
+    border-style: none;
+    margin: 0px;
+    border-radius: 0px;
+    padding: 10px;
+    color: rgb(255, 255, 255);
+    text-decoration: none;
+    white-space: nowrap;
+    width: auto;
+    height: auto;
+    min-height: 0px;
+    min-width: 0px;
+    max-height: none;
+    max-width: none;
+    opacity: 1;
+    transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+    transform-origin: 50% 50% 0px;
+}
+
+#add_child_link {
+    font-style: inherit;
+    font-family: "Roboto", Arial, Tahoma, sans-serif;
+    color:#fe6969; 
+}
+
+.box {
+    border: 1px solid #fff;
+    border-radius: 3px;
+    padding: 20px;
+    width: 100%;
+    background-color: #fff;
+    opacity: 100%;
+    z-index: 1;
+}
+
+.myfences {
+    z-index: 2;
+}
+
+.button-padding {
+    padding-top: 20px; 
+}
+
+#add-geofence {
+    background-color: rgb(	254, 105, 105, 0.5); 
+    padding-top: 14px;
+    padding-right: 30px;
+    padding-bottom: 14px;
+    padding-left: 30px;
+    border-radius: 3px;
+    border-style: none;
+    font-style: inherit;
+    color: rgb(	255, 255, 255, 1);
+}
+
+#add-geofence:hover {
+    background-color: #fff;
+    font-style: inherit;
+    color: black;
+}
+
+#map_box_padding {
+    padding-top: 30px;
+    padding-bottom: 100px;
+    
+}
+
+#map_box {
+    padding: 10px;
+    width: 100%;
+    height: 800px;
+    background-color: #fff;
+    opacity: 100%;
+    z-index: 1;
+}
+#map {
+    width: 100%;
+    height: 780px;
+    z-index: 2;
+}
+
