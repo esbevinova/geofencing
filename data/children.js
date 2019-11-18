@@ -116,7 +116,7 @@ module.exports ={
         childFound = await childCollection.findOne({childPhoneNumber:childsPhoneNumber}, { projection: { _id: 1 } })
         let childId = childFound._id
         geofenceCollection = await geofences()
-        geofenceFound = await geofenceCollection.findOne({geofenceName: geofencesName}, { projection: { _id: 1 } })
+        geofenceFound = await geofenceCollection.findOne({geofenceName: geofencesName})
         let geofencesId = geofenceFound._id
         let geofencingName = geofenceFound.geofenceName
         let geofenceAddress = geofenceFound.formattedAddress
@@ -160,12 +160,12 @@ module.exports ={
             lastUpdated: new Date()
         };
         
-        const updatedInfo = await childrenCollection.updateOne({ _id: id }, {$addToSet:updatedChild});
+        const updatedInfo = await childrenCollection.updateOne({ _id: childId }, {$set:updatedChild});
        
         if (updatedInfo.modifiedCount === 0) {
             throw "could not update successfully";
         }
-        return await this.get(id);
+        return await this.get(childId);
         },
 
      //updating an existing child fcmToken

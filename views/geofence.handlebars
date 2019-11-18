@@ -112,14 +112,6 @@
       map: map
       });
 
-      gmarkers.push(marker);
-      bounds.extend(marker.getPosition());
-
-      marker.Circle = new google.maps.Circle({
-        center:marker.getPosition(),
-        radius: 100,
-        map: map
-      });
       infoWindow = new google.maps.InfoWindow;
 
       // Try HTML5 geolocation.
