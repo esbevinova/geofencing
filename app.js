@@ -104,6 +104,7 @@ app.post("/authenticateParent", async (req, res) => {
 
     var parent_username = req.body.username
     var parent_password = req.body.password
+    console.log(parent_username)
     const result = await users.getUserbyname(parent_username)
     if( result === null){
       res.send("fail")
@@ -207,7 +208,7 @@ app.post("/childLocationUpdate", async (req, res) => {
     var child_id = req.body.id
     let parsedId = ObjectId(child_id)
     var receivedFCMToken = req.body.childFCMToken
-    var findChild = await children.get(parsedId)
+    var findChild = await children.get(child_id)
     var existingFCMToken = findChild.fcmToken
     var child_lastKnownLat = req.body.lastKnownLat
     var child_lastKnownLng = req.body.lastKnownLng
@@ -410,3 +411,6 @@ app.listen(3000, () => {
   console.log("We've now got a server!");
   console.log("Your routes will be running on http://localhost:3000");
 });
+
+
+module.exports = app
