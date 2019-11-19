@@ -20,8 +20,7 @@ h6 {
 
 header.masthead {
   position: relative;
-  background-color: #343a40;
-  background: url("../img/s006_LightBlue.jpg") no-repeat center center;
+  background-image: linear-gradient(rgb(254, 105, 105), rgb(254, 105, 105), rgb(247, 183, 128), white, white);
   background-size: cover;
   padding-top: 8rem;
   padding-bottom: 8rem;
@@ -29,7 +28,6 @@ header.masthead {
 
 header.masthead .overlay {
   position: absolute;
-  background-color: #212529;
   height: 100%;
   width: 100%;
   top: 0;
@@ -103,8 +101,7 @@ header.masthead h1 {
 
 .call-to-action {
   position: relative;
-  background-color: #343a40;
-  background: url("../img/s006_LightBlue.jpg") no-repeat center center;
+  background-image: linear-gradient(rgb(254, 105, 105), rgb(254, 105, 105), rgb(247, 183, 128));
   background-size: cover;
   padding-top: 7rem;
   padding-bottom: 7rem;
@@ -112,7 +109,6 @@ header.masthead h1 {
 
 .call-to-action .overlay {
   position: absolute;
-  background-color: #212529;
   height: 100%;
   width: 100%;
   top: 0;
@@ -123,4 +119,8 @@ header.masthead h1 {
 footer.footer {
   padding-top: 4rem;
   padding-bottom: 4rem;
+}
+
+#signUppointer{
+  background-image: linear-gradient(rgb(254, 105, 105), rgb(254, 105, 105), rgb(247, 183, 128));
 }
