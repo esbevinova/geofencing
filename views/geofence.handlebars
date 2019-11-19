@@ -16,37 +16,7 @@
 
 
 <!-- Navigation -->
-<nav class="navbar navbar-expand-lg static-top" id="header_wrapper">
-  <div class="container">
-    <a class="navbar-brand" href="#">
-          <img src="http://placehold.it/150x50?text=Logo" alt="">
-        </a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-    <div class="collapse navbar-collapse" id="navbarResponsive">
-      <ul class="navbar-nav ml-auto">
-        <li class="nav-item active">
-          <a class="nav-link" id="header_wrapper" href="/homepage">Home
-                <span class="sr-only">(current)</span>
-              </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" id="header_wrapper" href="/geofence">Geofence</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" id="header_wrapper" href="/viewChildren">Children</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" id="header_wrapper" href="/account">Account</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" id="header_wrapper" href="/logout">Logout</a>
-        </li>
-      </ul>
-    </div>
-  </div>
-</nav>
+{{> navigation }}
 
 <div class="container">
 
@@ -74,7 +44,7 @@
 <div class="button-padding">
   <button type="button" class="btn btn-outline-danger" id="add-geofence" href="/addGeofence">Add New Geofence</button>
 </div> <!-- end class button-padding -->
-
+    
 <!-- map-->
 <div  id="map_box_padding">
   <div class="box" id="map_box">
@@ -90,27 +60,32 @@
 
 
     <script>
-    var map, infoWindow;
+    var map;
+
     function initMap(){
+    
       var center = {
         lat: parseFloat(document.getElementById('map').getAttribute("data-lat")), 
         lng: parseFloat(document.getElementById('map').getAttribute("data-lng"))
       };
+      
       var mapGeofence = {
-        lat: parseFloat(document.getElementById('markers').getAttribute("data-lat")), 
+        lat: parseFloat(document.getElementById('markers').getAttribute("data-lat")),
         lng: parseFloat(document.getElementById('markers').getAttribute("data-lng")),
         radius: parseFloat(document.getElementById('markers').getAttribute("data-radius"))
       };
+
       map = new google.maps.Map(document.getElementById('map'), {
         center: mapGeofence,
         zoom: 15
       });
-
+  
       //marks
       var marker = new google.maps.Marker({
       position: mapGeofence,
       map: map
       });
+      
 
       infoWindow = new google.maps.InfoWindow;
 
@@ -172,29 +147,7 @@
 </div> <!-- end class container -->
 
   <!-- Footer -->
-  <footer id="Footer" class="clearfix">
-  <div class="widgets_wrapper">
-    <div class="container">
-      <div class="column one-half">
-        <aside id="custom_html-6" class="widget_text widget widget_custom_html">
-          <div class="textwidget custom-html-widget">
-            <ul>
-              <li style="margin-bottom: 10px;"><span style="color: #fe6969; margin-right: 10px;">→</span> <a href="#">About</a></li>
-            </ul>
-          </div>
-        </aside>
-      </div>
-    <div class="column one-half">
-      <aside id="custom_html-6" class="widget_text widget widget_custom_html">
-        <div class="textwidget custom-html-widget">
-          <ul>
-            <li style="margin-bottom: 10px;"><span style="color: #fe6969; margin-right: 10px;">→</span> <a href="#">Contact Us</a></li>
-          </ul>
-        </div>
-      </aside>
-    </div>
-  </div>
-  </footer>
+{{> footer }}
 
 <!-- Google map API -->
 <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js"></script>

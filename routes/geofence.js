@@ -51,6 +51,9 @@ router.get("/", async (req, res) => {
         
         res.status(401).render('errorPage', { e: { statusCode: "401", error: "You are not logged in, please login", redirect: "/" } })
     });
+
+
+
     
 
   module.exports = router;

@@ -1,12 +1,19 @@
 <head>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="initial-scale=1.0">
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <link rel="stylesheet" href="/css/{{this}}">
+
 </head>
 
 <body>
+  
+<!-- Navigation -->
+{{> navigation }}
 
-    <div class="container">
-        <h1 id="cordon">Cordon</h1>
+  <div class="container">
+
+{{> name }}
 
     <div class="custom-padding"></div>
       <nav>
@@ -17,10 +24,11 @@
           <li><a href="/logout" id="main-menu">Logout</a></li>
         </ul>
       </nav>
-    </div>
 
 <div class=ChildAdded>
     <h1>Child was Successfully added.</h1>
     <p id="afterSignup">Click <a href="/account" id="loginLink">here</a> to go back to your Account Summary</p>
 </div>
+</div><!-- End class container -->
+{{> footer }}
 </body>

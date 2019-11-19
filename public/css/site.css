@@ -1,10 +1,17 @@
 html {
+    position: relative;
     margin: 0;
     padding: 0;
     border: 0;
     background-repeat: no-repeat;
     min-height: 100%;
 }
+
+#container {
+    min-height:100%;
+    position:relative;
+}
+
 #header_wrapper {
     background-color: #fe6969; 
     font-style: inherit;
@@ -16,16 +23,18 @@ body {
 
     background-image: linear-gradient(rgb(254, 105, 105), rgb(254, 105, 105), rgb(247, 183, 128), white, white);
 }
+
 div, h1, h2, h3, h4, h5, h6, p, ul, li, a {
     font-family: "Roboto", Arial, Tahoma, sans-serif;
     color: black;
 }
 
 footer {
+    position:absolute;
+    bottom:0;
     display: block;
     padding: 20px 0;
     width:100%;
-    bottom:0;
     left:0;
     margin-right:20px;
     background-color: #2b2b2b;
