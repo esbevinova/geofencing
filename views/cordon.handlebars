@@ -26,7 +26,7 @@
   <nav class="navbar navbar-light bg-light static-top">
     <div class="container">
       <a class="navbar-brand" href="#">Cordon</a>
-      <a class="btn btn-primary" href="login">Sign In</a>
+      <a href="login" id="signInpointer">Sign In</a>
     </div>
   </nav>
 
@@ -36,7 +36,7 @@
     <div class="container">
       <div class="row">
         <div class="col-xl-9 mx-auto">
-          <h1 class="mb-5">Keep Your Child Safe with Cordon!</h1>
+          <h1 class="mb-5" id="landingPageText1">Keep Your Child Safe with Cordon!</h1>
         </div>
         <div class="col-md-10 col-lg-8 col-xl-7 mx-auto">
             <form id="static-form10" method="get" action="/signup">
@@ -119,7 +119,7 @@
     <div class="container">
       <div class="row">
         <div class="col-xl-9 mx-auto">
-          <h2 class="mb-4">Ready to get started? Sign up now!</h2>
+          <h2 class="mb-4" id='landingPageText2'>Ready to get started? Sign up now!</h2>
         </div>
         <div class="col-md-10 col-lg-8 col-xl-7 mx-auto">
                 <form id="static-form10" method="get" action="/signup">
@@ -138,42 +138,23 @@
         <div class="col-lg-6 h-100 text-center text-lg-left my-auto">
           <ul class="list-inline mb-2">
             <li class="list-inline-item">
-              <a href="#">About</a>
+              <a href="#" class='bottomlinks'>About</a>
             </li>
             <li class="list-inline-item">&sdot;</li>
             <li class="list-inline-item">
-              <a href="#">Contact</a>
+              <a href="#" class='bottomlinks'>Contact</a>
             </li>
             <li class="list-inline-item">&sdot;</li>
             <li class="list-inline-item">
-              <a href="#">Terms of Use</a>
+              <a href="#" class='bottomlinks'>Terms of Use</a>
             </li>
             <li class="list-inline-item">&sdot;</li>
             <li class="list-inline-item">
-              <a href="#">Privacy Policy</a>
+              <a href="#" class='bottomlinks'>Privacy Policy</a>
             </li>
           </ul>
           <p class="text-muted small mb-4 mb-lg-0">&copy; Cordon 2019. All Rights Reserved.</p>
         </div>
-        {{!-- <div class="col-lg-6 h-100 text-center text-lg-right my-auto">
-          <ul class="list-inline mb-0">
-            <li class="list-inline-item mr-3">
-              <a href="#">
-                <i class="fab fa-facebook fa-2x fa-fw"></i>
-              </a>
-            </li>
-            <li class="list-inline-item mr-3">
-              <a href="#">
-                <i class="fab fa-twitter-square fa-2x fa-fw"></i>
-              </a>
-            </li>
-            <li class="list-inline-item">
-              <a href="#">
-                <i class="fab fa-instagram fa-2x fa-fw"></i>
-              </a>
-            </li>
-          </ul>
-        </div> --}}
       </div>
     </div>
   </footer>

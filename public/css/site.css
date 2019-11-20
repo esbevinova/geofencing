@@ -29,11 +29,15 @@ div, h1, h2, h3, h4, h5, h6, p, ul, li, a {
     color: black;
 }
 
+<<<<<<< HEAD
 #logo {
     width: 300px;
 }
 
 footer {
+=======
+#Footer {
+>>>>>>> fd6c58674a20a2ea2f8a7e30dc240a5712dff4a5
     position:absolute;
     bottom:0;
     display: block;
@@ -44,13 +48,13 @@ footer {
     background-color: #2b2b2b;
     column-count: 2;
 }
-footer ul {
+#Footer ul {
     list-style-type: none;
 }
-footer span  {
+#Footer span  {
     padding-left: 300px;
 }
-footer a  {
+#Footer a  {
     font-size: 100%;
     font: inherit;
     color: #cccccc;
@@ -87,7 +91,7 @@ footer a  {
 
 #loginLink {
     font-size: 25px;
-    color: blue;
+    color: #fe6969;
 }
 
 .menu-area li{
@@ -102,7 +106,23 @@ footer a  {
     padding: 0 70px;
     border: 1px solid #eee;
     font-size: 12px;
-    color: #0000FF;
+    color: #fe6969;
+    box-shadow: 5px 10px 8px #888888
+}
+
+.signupbox{
+    width: 1000px;
+    margin: auto;
+    margin-top: 50px
+}
+.signupform{
+    margin-top: 20px;
+}
+#submitbutton{
+    margin-top: 10px
+}
+#submitbutton:hover{
+    transform: scale(1.1)
 }
 
 .loginbox h1{
@@ -121,7 +141,7 @@ footer a  {
 
 .btn-register{
     background: #fff;
-    color:  #0000FF;
+    color:  black;
     border: 1px solid #CECDD2;
     width: 338px;
     height: 34px;
@@ -150,9 +170,9 @@ footer a  {
 
 
 .btn-login{
-    background: #0000FF;
+    background:  #fe6969;
     color: #fff;
-    border: 1px solid #0000FF;
+    border: 1px solid  #fe6969;
     margin-top: 20px;
     width: 338px;
     height: 34px;
@@ -233,10 +253,6 @@ footer a  {
     color: black;
 }
 
-#viewChildren {
-    font-size: 25px;
-    color: blue;
-}
 
 
 
