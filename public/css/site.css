@@ -29,15 +29,7 @@ div, h1, h2, h3, h4, h5, h6, p, ul, li, a {
     color: black;
 }
 
-<<<<<<< HEAD
-#logo {
-    width: 300px;
-}
-
-footer {
-=======
 #Footer {
->>>>>>> fd6c58674a20a2ea2f8a7e30dc240a5712dff4a5
     position:absolute;
     bottom:0;
     display: block;
