@@ -56,6 +56,9 @@ app.engine("handlebars", handlebarsInstance.engine);
 app.set("view engine", "handlebars");
 app.set("views", viewPath);
 
+
+
+
 app.use(session({
   name: "AuthCookie",
   secret: "Project",

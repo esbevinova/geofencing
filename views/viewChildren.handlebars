@@ -4,6 +4,8 @@
   <meta charset="utf-8">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <link rel="stylesheet" href="/css/{{this}}">
+  <link rel="stylesheet" type="text/css" href="public/css/children.css">
+  <link rel="stylesheet" type="text/scss" href="public/css/scss/children.scss">
 
 </head>
 
@@ -14,45 +16,30 @@
 
 <div class="container">
 
+<div id="myChildren">
+  <h1>Children</h1>  
+</div> <!-- end id myChildren -->
 
 
+<!-- Children -->
+<div class="box">
+        {{#each myChildren as |child|}}
+        {{#with child}}
+  <form method="POST" action = "/singleChild">
+    <table class='table table-striped' id="kids-{{child._id}}">
+        <tr>
+            <th><label>{{child.firstN}} {{child.lastN}}</label></th>
+            {{!-- <td><button type="button" class="btn btn-outline-danger" id="view-child-{{child._id}}" name={{child._id}} onclick="onButtonClick(event)">View</button></td> --}}
+            <td><a class="btn btn-outline-danger" id="view-child-{{child._id}} name={{child._id}}" href="/singleChild/{{child._id}}">View</a></td>
+        </tr>
+    </table><!-- End of Children -->
+  </form> <!-- End form vew child -->
+        {{/with}}
+        {{/each}}
+</div><!-- end class box -->
 
-  {{!-- <div class="container">
-    <h1 id="cordon">Cordon</h1>
-  <div class="custom-padding"></div>
-    <nav>
-      <ul class="menu-area">
-        <li><a href="/homepage" id="main-menu">Home</a></li>
-        <li><a href="/geofence" id="main-menu">Geofence</a></li>
-        <li><a href="/account" id="main-menu">Account</a></li>
-        <li><a href="/logout" id="main-menu">Logout</a></li>
-      </ul>
-    </nav>
-  </div> --}}
-
-<ul id="mychildren">
-  {{#each myChildren as |child|}}
-  {{#with child}}
-    <li>{{child.firstN}} {{child.lastN}}</li>
-  {{/with}}
-  {{/each}}
-</ul>
-
-<table border="1">
-
-<script language="javascript" type="text/javascript">
-
-
-  var myArray = userResult.children;
-
-  for (var i=0; i < userResult.children.length; i++) {
-    document.write("<tr><td>Number " + i + " is:</td>");
-    document.write("<td>" + myArray[i] + "</td></tr>");
-  }
-
-</script>
-
-</table>
 </div> <!-- End class container -->
 {{> footer }}
 </body>
+
+<script src="public/js/index.js" />

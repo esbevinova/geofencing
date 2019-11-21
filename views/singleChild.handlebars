@@ -1,0 +1,83 @@
+<head>
+
+
+  <meta name="viewport" content="initial-scale=1.0">
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel="stylesheet" href="/css/{{this}}">
+ </head>
+
+
+<body>
+
+<!-- Navigation -->
+{{> navigation }}
+
+<div class="container">
+
+<ul>
+    <li>Name: {{myChild.firstN}} {{myChild.lastN}}</li>
+    <li>Phone: {{myChild.childPhoneNumber}}</li>
+
+    {{!-- <h2>Geofences</h2>
+    {{#each myGeofences as |geoFence|}}
+    {{#with geoFence}}
+      <h3>{{geoFence.geofenceName}}</h3>
+      <li>Address: {{geoFence.formattedAddress}}</li>
+      <li>Radius: {{geoFence.radius}}</li>
+      <a href="/addChildToGeofence" id="add_child_link">Add Child to Geofence</a>
+    {{/with}}
+    {{/each}}
+</ul>
+<!-- map-->
+<div  id="map_box_padding">
+  <div class="box" id="map_box">
+    <div id="map">
+    {{#each myGeofences as |geoFence|}}
+    {{#with geoFence}}
+    <div id="markers" data-lat={{geoFence.lat}} data-lng={{geoFence.lng}} data-radius={{geoFence.radius}} data-name={{geoFence.geofenceName}}></div>
+    {{/with}}
+    {{/each}}
+</div> <!-- End class map --> --}}
+
+    
+<script>
+function initMap(){
+      map = new google.maps.Map(document.getElementById('map'), {
+        center: mapGeofence,
+        zoom: 15
+      });
+  
+      //marks
+      var marker = new google.maps.Marker({
+      position: mapGeofence,
+      map: map
+      });
+
+      //adds radius
+      var circle = new google.maps.Circle({
+      map: map,
+      radius: mapGeofence.radius,
+      fillColor: '#AA0000'
+      });
+      circle.bindTo('center', marker, 'position');
+
+      //adds Name to Geofence on click
+      var infoWindow = new google.maps.InfoWindow({
+        content:mapGeofence.name
+      });
+      marker.addListener('click', function(){
+        infoWindow.open(map, marker);
+      });  
+}
+</script>
+
+</div> <!-- End class container -->
+</body>
+{{> footer }}
+
+<!-- Google map API -->
+<script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDAvtiMO_fBipcjY_VBJF-1px9GVBfSLiQ&callback=initMap" async defer></script>
+ 
+</body>
