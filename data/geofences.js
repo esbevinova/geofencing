@@ -43,15 +43,6 @@ module.exports ={
     },
 
     /**
-     *
-     * @returns an array of all the geofences added to the collection
-     */
-    async allGeofences(){
-        const geofences = await this.addGeofence();
-        return await geofences.find({}).toArray();
-    },
-
-    /**
      * get the geofence from the database
      * @param {string} id
      * @returns the geofence from the database

@@ -76,19 +76,6 @@ module.exports ={
             if (child === null) throw "No user with that id";
            
         return child;
-        // //given id, return the user from the database
-        // if(!id){
-        //     throw "Error: no id was provided";
-        // }
-
-        // var targetID = ObjectId.createFromHexString(id.toString());
-        // const child = await children();
-        // //console.log(child)
-        // const findChild = await child.findOne({_id: targetID});
-        // if(findChild === null){
-        //     throw "No child was found with that id";
-        // }
-        // return findChild;
     },
 
     /** 
@@ -188,23 +175,27 @@ module.exports ={
         return await this.get(parsedId);
     },
 
-    async addGeofenceAlerts(child_id, geofence_id, latitude, longtitude, accuracy, speed, altitude, bearing, timestamp){
+    async addGeofenceAlerts(alertId, child_id, geofence_id, latitude, longtitude, accuracy, speed, altitude, bearing, timestamp){
+        // convertedAlertId = ObjectId(alertId)
         childCollection = await children()
         const parsedChildId = ObjectId(child_id)
         childFound = await childCollection.findOne({_id:parsedChildId}, { projection: { _id: 1 } })
         let childId = childFound._id
         geofenceCollection = await geofences()
         const parsedGeofenceId = ObjectId(geofence_id)
-        geofenceFound = await geofenceCollection.findOne({_id: parsedGeofenceId}, { projection: { _id: 1 } })
+        geofenceFound = await geofenceCollection.findOne({_id: parsedGeofenceId})
         let geofencesId = geofenceFound._id
-        
+        var geofencingName = geofenceFound.geofenceName   ///not working
+        console.log(alertId)
         return this.get(childId).then(currentUser => {
         return childCollection.updateOne(
             { _id: childId },
             {
             $addToSet: {
                 alerts: {
+                _id: alertId,
                 geofenceId: geofencesId,
+                geofenceName: geofencingName,
                 latitude: latitude,
                 longtitude: longtitude,
                 accuracy: accuracy,
@@ -217,5 +208,35 @@ module.exports ={
         }
     });
 });
-}
+},
+
+    async returnLatestAlerts(parsedReceivedChildId){
+        childrenCollection = await children()
+        // const returnedAlertHistory = await childrenCollection.findOne( { "_id": parsedReceivedChildId }); //, { "alerts": {$slice: 5 } } );
+        
+        // var sortedarray = _.orderBy(returnedAlertHistory, ['alerts.timestamp'], ['desc'])
+        // const returnedAlertHistory = await childrenCollection.find({ "_id": parsedReceivedChildId }).toArray();
+        // var alertsArray = returnedAlertHistory.alerts
+        // // // const { alerts } = returnedAlertHistory;
+        // // console.log(returnedAlertHistory)
+    
+        const returnedAlertHistory = await childrenCollection.aggregate(
+                { $match: {
+                    _id : parsedReceivedChildId
+                }},
+                // Expand the scores array into a stream of documents
+                { $unwind: '$alerts' },
+                // Sort in descending order
+                { $sort: {
+                    'alerts.timestamp': -1
+                }},
+                ).toArray()
+        var keyArray = returnedAlertHistory.map(function(item) { return item["alerts"]; });
+        console.log(keyArray)
+        var mostRecentAlerts = keyArray.slice(Math.max(keyArray.length - 5, 0))
+        // console.log(mostRecentAlerts)
+
+        return mostRecentAlerts
+
+    }
 }
