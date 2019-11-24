@@ -2,7 +2,8 @@
   <meta name="viewport" content="initial-scale=1.0">
   <meta charset="utf-8">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-  <link rel="stylesheet" href="/css/{{this}}">
+  <link rel="stylesheet" href="/public/css/{{this}}">
+  <link rel="stylesheet" type="text/css" href="/public/css/addGeofence.css">
 
 </head>
 
@@ -11,21 +12,41 @@
 <!-- Navigation -->
 {{> navigation }}
 
-  <div class="container">
+<div class="container">
 
-{{> name }}
+  
+<div class='addNewGeofence'>
 
-    <div class="custom-padding"></div>
-      <nav>
-        <ul class="menu-area">
-          <li><a href="/homepage" id="main-menu">Home</a></li>
-          <li><a href="/geofence" id="main-menu">Geofence</a></li>
-          <li><a href="/account" id="main-menu">Account</a></li>
-          <li><a href="/logout" id="main-menu">Logout</a></li>
-        </ul>
-      </nav>
+  <div id='addGeofence'>
+    <h1>Add Geofence</h1>
+  </div> <!-- End id addGeofence -->
+  
+  <div class="box">
+   <form id="addGeofence-form" method="post" action="/addGeofence">
+      <table class='table table-striped' id="addGeofenceTable">
+          <tr>
+              <th><label>Geofence Name</label></th>
+              <td><input type="text" class="form-control" id="geofenceName" name="geofenceName" placeholder="Enter Text" required></td>
+          </tr>
+          <tr>
+              <th><label>Address:</label></th>
+              <td><input type="text" class="form-control" id="geofenceAddress" name="geofenceAddress" placeholder="Enter Text" required></td>
+          </tr>
+          <tr>
+              <th><label>Radius:</label></th>
+              <td><input type="number" class="form-control" id="radius" name="radius" placeholder="Enter Radius" required></div></td>
+              <div class="radiuserror" id="radiuserror" hidden></div>
+          </tr>  
+      </table>
+          <div id="botton-padding"><a><input type="submit" class="btn btn-outline-danger" id="submitGeofence" name='addGeofence'></a></div>
+   
+      {{!-- <input type="submit" class="btn btn-primary btn-lg" name='addGeofence'> --}}
+  </form>
+  </div><!-- End class box -->
+</div><!-- End class addNewGeofence -->
 
-<div class = "addGeofenceBox">
+
+{{!-- <div class = "addGeofenceBox">
   <h1>Add Geofence</h1>
   <div class = "addGeofenceForm">
     <form id="addGeofence-form" method="post" action="/addGeofence">
@@ -51,9 +72,9 @@
             <button type="submit" class="btn-submit" id = "submitbutton">Create Geofence</button>
         </div>
     </form>
-  </div>
+  </div> --}}
 
-</div>
+</div> <!-- End class container -->
 
 <!--
   <div class="container">
@@ -119,4 +140,4 @@
   </script>
   -->
   {{> footer }}
-    </body>
+  </body>

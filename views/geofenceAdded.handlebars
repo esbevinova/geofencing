@@ -2,7 +2,8 @@
   <meta name="viewport" content="initial-scale=1.0">
   <meta charset="utf-8">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-  <link rel="stylesheet" href="/css/{{this}}">
+  <link rel="stylesheet" href="/public/css/{{this}}">
+  <link rel="stylesheet" type="text/css" href="/public/css/geofenceAdded.css">
 
 </head>
 
@@ -11,21 +12,21 @@
 <!-- Navigation -->
 {{> navigation }}
 
-  <div class="container">
+<div class="container">
 
-{{> name }}
-  <div class="custom-padding"></div>
-    <nav>
-      <ul class="menu-area">
-        <li><a href="/homepage" id="main-menu">Home</a></li>
-        <li><a href="/geofence" id="main-menu">Geofence</a></li>
-        <li><a href="/account" id="main-menu">Account</a></li>
-        <li><a href="/logout" id="main-menu">Logout</a></li>
-      </ul>
-    </nav>
+  <div id="geofence-added-successfully">
+    <h1>Child</h1>
 
-<div>Succesfully Added Child to Geofence</div>
-<p id="afterSignup">Click <a href="/geofence" id="loginLink">here</a> to go back to Geofences</p>
+    <form method="POST" action = "/singleChild">
+      <a href="/singleChild/{{childToAdd._id}}" id="link"  name="{{childToAdd._id}}"> <h2>{{childToAdd.firstN}} {{childToAdd.lastN}}</h2> </a>
+    </form>
+    <h1>was successfully added to geofence</h1>
+    <form>
+      <a href="/geofence" id="link"> <h2>{{geofenceToAdd.geofenceName}}</h2> </a>
+    </form>
+  </div><!-- End div geofence-added-successfully -->
+
+
 </div><!-- End class container -->
 {{> footer }}
 </body>

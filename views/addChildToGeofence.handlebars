@@ -30,14 +30,14 @@
 
 <!-- Children -->
 <div = class="box">
-  <form method="GET" action = "/childAddedToGeofence">
+  <form method="USE" action = "/addChildToGeofence">
         {{#each myChildren as |child|}}
         {{#with child}}
     <table class='table table-striped' id="kids-{{child._id}}">
         <tr>
             <th><label>{{child.firstN}} {{child.lastN}}</label></th>
             {{!-- <td><button type="button" class="btn btn-outline-danger" id="view-child-{{child._id}}" name={{child._id}} onclick="onButtonClick(event)">View</button></td> --}}
-            <td><a class="btn btn-outline-danger" id="add-child-{{child._id}}" name="{{child._id}}" href="/childAddedToGeofence/{{../geofenceToAddChild._id}}/{{child._id}}">Add child</a></td>
+            <td><a class="btn btn-outline-danger" id="add-child-{{child._id}}" name="{{child._id}}" href="/addChildToGeofence/{{../geofenceToAddChild._id}}/{{child._id}}">Add child</a></td>
             {{log  ../geofenceToAddChild._id  child._id}}
         </tr>
     </table><!-- End of Children -->
@@ -47,7 +47,7 @@
 </div> <!-- End class box -->
 
 
-
+{{!-- 
 
 <div class = "addChildToGeofenceBox">
   <h1>Assign Geofence To Registered Child</h1>
@@ -69,7 +69,7 @@
                 <button type="submit" class="btn-submit" id = "submitbutton">Submit</button>
         </div>
     </form>
-  </div>
+  </div> --}}
 
 </div>
 </div> <!-- End class container -->

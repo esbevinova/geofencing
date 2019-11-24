@@ -6,7 +6,7 @@
   <meta name="viewport" content="initial-scale=1.0">
   <meta charset="utf-8">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-  <link rel="stylesheet" href="/css/{{this}}">
+  <link rel="stylesheet" href="/public/css/{{this}}">
   <link rel="stylesheet" type="text/css" href="public/css/geofences.css">
 
 </head>
@@ -44,7 +44,9 @@
 
 <!-- ADD geofence button -->
 <div class="button-padding">
-  <button type="button" class="btn btn-outline-danger" id="add-geofence" href="/addGeofence">Add New Geofence</button>
+  <form method="POST" action="/addGeofence">
+    <a class="btn btn-outline-danger" id="add-geofence" href="/addGeofence">Add New Geofence</a>
+  </form>
 </div> <!-- end class button-padding -->
     
 <!-- map-->
@@ -160,6 +162,6 @@
 <!-- Google map API -->
 <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js"></script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDAvtiMO_fBipcjY_VBJF-1px9GVBfSLiQ&callback=initMap" async defer></script>
-<script scr="/routes/addChildToGeofence.js"></script>
+
  
 </body>

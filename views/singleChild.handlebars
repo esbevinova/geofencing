@@ -4,7 +4,8 @@
   <meta name="viewport" content="initial-scale=1.0">
   <meta charset="utf-8">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-  <link rel="stylesheet" href="/css/{{this}}">
+  <link rel="stylesheet" href="/public/css/{{this}}">
+  <link rel="stylesheet" type="text/css" href="/public/css/singleChild.css">
  </head>
 
 
@@ -15,69 +16,155 @@
 
 <div class="container">
 
-<ul>
-    <li>Name: {{myChild.firstN}} {{myChild.lastN}}</li>
-    <li>Phone: {{myChild.childPhoneNumber}}</li>
+  <div id="childName">
+  <h1>{{myChild.firstN}} {{myChild.lastN}}</h1>
+</div> <!-- end id childName -->
 
-    {{!-- <h2>Geofences</h2>
+<div id="childPhoneNumber">
+  <h3>Phone: {{myChild.childPhoneNumber}}</h3>
+</div> <!-- end id childName -->
+
+
+<!-- Geofences -->
+<div class="box">
+  
     {{#each myGeofences as |geoFence|}}
     {{#with geoFence}}
-      <h3>{{geoFence.geofenceName}}</h3>
-      <li>Address: {{geoFence.formattedAddress}}</li>
-      <li>Radius: {{geoFence.radius}}</li>
-      <a href="/addChildToGeofence" id="add_child_link">Add Child to Geofence</a>
+    <table class='table table-striped' id="geofences">
+      <label><h2>{{geoFence.geofenceName}}</h2></label>
+      <tr>
+        <ul>
+          <li>Address: {{geoFence.formattedAddress}}</li>
+          <li>Radius: {{geoFence.radius}}</li>
+        </ul>
+      </tr>
+    </table>
     {{/with}}
     {{/each}}
-</ul>
+
+</div> <!-- end class box -->
+
 <!-- map-->
 <div  id="map_box_padding">
   <div class="box" id="map_box">
     <div id="map">
+      <div id="childLocation" data-lat={{myChild.lastKnownLat}} data-lng={{myChild.lastKnownLng}} data-name={{myChild.firstN}}></div>
     {{#each myGeofences as |geoFence|}}
     {{#with geoFence}}
-    <div id="markers" data-lat={{geoFence.lat}} data-lng={{geoFence.lng}} data-radius={{geoFence.radius}} data-name={{geoFence.geofenceName}}></div>
+    <div id="markers-{{geoFence._id}}" data-lat={{geoFence.lat}} data-lng={{geoFence.lng}} data-radius={{geoFence.radius}} data-name={{geoFence.geofenceName}}></div>
     {{/with}}
     {{/each}}
-</div> <!-- End class map --> --}}
+    </div> <!-- End class map -->
 
+
+
+     <!-- JavaScript map --->
+    <script>
+    var map;
+
+    function initMap(){
     
-<script>
-function initMap(){
+      var center = {
+        lat: parseFloat(document.getElementById('map').getAttribute("data-lat")), 
+        lng: parseFloat(document.getElementById('map').getAttribute("data-lng"))
+      };
+      
+      //var mapGeofence = {
+      //  name: document.getElementById('markers').getAttribute("data-name"),
+      //  lat: parseFloat(document.getElementById('markers').getAttribute("data-lat")),
+      //  lng: parseFloat(document.getElementById('markers').getAttribute("data-lng")),
+      //  radius: parseFloat(document.getElementById('markers').getAttribute("data-radius"))
+      //};
+
+      var childLocation = {
+        lat: parseFloat(document.getElementById('childLocation').getAttribute("data-lat")), 
+        lng: parseFloat(document.getElementById('childLocation').getAttribute("data-lng"))
+      }
+
+      const allGeoFences = document.querySelectorAll('div[id^="markers"]');
+
+      const allGeoFencesObjects = Object.values(allGeoFences).map(geoFenceDom => ({
+        name: geoFenceDom.getAttribute('data-name'),
+        lat: parseFloat(geoFenceDom.getAttribute('data-lat')),
+        lng: parseFloat(geoFenceDom.getAttribute('data-lng')),
+        radius: parseFloat(geoFenceDom.getAttribute('data-radius'))
+      }))
+      
+        
       map = new google.maps.Map(document.getElementById('map'), {
-        center: mapGeofence,
+        center: allGeoFencesObjects[0],
         zoom: 15
       });
-  
-      //marks
-      var marker = new google.maps.Marker({
-      position: mapGeofence,
-      map: map
-      });
 
-      //adds radius
-      var circle = new google.maps.Circle({
-      map: map,
-      radius: mapGeofence.radius,
-      fillColor: '#AA0000'
-      });
-      circle.bindTo('center', marker, 'position');
+        //marks
+        var kidLocation = new google.maps.Marker({
+        position: childLocation,
+        map: map,
+        icon: "http://maps.google.com/mapfiles/kml/paddle/grn-stars.png"
+        });
 
-      //adds Name to Geofence on click
-      var infoWindow = new google.maps.InfoWindow({
-        content:mapGeofence.name
-      });
-      marker.addListener('click', function(){
-        infoWindow.open(map, marker);
-      });  
-}
-</script>
+      allGeoFencesObjects.forEach(geoFenceObj => {
 
-</div> <!-- End class container -->
-</body>
+        //marks
+        var marker = new google.maps.Marker({
+        position: geoFenceObj,
+        map: map
+        });
+
+        //adds radius
+        var circle = new google.maps.Circle({
+        map: map,
+        radius: geoFenceObj.radius,
+        fillColor: '#AA0000'
+        });
+        circle.bindTo('center', marker, 'position');
+
+        //adds Name to Geofence on click
+        var infoWindow = new google.maps.InfoWindow({
+          content:geoFenceObj.name
+        });
+        marker.addListener('click', function(){
+          infoWindow.open(map, marker);
+        });  
+      })
+    }
+
+    </script>
+    
+  </div> <!-- end class box -->
+</div> <!-- end class map_box_padding -->
+
+<div id="alerts">
+  <h1>Alert History</h1>
+</div> <!-- end id alerts -->
+
+<!-- Geofences -->
+<div class="alert-box">
+  <ul id="myfences">
+    <table class='table table-striped' id="alertsTable">
+    {{#each alerts as |alert|}}
+    {{#with alert}}
+      <label><h2>{{alert.geofenceId}}</h2></label>
+      <tr>
+        <ul>
+          <li>Latitute: {{alert.latitute}}</li>
+          <li>Longtitude: {{alert.longtitude}}</li>
+        </ul>
+      </tr>
+    {{/with}}
+    {{/each}}
+    </table>
+  </ul>
+</div> <!-- end class alert-box -->
+<div id="padding"></div>
+
+</div> <!-- end class container -->
+
+  <!-- Footer -->
 {{> footer }}
 
 <!-- Google map API -->
 <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js"></script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDAvtiMO_fBipcjY_VBJF-1px9GVBfSLiQ&callback=initMap" async defer></script>
- 
+
 </body>

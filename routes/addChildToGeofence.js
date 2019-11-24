@@ -56,9 +56,14 @@ router.use('/:geofenceId/:id', async (req, res) =>{
     console.log(childToAdd.childPhoneNumber)
 
     var addedGeofenceToChild = await children.addGeofenceToChild(geofenceToAdd.geofenceName, childToAdd.childPhoneNumber);
-    var addedChildtoGeofence = await geofences.addTheChildToGeofence(geofenceToAdd.geofenceName, childToAdd.childPhoneNumber);
+    //var addedChildtoGeofence = await geofences.addTheChildToGeofence(geofenceToAdd.geofenceName, childToAdd.childPhoneNumber);
     var addedGeofenceToChildArray = await users.addGeofenceToChildArray(userId, geofenceToAdd.geofenceName, childToAdd.childPhoneNumber)
-    res.status(200).render("geofenceAdded", {});
+    res.status(200).render("geofenceAdded", 
+    {
+        childToAdd : childToAdd,
+        geofenceToAdd : geofenceToAdd
+    })
+    return
 })
 
 // router.post("/", async (req, res) => {

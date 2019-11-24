@@ -1,8 +1,8 @@
-#myGeofences {
+#childName {
     padding: 40px;
 }
 
-#myGeofences h1 {
+#childName h1 {
     font: inherit;
     text-indent: 0em;
     pointer-events: auto;
@@ -39,6 +39,13 @@
     transform-origin: 50% 50% 0px;
 }
 
+#childPhoneNumber {
+    padding-top: 14px;
+    padding-right: 30px;
+    padding-bottom: 14px;
+    padding-left: 30px;
+}
+
 [id^='add_child_link'] {
     font-style: inherit;
     font-family: "Roboto", Arial, Tahoma, sans-serif;
@@ -46,11 +53,11 @@
 }
 
 .box {
-    border: 1px solid #fff;
+    border: 1px solid rgb(255, 255, 255, 0.25);
     border-radius: 3px;
     padding: 20px;
     width: 100%;
-    background-color: #fff;
+    background-color: rgb(255, 255, 255, 0.25);
     opacity: 100%;
     z-index: 1;
 }
@@ -83,7 +90,6 @@
 
 #map_box_padding {
     padding-top: 30px;
-    padding-bottom: 300px;
     
 }
 
@@ -123,7 +129,7 @@
     color: black;
 }
 
-#kids {
+#geofences {
     -webkit-tap-highlight-color: transparent;
     --blue: #007bff;
     --indigo: #6610f2;
@@ -163,3 +169,99 @@
     box-sizing: border-box;
 }
 
+#alerts {
+    padding: 50px;
+    padding-bottom: 100px;
+}
+
+#alerts h1 {
+    font: inherit;
+    text-indent: 0em;
+    pointer-events: auto;
+    box-sizing: border-box;
+    outline: none !important;
+    position: relative;
+    display: block;
+    -webkit-font-smoothing: antialiased !important;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    z-index: 5;
+    font-family: "Source Serif Pro";
+    visibility: visible;
+    text-align: center;
+    line-height: 41px;
+    letter-spacing: 1px;
+    font-weight: 600;
+    font-size: 51px;
+    border-color: rgb(98, 98, 98);
+    border-style: none;
+    margin: 0px;
+    border-radius: 0px;
+    padding: 10px;
+    color:rgb(	254, 105, 105); 
+    text-decoration: none;
+    white-space: nowrap;
+    width: auto;
+    height: auto;
+    min-height: 0px;
+    min-width: 0px;
+    max-height: none;
+    max-width: none;
+    opacity: 1;
+    transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+    transform-origin: 50% 50% 0px;
+}
+
+
+.alert-box {
+    border: 1px solid rgb(	254, 105, 105, 0.25); 
+    border-radius: 3px;
+    padding: 100px;
+    width: 100%;
+    background-color:rgb(	254, 105, 105, 0.25); 
+    opacity: 100%;
+    z-index: 1;
+}
+
+#alertsTable {
+    -webkit-tap-highlight-color: transparent;
+    --blue: #007bff;
+    --indigo: #6610f2;
+    --purple: #6f42c1;
+    --pink: #e83e8c;
+    --red: #dc3545;
+    --orange: #fd7e14;
+    --yellow: #ffc107;
+    --green: #28a745;
+    --teal: #20c997;
+    --cyan: #17a2b8;
+    --white: #fff;
+    --gray: #6c757d;
+    --gray-dark: #343a40;
+    --primary: #007bff;
+    --secondary: #6c757d;
+    --success: #28a745;
+    --info: #17a2b8;
+    --warning: #ffc107;
+    --danger: #dc3545;
+    --light: #f8f9fa;
+    --dark: #343a40;
+    --breakpoint-xs: 0;
+    --breakpoint-sm: 576px;
+    --breakpoint-md: 768px;
+    --breakpoint-lg: 992px;
+    --breakpoint-xl: 1200px;
+    --font-family-sans-serif: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+    --font-family-monospace: SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    text-align: left;
+    font-family: "Roboto", Arial, Tahoma, sans-serif;
+    border-collapse: collapse;
+    color: #212529;
+    box-sizing: border-box;
+}
+
+#padding {
+    padding-bottom: 400px;
+}

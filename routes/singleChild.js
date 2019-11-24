@@ -32,10 +32,17 @@ router.post("/", async (req, res) => {
 router.get('/:id', async (req, res) => {
     const { id } = req.params;
     var myChild = await children.get(id);
+    console.log(myChild.geofences)
+    var myGeofences = myChild.geofences
+    var alerts = myChild.alerts
+
+    //var myGeofences = await geofences.getMyGeofences(userID);
     //return res.send(`<h1>${id}</h1>`);
     res.status(200).render("singleChild",
     {
-        myChild : myChild
+        myChild : myChild,
+        myGeofences : myGeofences,
+        alerts : alerts
     })
     return
 });

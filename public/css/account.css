@@ -1,8 +1,8 @@
-#myGeofences {
+.account {
     padding: 40px;
 }
 
-#myGeofences h1 {
+.account h1 {
     font: inherit;
     text-indent: 0em;
     pointer-events: auto;
@@ -39,71 +39,24 @@
     transform-origin: 50% 50% 0px;
 }
 
-[id^='add_child_link'] {
-    font-style: inherit;
-    font-family: "Roboto", Arial, Tahoma, sans-serif;
-    color:#fe6969; 
-}
-
 .box {
-    border: 1px solid #fff;
+    border: 1px solid rgb(255, 255, 255, 0.25);
     border-radius: 3px;
     padding: 20px;
     width: 100%;
-    background-color: #fff;
+    background-color: rgb(255, 255, 255, 0.25);
     opacity: 100%;
     z-index: 1;
 }
-
-.myfences {
-    z-index: 2;
-}
-
-.button-padding {
-    padding-top: 20px; 
-}
-
-#add-geofence {
-    background-color: rgb(	254, 105, 105); 
-    padding-top: 14px;
-    padding-right: 30px;
-    padding-bottom: 14px;
-    padding-left: 30px;
-    border-radius: 3px;
-    border-style: none;
-    font-style: inherit;
-    color: rgb(	255, 255, 255, 1);
-}
-
-#add-geofence:hover {
-    background-color: #fff;
-    font-style: inherit;
-    color: black;
-}
-
-#map_box_padding {
-    padding-top: 30px;
-    padding-bottom: 300px;
-    
-}
-
-#map_box {
-    padding: 10px;
-    width: 100%;
-    height: 800px;
-    background-color: #fff;
-    opacity: 100%;
-    z-index: 1;
-}
-#map {
-    width: 100%;
-    height: 780px;
-    z-index: 2;
-}
-
 
 /* button */
-[id^='view-child'] {
+#botton-padding {
+    float: right;
+    padding-top: 50px; 
+    padding-bottom: 500px; 
+}
+
+#submitChild {
     width: 150px;
     float: right;
     background-color: rgb(	254, 105, 105); 
@@ -117,13 +70,13 @@
     color: rgb(	255, 255, 255, 1);
 }
 
-[id^='view-child']:hover {
+#submitChild:hover {
     background-color: #fff;
     font-style: inherit;
     color: black;
 }
 
-#kids {
+#addChildTable {
     -webkit-tap-highlight-color: transparent;
     --blue: #007bff;
     --indigo: #6610f2;
@@ -162,4 +115,3 @@
     color: #212529;
     box-sizing: border-box;
 }
-
