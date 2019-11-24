@@ -34,7 +34,9 @@
       <h2>{{geoFence.geofenceName}}</h2>
       <li>Address: {{geoFence.formattedAddress}}</li>
       <li>Radius: {{geoFence.radius}}</li>
-      <a href="/addChildToGeofence" id="add_child_link">Add Child to Geofence</a>
+      <form method="POST" action = "/addChildToGeofence">
+        <a href="/addChildToGeofence/{{geoFence._id}}" id="add_child_link-{{geoFence._id}}  name={{geoFence._id}}">Add Child to Geofence</a>
+      </form>
     {{/with}}
     {{/each}}
   </ul>

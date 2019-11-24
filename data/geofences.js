@@ -117,9 +117,10 @@ module.exports ={
         geofenceCollection = await geofences()
         geofenceFound = await geofenceCollection.findOne({geofenceName: geofencesName})
         let geofencesId = geofenceFound._id
-        let parsedGeofencesId = ObjectId(geofencesId)
+        //let parsedGeofencesId = ObjectId(geofencesId)
+        
        
-        return this.get(parsedGeofencesId).then(currentUser => {
+        return this.get(geofencesId).then(currentUser => {
           return geofenceCollection.updateOne(
             { _id: parsedGeofencesId },
             {

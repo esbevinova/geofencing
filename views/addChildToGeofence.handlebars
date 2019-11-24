@@ -1,8 +1,10 @@
 <head>
-  <meta name="viewport" content="initial-scale=1.0">
-  <meta charset="utf-8">
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-  <link rel="stylesheet" href="/css/{{this}}">
+    <meta name="viewport" content="initial-scale=1.0">
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="/public/css/{{this}}">
+    <link rel="stylesheet" type="text/css" href="/public/css/addChildToGeofence.css">
+    <link rel="stylesheet" type="text/scss" href="/public/css/scss/children.scss">
 
 </head>
 
@@ -11,19 +13,40 @@
 <!-- Navigation -->
 {{> navigation }}
 
-  <div class="container">
+<div class="container">
 
-{{> name }}
-    <div class="custom-padding"></div>
+<div id="geofence-to-add-child">
+  <h1>Add child to the geofence</h1>
+</div> <!-- end id geofence-to-add-child -->
 
-    <nav>
-        <ul class="menu-area">
-            <li><a href="/homepage" id="main-menu">Home</a></li>
-            <li><a href="/geofence" id="main-menu">Geofence</a></li>
-            <li><a href="/account" id="main-menu">Account</a></li>
-            <li><a href="/logout" id="main-menu">Logout</a></li>
-        </ul>
-    </nav>
+<!-- geofence info -->
+<div class="box">
+    <h2>{{geofenceToAddChild.geofenceName}}</h2>
+    <ul>
+        <li>Address: {{geofenceToAddChild.formattedAddress}}</li>
+        <li>Radius: {{geofenceToAddChild.radius}}</li>
+    </ul>
+</div>
+
+<!-- Children -->
+<div = class="box">
+  <form method="USE" action = "/addChildToGeofence">
+        {{#each myChildren as |child|}}
+        {{#with child}}
+    <table class='table table-striped' id="kids-{{child._id}}">
+        <tr>
+            <th><label>{{child.firstN}} {{child.lastN}}</label></th>
+            {{!-- <td><button type="button" class="btn btn-outline-danger" id="view-child-{{child._id}}" name={{child._id}} onclick="onButtonClick(event)">View</button></td> --}}
+            <td><a class="btn btn-outline-danger" id="add-child-{{child._id}}" name="{{child._id}}" href="/addChildToGeofence/{{../geofenceToAddChild._id}}/{{child._id}}">Add child</a></td>
+            {{log  ../geofenceToAddChild._id  child._id}}
+        </tr>
+    </table><!-- End of Children -->
+  </form> <!-- End form vew child -->
+        {{/with}}
+        {{/each}}
+</div> <!-- End class box -->
+
+
 
 
 <div class = "addChildToGeofenceBox">
@@ -49,6 +72,10 @@
   </div>
 
 </div>
-</div>
+</div> <!-- End class container -->
 {{> footer }}
 </body>
+
+<!-- Google map API -->
+<script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDAvtiMO_fBipcjY_VBJF-1px9GVBfSLiQ&callback=initMap" async defer></script>

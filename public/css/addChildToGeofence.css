@@ -1,8 +1,8 @@
-#myChildren {
+#geofence-to-add-child {
     padding: 40px;
 }
 
-#myChildren h1 {
+#geofence-to-add-child h1 {
     font: inherit;
     text-indent: 0em;
     pointer-events: auto;
@@ -50,7 +50,7 @@
 }
 
 /* button */
-[id^='view-child'] {
+[id^='add-child'] {
     width: 150px;
     float: right;
     background-color: rgb(	254, 105, 105); 
@@ -64,7 +64,7 @@
     color: rgb(	255, 255, 255, 1);
 }
 
-[id^='view-child']:hover {
+[id^='add-child']:hover {
     background-color: #fff;
     font-style: inherit;
     color: black;
