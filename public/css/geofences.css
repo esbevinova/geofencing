@@ -39,7 +39,7 @@
     transform-origin: 50% 50% 0px;
 }
 
-#add_child_link {
+[id^='add_child_link'] {
     font-style: inherit;
     font-family: "Roboto", Arial, Tahoma, sans-serif;
     color:#fe6969; 
