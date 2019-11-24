@@ -56,15 +56,6 @@ module.exports ={
     },
 
     /**
-     *
-     * @returns an array of all the users in the collection
-     */
-    async allPeople(){
-        const people = await signup();
-        return await people.find({}).toArray();
-    },
-
-    /**
      * get the person who signed up from the database
      * @param {string} id
      * @returns the person from the database
@@ -221,7 +212,6 @@ module.exports ={
       let foundLng = geofenceFound.lng
       let foundRadius = geofenceFound.radius
       
-      
       return this.get(userId).then(currentUser => {
         return usersCollection.updateOne(
           { 'children.id': childId },
@@ -240,5 +230,21 @@ module.exports ={
             }
             );
       });
+    },
+
+    async returnAllChildren(userId){
+      usersCollection = await users()
+      foundUser = await usersCollection.findOne({_id: userId})
+      allChildren = foundUser.children
+      let result = allChildren.map((item)=>{
+        return {
+          id: item.id,
+          name: item.childFirstName
+        }
+      
+      })
+      console.log(result)
+
+      return result
     }
 }
