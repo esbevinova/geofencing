@@ -51,14 +51,7 @@ module.exports ={
         const myChildren = await child.find({parentId : targetID}).toArray();
         return myChildren;
     },
-    // /**
-    //  * returns all existing children in children collection in an array format
-    //  */
-    // async allChildren(){
-    //     const people = await signup();
-    //     return await people.find({}).toArray();
-    // },
-
+   
     /**
      * get an already existing child from database by searching with Id
      * @returns the child from the database - object

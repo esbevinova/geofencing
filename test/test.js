@@ -5,6 +5,7 @@ const request = require('supertest')//option 2
 const app = require('../app');//option 2
 var users = data.usersData;
 var children = data.childrenData
+var geofences = data.geofences
 
 
 describe('findUserByEmail', function() {
@@ -59,7 +60,7 @@ describe("POST /parentFCMTokenUpdate", () =>{
         const res = request(app)
             .post("/parentFCMTokenUpdate")
             .send({
-                id: "5dc355779443a5432c379bc7",
+                id: "5db751c5eaa4f643e85bf023",
                 fcmToken: "dK4fCdhXqEs:APA91bFvTzLRAJ27kUlFY84KpUB9icMxImB1pbJTXsyuOFfdl0kk3uXbE7wdFYEtjKuaj84BcxMtDBMK3Mc6zN27ZiLVr9NDLvVWmjsAng4cGbfGi70c46J7EFV7A3Gc-w7JcK9dpVor"
             })
             .set('Accept', 'application/json')
@@ -86,6 +87,23 @@ describe('getChildbyPhoneNumber', function() {
         var result = await children.getChildbyPhoneNumber('732-614-5717');
         assert.equal(result._id, '5dc1d3ae7125021f285982db');
     });
+});
+
+/*
+describe('addGeofenceAlerts', function(){
+    it('return added alert', async function () {
+        var result = await children.addGeofenceAlerts("a365ff7c-d007-44a0-96e0-f6f0b67ab48c", "5dbf91eb64f20be36858fbc2", "5dcdf6fb6227c467ccb68064", 40.7434983, -74.027025, 
+        20, 0, 100, 100, "2019-11-20 15:39:50.798")
+        assert.equal(result, "updated")
+    })
+})
+*/
+
+describe('getMyChildren', function(){
+    it('all the children', async function () {
+        var result = await children.getMyChildren('5db751c5eaa4f643e85bf023')
+        assert.equal(result, '')
+    })
 });
 
 describe("POST /authenticateChild", () =>{
@@ -132,27 +150,6 @@ describe("POST /childFCMTokenUpdate", () =>{
     });  
 });
 
-// describe("POST /safeGeofenceEventTriggerNotification", () =>{
-//     it("should return successfully saved an alert", (done) =>{
-//         const res = request(app)
-//             .post("/safeGeofenceEventTriggerNotification")
-//             // .set('Accept', 'application/json')
-//             // .expect('Content-Type', "text/html; charset=utf-8")
-//             .send({"geofenceAlert":{
-//                 childId:"5dc1d3ae7125021f285982db",
-//                 geofenceId:"5dbcbab0f8f8319eebe27b68",
-//                 latitude: "1111111",
-//                 longtitude:"2222222",
-//                 accuracy:"12121212",
-//                 speed:'0',  
-//                 altitude:"100",
-//                 bearing:"none",
-//                 timestamp: "2019-11-14 19:52:21.676"
-//             }})
-//             .set('Accept', 'application/json')
-//             .expect(200, "successfully saved an alert", done);
-//     });  
-// });
 
 describe("POST /returnAlertHistory", () =>{
     it("should return returnedAlertHistory array", (done) =>{
@@ -166,31 +163,83 @@ describe("POST /returnAlertHistory", () =>{
              })
             .set('Accept', 'application/json')
             .expect(200,
-                "success", done);
+                '[{"_id":"84fb54b3-c81e-4cd9-ba84-a31267986057","geofenceId":"5dcdf6fb6227c467ccb68064","geofenceName":"School","latitude":40.7434983,"longtitude":-74.027,"accuracy":20,"speed":0,"altitude":0,"bearing":0,"timestamp":"2019-11-22T00:23:30.811Z","addedAt":"2019-11-22T00:36:28.219Z"},{"_id":"cc4070f9-d740-4f4a-a5b3-ac8871a5a68c","geofenceId":"5dcdf6fb6227c467ccb68064","geofenceName":"School","latitude":40.7434983,"longtitude":-74.027,"accuracy":20,"speed":0,"altitude":0,"bearing":0,"timestamp":"2019-11-22T00:29:03.409Z","addedAt":"2019-11-22T00:36:28.232Z"},{"_id":"11cf5c72-42ed-42a6-8887-1b3f120a8ab1","geofenceId":"5dcdf6fb6227c467ccb68064","geofenceName":"School","latitude":40.7434983,"longtitude":-74.027,"accuracy":20,"speed":0,"altitude":0,"bearing":0,"timestamp":"2019-11-22T00:31:01.115Z","addedAt":"2019-11-22T00:36:28.243Z"},{"_id":"0c7b26d9-d2b4-4a5d-8eed-616ad940c2fc","geofenceId":"5dcdf6fb6227c467ccb68064","geofenceName":"School","latitude":40.7434983,"longtitude":-74.027,"accuracy":20,"speed":0,"altitude":0,"bearing":0,"timestamp":"2019-11-22T00:32:09.123Z","addedAt":"2019-11-22T00:36:28.253Z"},{"_id":"4a1f93c6-6630-4e21-a2fa-410f30a46ccd","geofenceId":"5dcdf6fb6227c467ccb68064","geofenceName":"Home","latitude":40.7434983,"longtitude":-74.027,"accuracy":20,"speed":0,"altitude":0,"bearing":0,"timestamp":"2019-11-22T00:36:26.562Z","addedAt":"2019-11-22T00:36:28.267Z"}]', done);
     });  
 });
 
+describe("POST /allChildren", () =>{
+    it("should return first names and ids of children of the parent array", (done) =>{
+        const res = request(app)
+            .post("/allChildren")
+            .send({
+                parentId:"5db751c5eaa4f643e85bf023",
+                fcmToken:"dK4fCdhXqEs:APA91bFvTzLRAJ27kUlFY84KpUB9icMxImB1pbJTXsyuOFfdl0kk3uXbE7wdFYEtjKuaj84BcxMtDBMK3Mc6zN27ZiLVr9NDLvVWmjsAng4cGbfGi70c46J7EFV7A3Gc-w7JcK9dpVor"
+             })
+            .set('Accept', 'application/json')
+            .expect(200,
+                '[{"id":"5dbf91eb64f20be36858fbc2","name":"georgey"},{"id":"5dc1d3ae7125021f285982db","name":"Morticia"}]', done);
+    });  
+});
+
+//need to work on it more!!!!!!!!!!!!!!!!!!!!!!!!!
+describe("POST /saveGeofenceEventToServer", () =>{
+    it("should return array", (done) =>{
+        const res = request(app)
+            .post("/saveGeofenceEventToServer")
+            // .set('Accept', 'application/json')
+            // .expect('Content-Type', "text/html; charset=utf-8")
+            .send({
+                childId:"5dc1d3ae7125021f285982db",
+                parentId:"5db751c5eaa4f643e85bf023"
+             })
+            .set('Accept', 'application/json')
+            .expect(200,
+                '', done);
+    });  
+});
+
+
+describe("POST /sendLastKnownLocationToParent", () =>{
+    it("should sendLastKnownLocationToParent", (done) =>{
+        const res = request(app)
+            .post("/sendLastKnownLocationToParent")
+            .send({
+                childId:"5dc1d3ae7125021f285982db",
+                parentId:"5db751c5eaa4f643e85bf023"
+             })
+            .set('Accept', 'application/json')
+            .expect(200,
+                '{"lastKnownLat":40.7434666,"lastKnownLng":-74.0268975}' , done);
+    });  
+});
+
+describe('getGeofence', function() {
+    it('returns geofence', async function () {
+        var result = await geofences.getGeofence('5dbcbab0f8f8319eebe27b68');
+        assert.equal(result._id, '5dbcbab0f8f8319eebe27b68');
+    });
+});
+
+//failing
+describe('getMyGeofences', function() {
+    it('getMyGeofences', async function () {
+        var result = await geofences.getMyGeofences("5db751c5eaa4f643e85bf023");
+        assert.equal(result, '');
+    });
+});
+
+describe('getGeofenceByName', function() {
+    it('getGeofenceByName', async function () {
+        var result = await geofences.getGeofenceByName("Home");
+        assert.equal(result._id, '5dbcbab0f8f8319eebe27b68');
+    });
+});
+
+describe('getParent', function() {
+    it('getParent', async function () {
+        var result = await users.get("5db751c5eaa4f643e85bf023");
+        assert.equal(result._id, '5db751c5eaa4f643e85bf023');
+    });
+});
+
 //Need to add test for every function
-//children.js - addGeofenceToChild case
-//users.js - signup, getUserbyname, getUserbyfirstName, addChildToUser, addGeofenceToUser, updateUser, addGeofenceToChildArray, 
-//geofences.js - addGeofence, getGeofence, getMyGeofences, getGeofenceByName, addTheChildToGeofence, 
-// { "_id": "a365ff7c-d007-44a0-96e0-f6f0b67ab48c",
-//                 "geofenceId": "5dcdf6fb6227c467ccb68064",
-//                 "latitude": "40.7434983",
-//                 "longtitude": "-74.027025",
-//                 "accuracy":"20",
-//                 "speed": "0",
-//                 "altitude": "0",
-//                 "bearing": "0",
-//                 "timestamp": "2019-11-20 15:39:50.798",
-//                 "addedAt": "2019-11-20 16:38:15.912"},
-//                 {"_id": "3eba73e1-cf81-48ef-b906-3c4a057866fc",
-//                     "geofenceId": "5dcdf6fb6227c467ccb68064",
-//                     "latitude": "40.7434983",
-//                     "longtitude": "-74.0269996",
-//                     "accuracy": "20.016000747680664",
-//                     "speed": "0.011554083786904812",
-//                     "altitude": "5",
-//                     "bearing": "270",
-//                     "timestamp": "2019-11-20 15:41:14.529",
-//                     "addedAt": "2019-11-20 16:38:15.921"}

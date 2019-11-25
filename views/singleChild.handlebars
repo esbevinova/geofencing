@@ -27,7 +27,7 @@
 
 <!-- Geofences -->
 <div class="box">
-  
+  <h1>Active Geofences</h1>
     {{#each myGeofences as |geoFence|}}
     {{#with geoFence}}
     <table class='table table-striped' id="geofences">
@@ -144,13 +144,14 @@
     <table class='table table-striped' id="alertsTable">
     {{#each alerts as |alert|}}
     {{#with alert}}
-      <label><h2>{{alert.geofenceId}}</h2></label>
+    <div>Child has crossed <strong>{{alert.geofenceName}}</strong> Geofence on {{alert.timestamp}}</div>
+      {{!-- <label><h2>{{alert.geofenceName}}</h2></label>
       <tr>
         <ul>
-          <li>Latitute: {{alert.latitute}}</li>
+          <li>Latitute: {{alert.latitude}}</li>
           <li>Longtitude: {{alert.longtitude}}</li>
         </ul>
-      </tr>
+      </tr> --}}
     {{/with}}
     {{/each}}
     </table>
