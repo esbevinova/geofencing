@@ -30,6 +30,8 @@ router.post("/", async (req, res) => {
 
 
 router.get('/:id', async (req, res) => {
+    if(req.session.authority == true)
+    {
     const { id } = req.params;
     var myChild = await children.get(id);
     console.log(myChild.geofences)
@@ -45,6 +47,9 @@ router.get('/:id', async (req, res) => {
         alerts : alerts
     })
     return
+}
+    
+res.status(401).render('errorPage', { e: { statusCode: "401", error: "You are not logged in, please login", redirect: "/" } })
 });
 
 

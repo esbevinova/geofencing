@@ -1,7 +1,6 @@
 //This file establishes the collections to be created in MongoDB
 const dbConnection = require("./connection")
 
-
 const getCollectionFn = collection => {
     let _col = undefined;
 

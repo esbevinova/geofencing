@@ -4,7 +4,6 @@ const data = require("../data");
 const users = data.usersData;
 
 router.get("/", async (req, res) => {
-    //checks for authorization. If not logged in show 401 error otherwise render /childAdded if successful
     if(req.session.authority == true)
     {
         var userID = req.session.userID;

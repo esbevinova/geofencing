@@ -9,12 +9,6 @@ const children = mongoCollections.children;
 const geofences = mongoCollections.geofences;
 
 module.exports ={
-    /**
-     * stores the signup information into a mongoDB
-     * @param {*} username username they set 
-     * @param {*} email validated email
-     * @param {*} password password they set, 
-     */
     async signup(username, email, password, firstName, lastName, phoneNumber){
         if ((!username) || (typeof username !== "string")){
             throw `Error: ${username} is invalid`;
@@ -23,7 +17,7 @@ module.exports ={
             throw `Error: ${password} is invalid`;
         }
         if ((!email) || (typeof email !== "string")){
-            throw `Error: ${email}is invalid`;
+            throw `Error: ${email} is invalid`;
         }
         if ((!firstName) || (typeof firstName !== "string")){
             throw `Error: ${firstName} is invalid`;
@@ -55,11 +49,6 @@ module.exports ={
         return await this.get(newId);
     },
 
-    /**
-     * get the person who signed up from the database
-     * @param {string} id
-     * @returns the person from the database
-     */
     async get(id){
             if (!id && typeof id !== "string") throw "You must provide an id to search for";
             try{
@@ -75,11 +64,6 @@ module.exports ={
         return user;
       },
 
-    /**
-     * finds user by its username
-     * @param {string} userName 
-     * @returns found user from database
-     */
     async getUserbyname(userName){
         if(!userName)
         {
@@ -104,14 +88,6 @@ module.exports ={
       return stringedFoundPersonId;
   },
 
-    /**
-     * adds child to user's children array
-     * @param {objectId} id 
-     * @param {objectId} childId 
-     * @param {string} childFirstName 
-     * @param {string} childLastName 
-     * @param {string} childPhoneNumber 
-     */
     async addChildToUser(id, childId, childFirstName, childLastName, childPhoneNumber) {
         let parsedId = ObjectId(id);
         const usersCollection = await users();
@@ -132,9 +108,7 @@ module.exports ={
         });
       },
 
-      /**
-       * adds geofence to user's geofences array
-       */
+    //adds geofence to user's geofences array
     async addGeofenceToUser(id, geofenceId, geofenceName, formattedAddress, lat, lng, radius) {
       let parsedId = ObjectId(id);
       const usersCollection = await users();
@@ -157,44 +131,43 @@ module.exports ={
       });
     },
 
-  //Updates user's children array in database
-  async updateUser(id, childId){
-      if (!id) throw "You must provide an id to search for";
-      if (!childId) throw "Invalid Input.";
+    //Updates user's children array in database
+    async updateUser(id, childId){
+        if (!id) throw "You must provide an id to search for";
+        if (!childId) throw "Invalid Input.";
+        
+        await this.get(id)
+        const userCollection = await users();
+        const updatedUser = {
+            children: childId
+        };
+        
+        const updatedInfo = await userCollection.updateOne({ _id: id }, {$set:updatedUser});
+        if (updatedInfo.modifiedCount === 0) {
+            throw "could not update successfully";
+        }
+        return await this.get(id);
+        },
+
+    //updating an existing parent fcmToken
+    async updateParentFCMToken(parent_id, parentToken){
+      if (!parent_id) throw "NO ID";
+      if (!parentToken) throw "NO TOKEN";
+      const parsedId = ObjectId(parent_id);
+      const found_parent = await this.get(parsedId)
+      const found_id = found_parent._id
       
-      await this.get(id)
-      const userCollection = await users();
+      const usersCollection = await users();
       const updatedUser = {
-          children: childId
+        fcmToken: parentToken
       };
-      
-      const updatedInfo = await userCollection.updateOne({ _id: id }, {$set:updatedUser});
+
+      const updatedInfo = await usersCollection.updateOne({_id: found_id}, {$set:updatedUser});
       if (updatedInfo.modifiedCount === 0) {
-          throw "could not update successfully";
-      }
-      return await this.get(id);
-      },
-
-
-  //updating an existing parent fcmToken
-  async updateParentFCMToken(parent_id, parentToken){
-    if (!parent_id) throw "NO ID";
-    if (!parentToken) throw "NO TOKEN";
-    const parsedId = ObjectId(parent_id);
-    const found_parent = await this.get(parsedId)
-    const found_id = found_parent._id
-    
-    const usersCollection = await users();
-    const updatedUser = {
-      fcmToken: parentToken
-    };
-
-    const updatedInfo = await usersCollection.updateOne({_id: found_id}, {$set:updatedUser});
-    if (updatedInfo.modifiedCount === 0) {
-      throw "could not update successfully";
-  }
-  return await this.get(parsedId);
-  },
+        throw "could not update successfully";
+    }
+    return await this.get(parsedId);
+    },
 
     //add geofences to children array
     async addGeofenceToChildArray(userId, geofencesName, childsPhoneNumber) {
@@ -243,8 +216,6 @@ module.exports ={
         }
       
       })
-      console.log(result)
-
       return result
     }
 }

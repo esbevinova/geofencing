@@ -12,7 +12,7 @@ module.exports ={
     //Adds a child to children Collection in MongoDB
     async addChild(parentId, firstN, lastN, childPhoneNumber){
         if ((!parentId) || (typeof parentId !== "string")){
-            throw `Error: ${userId} is invalid`;
+            throw `Error: ${parentId} is invalid`;
         }
         if ((!firstN) || (typeof firstN !== "string")){
             throw `Error: ${firstN} is invalid`;
@@ -21,7 +21,7 @@ module.exports ={
             throw `Error: ${lastN} is invalid`;
         }
         if ((!childPhoneNumber) || (typeof childPhoneNumber !== "string")){
-            throw 'Error: ${childPhoneNumber} is invalid';
+            throw `Error: ${childPhoneNumber} is invalid`;
         }
         
         const child = await children();
@@ -52,10 +52,6 @@ module.exports ={
         return myChildren;
     },
    
-    /**
-     * get an already existing child from database by searching with Id
-     * @returns the child from the database - object
-     */
     async get(id){
         if (!id && typeof id !== "string") throw "You must provide an id to search for";
             try{
@@ -71,10 +67,6 @@ module.exports ={
         return child;
     },
 
-    /** 
-     * @param {string} childPhoneNumber
-     * @returns an object with child's information by searching for the provided phone number
-     */
     async getChildbyPhoneNumber(childPhoneNumber){
         if(!childPhoneNumber)
         {
@@ -85,12 +77,7 @@ module.exports ={
         return foundChild;
     },
 
-    /**
-     * adds geofence to child under geofences array
-     * @param {string} geofencesName 
-     * @param {string} childsPhoneNumber 
-     * @returns an updated child object
-     */
+    //add geofence to child's geofences array
     async addGeofenceToChild(geofencesName, childsPhoneNumber) {
         childCollection = await children()
         childFound = await childCollection.findOne({childPhoneNumber:childsPhoneNumber}, { projection: { _id: 1 } })
@@ -103,7 +90,6 @@ module.exports ={
         let foundLat = geofenceFound.lat
         let foundLng = geofenceFound.lng
         let foundRadius = geofenceFound.radius
-        
         
         return this.get(childId).then(currentUser => {
           return childCollection.updateOne(
@@ -126,7 +112,7 @@ module.exports ={
       },
 
 
-      //Updates children's lastKnownLat, lastKnownLng
+    //Updates children's lastKnownLat, lastKnownLng
     async updateChild(childId, lastKnownLat, lastKnownLng){
         if (!childId) throw "Invalid Input.";
         if (!lastKnownLat) throw "You must provide lattitude";
@@ -212,7 +198,6 @@ module.exports ={
         // var alertsArray = returnedAlertHistory.alerts
         // // // const { alerts } = returnedAlertHistory;
         // // console.log(returnedAlertHistory)
-    
         const returnedAlertHistory = await childrenCollection.aggregate(
                 { $match: {
                     _id : parsedReceivedChildId
@@ -225,11 +210,7 @@ module.exports ={
                 }},
                 ).toArray()
         var keyArray = returnedAlertHistory.map(function(item) { return item["alerts"]; });
-        console.log(keyArray)
-        var mostRecentAlerts = keyArray.slice(Math.max(keyArray.length - 5, 0))
-        // console.log(mostRecentAlerts)
-
+        var mostRecentAlerts = keyArray.slice(Math.max(keyArray.length - 5, 0))     
         return mostRecentAlerts
-
     }
 }
