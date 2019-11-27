@@ -45,7 +45,9 @@ router.post("/", async (req, res) => {
         var userID = req.session.userID;    
         var createdGeofence = await geofences.addGeofence(userID, req.body.geofenceName, formattedAddress, lat, lng, req.body.radius);
         var addGeofenceToParent = await users.addGeofenceToUser(userID, createdGeofence._id, req.body.geofenceName, formattedAddress, lat, lng, req.body.radius)
-        res.status(200).render("geofenceCreated", {});     
+        res.status(200).render("geofenceCreated", {
+            createdGeofence : createdGeofence
+        });     
       });
   });
 

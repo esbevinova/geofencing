@@ -60,9 +60,11 @@
 
      <!-- JavaScript map --->
     <script>
+
     var map;
 
     function initMap(){
+
     
       var center = {
         lat: parseFloat(document.getElementById('map').getAttribute("data-lat")), 
@@ -92,9 +94,12 @@
       
         
       map = new google.maps.Map(document.getElementById('map'), {
-        center: allGeoFencesObjects[0],
-        zoom: 15
+        center: childLocation,
+        zoom: 14
       });
+
+
+
 
         //marks
         var kidLocation = new google.maps.Marker({
@@ -102,6 +107,7 @@
         map: map,
         icon: "http://maps.google.com/mapfiles/kml/paddle/grn-stars.png"
         });
+
 
       allGeoFencesObjects.forEach(geoFenceObj => {
 
