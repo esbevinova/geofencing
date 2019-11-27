@@ -11,7 +11,7 @@ const geofences = mongoCollections.geofences;
 module.exports ={
     async addGeofence(parentId, geofenceName, formattedAddress, lat, lng, radius){
         if ((!parentId) || (typeof parentId !== "string")){
-            throw `Error: ${userId} is invalid`;
+            throw `Error: ${parentId} is invalid`;
         }
         if ((!geofenceName) || (typeof geofenceName !== "string")){
             throw `Error: ${geofenceName} is invalid`;
@@ -42,11 +42,6 @@ module.exports ={
         return await this.getGeofence(newId);
     },
 
-    /**
-     * get the geofence from the database
-     * @param {string} id
-     * @returns the geofence from the database
-     */
     async getGeofence(id){
         //given id, return the user from the database
         if(!id){
@@ -72,17 +67,9 @@ module.exports ={
         const geofence = await geofences();
         const myGeofences = await geofence.find({parentId : targetID}).toArray();
         return myGeofences;
-    },
-
-  
+    }, 
     //11.03.end
 
-
-    /**
-     * get an already existing geofence from database by searching its name
-     * @param {string} geofenceName
-     * @returns the geofence from the database
-     */
     async getGeofenceByName(geofenceName){
         if(!geofenceName)
         {
@@ -94,12 +81,6 @@ module.exports ={
         return findGeofence;
     },
 
-    /**
-     * add the child to geofences's array children in geofences collection
-     * @param {string} geofencesName
-     * @param {string} childsPhoneNumber
-     * @returns the geofence with updated registeredChildren array
-     */
     async addTheChildToGeofence(geofencesName, childsPhoneNumber) {
         //adding a child to geofence
         childCollection = await children()
@@ -109,8 +90,7 @@ module.exports ={
         geofenceFound = await geofenceCollection.findOne({geofenceName: geofencesName})
         let geofencesId = geofenceFound._id
         let parsedGeofencesId = ObjectId(geofencesId)
-        
-       
+           
         return this.getGeofence(geofencesId).then(currentUser => {
           return geofenceCollection.updateOne(
             { _id: parsedGeofencesId },

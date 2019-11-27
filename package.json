@@ -16,6 +16,7 @@
     "bcrypt": "^3.0.6",
     "body-parser": "^1.19.0",
     "bootstrap": "^4.3.1",
+    "chai-as-promised": "^7.1.1",
     "chai-http": "^4.3.0",
     "coverage": "^0.4.1",
     "express": "^4.17.1",
@@ -29,11 +30,12 @@
     "nyc": "^14.1.1",
     "scss": "^0.2.4",
     "simple-line-icons": "^2.4.1",
-    "supertest": "^4.0.2",
     "xss": "^1.0.6"
   },
   "devDependencies": {
     "chai": "^4.2.0",
-    "mocha": "^6.2.2"
+    "mocha": "^6.2.2",
+    "supertest": "^4.0.2",
+    "supertest-session": "^4.0.0"
   }
 }

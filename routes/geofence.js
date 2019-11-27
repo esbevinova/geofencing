@@ -18,28 +18,7 @@ router.get("/", async (req, res) => {
             userResult = ["None"]
         }
         var myGeofences = await geofences.getMyGeofences(userID);
-        console.log('myGeofences', myGeofences)
 
-        // axios.get('https://maps.googleapis.com/maps/api/js',{
-        //     params:{
-        //       key:'AIzaSyDAvtiMO_fBipcjY_VBJF-1px9GVBfSLiQ'
-        //     }
-        //   })
-
-        //   .then(async function(response){
-        //       var map;
-        //       function initMap() {
-        //           map = new google.maps.Map(document.getElementById('map'), {
-        //               center: {lat: -34.397, lng: 150.644},
-        //               zoom: 8
-        //             });
-                    // var marker = new google.maps.Marker({
-                    //     position: {lat: this.get(myGeofences).lat, lng: this.get(myGeofences).lng},
-                    //     map: map
-                    // });
-              
-            //     }
-            // })
         res.status(200).render("geofence",
         {
             userResult : userResult,
