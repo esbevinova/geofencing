@@ -48,7 +48,7 @@
 <div  id="map_box_padding">
   <div class="box" id="map_box">
     <div id="map">
-      <div id="childLocation" data-lat={{myChild.lastKnownLat}} data-lng={{myChild.lastKnownLng}} data-name={{myChild.firstN}}></div>
+      <div id="childLocation" data-child-id={{myChild._id}} data-lat={{myChild.lastKnownLat}} data-lng={{myChild.lastKnownLng}} data-name={{myChild.firstN}}></div>
     {{#each myGeofences as |geoFence|}}
     {{#with geoFence}}
     <div id="markers-{{geoFence._id}}" data-lat={{geoFence.lat}} data-lng={{geoFence.lng}} data-radius={{geoFence.radius}} data-name={{geoFence.geofenceName}}></div>
@@ -173,5 +173,14 @@
 <!-- Google map API -->
 <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js"></script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDAvtiMO_fBipcjY_VBJF-1px9GVBfSLiQ&callback=initMap" async defer></script>
+<script>
+  const childId = document.getElementById('childLocation').getAttribute('data-child-id')
+  setInterval(async () => {
+    const res = await fetch(`/singleChild/${childId}/json`, { method: 'GET' });
+    const newChildLocation = await res.json();
 
+    console.log(newChildLocation);
+
+  }, 2000);
+</script>
 </body>

@@ -52,6 +52,16 @@ router.get('/:id', async (req, res) => {
 res.status(401).render('errorPage', { e: { statusCode: "401", error: "You are not logged in, please login", redirect: "/" } })
 });
 
+router.get('/:id/json', async (req, res) => {
+    if (req.session.authority) {
+        const { id } = req.params;
+        const myChild = await children.get(id);
+        const myGeofences = myChild.geofences;
+        const alerts = myChild.alerts
+
+        return res.status(200).json({ myChild, myGeofences, alerts });
+    }
+})
 
 
 

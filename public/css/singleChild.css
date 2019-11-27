@@ -53,11 +53,11 @@
 }
 
 .box {
-    border: 1px solid rgb(255, 255, 255, 0.25);
+    border: 1px solid rgb(255, 255, 255);
     border-radius: 3px;
     padding: 20px;
     width: 100%;
-    background-color: rgb(255, 255, 255, 0.25);
+    background-color: rgb(255, 255, 255);
     opacity: 100%;
     z-index: 1;
 }
