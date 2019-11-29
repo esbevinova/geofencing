@@ -1,39 +1,21 @@
-
-<head>
-  <meta name="viewport" content="initial-scale=1.0">
-  <meta charset="utf-8">
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-  <link rel="stylesheet" href="/css/{{this}}">
-  <link rel="stylesheet" href="public/css/homepage.css">
-</head>
-
 <body>
-  
-<!-- Navigation -->
-{{> navigation }}
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel="stylesheet" href="public/css/homepage.css">
+  <!-- Navigation -->
+  {{> navigation }}
 
   <div class="container">
-
-
-
-
-    
 
     <div class=afterLogIn id="welcome">
       <h1>Welcome</h1>
       <h1> {{userResult.email}} </h1>
     </div>
 
-
-
   {{!-- <div>
       <img src="/public/img/lgo3a.jpg" width="100%">
   </div> --}}
-</div> <!-- end of class container -->
+  </div> <!-- end of class container -->
   <!-- Footer -->
-{{> footer }}
-    <!--
-  <div><iframe width="600" height="450" frameborder="0" style="border:0" src="https://www.google.com/maps/embed/v1/view?key=AIzaSyDAvtiMO_fBipcjY_VBJF-1px9GVBfSLiQ&zoom=17&center=40.7503%2C-73.9877" allowfullscreen></iframe></div>
--->
+  {{> footer }}
 </body>
 

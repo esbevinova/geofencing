@@ -121,6 +121,6 @@ footer.footer {
   padding-bottom: 4rem;
 }
 
-#signUppointer{
+#signUppointer, #signUppointer1{
   background-image: linear-gradient(rgb(254, 105, 105), rgb(254, 105, 105), rgb(247, 183, 128));
 }

@@ -346,7 +346,7 @@ app.post("/geofenceEventTriggerNotification", async (req, res) => {
     if (foundFCMToken != "" || foundFCMToken != null){
 
         geofence_id = req.body.geofenceId //get geofence ID
-        const found_geofence = await geofences.get(geofence_id)  //find geofence in geofence collection
+        const found_geofence = await geofences.getGeofence(geofence_id)  //find geofence in geofence collection
 
         const payload = {
           notification: {
@@ -407,7 +407,6 @@ app.post("/childLocationRequestNotification", async (req, res) => {
     }
 });
 
-
 //parentId and fcmtoken. Check if valid, then send name and Id of child.
 app.post("/allChildren", async (req, res) => {
   try{
@@ -436,8 +435,6 @@ app.listen(3000, () => {
   console.log("We've now got a server!");
   console.log("Your routes will be running on http://localhost:3000");
 });
-
-
 
 
 module.exports = app

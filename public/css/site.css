@@ -12,11 +12,12 @@ html {
     position:relative;
 }
 
-#header_wrapper {
+#header_wrapper1, #header_wrapper2, #header_wrapper3, #header_wrapper4, #header_wrapper5, #header_wrapper {
     background-color: #fe6969; 
     font-style: inherit;
     font-family: "Roboto", Arial, Tahoma, sans-serif;
     color: white;
+    font-size: 20px;
 }
 
 body {
@@ -149,6 +150,7 @@ div, h1, h2, h3, h4, h5, h6, p, ul, li, a {
     margin-bottom: 20px;
     width: 50%;
     float: left;
+    font-size: 18px;
 }
 
 .loginform input[type="text"]:focus{
@@ -173,6 +175,9 @@ div, h1, h2, h3, h4, h5, h6, p, ul, li, a {
     margin-bottom: 20px;
 }
 
+#enterUsername, #enterPassword{
+    size: 14px;
+}
 
 .btn-login{
     background:  #fe6969;
@@ -253,7 +258,7 @@ div, h1, h2, h3, h4, h5, h6, p, ul, li, a {
     bottom: 0;
 }
 
-#user-info {
+#user-info, #user-username, #user-fname, #user-lname, #user-email, #user-phoneNumber, #user-children{
     font-size: 25px;
     color: black;
 }
