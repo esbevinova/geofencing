@@ -18,7 +18,7 @@ router.get('/', async (req, res) => {
         if(err) {
             return console.log(err);
         }
-        res.render("logout");
+        res.status(200).render("logout");
         return;
     });
   

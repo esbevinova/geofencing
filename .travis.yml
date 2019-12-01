@@ -1,8 +1,0 @@
-language: node_js
-node_js:
-  - 10.15.0
-services:
-  - mongodb
-before_script:
-  - sleep 15
-  - mongo mydb_test --eval 'db.createUser({user:"kat",pwd:"kat",roles:["readWrite"]});'

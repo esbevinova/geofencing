@@ -5,6 +5,8 @@
   "main": "app.js",
   "scripts": {
     "test": "mocha",
+    "inditest": "mocha ./test/route_tests.js",
+    "complex": "cr ./data/*.js",
     "start": "node app.js",
     "coverage": "nyc --reporter=html --reporter=text mocha --exit --timeout 15000"
   },
@@ -34,6 +36,7 @@
   },
   "devDependencies": {
     "chai": "^4.2.0",
+    "complexity-report": "^2.0.0-alpha",
     "mocha": "^6.2.2",
     "supertest": "^4.0.2",
     "supertest-session": "^4.0.0"
