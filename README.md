@@ -1,2 +1,2 @@
-# geofencing
-An application that allows a parent to set up geofencing around certain location.
+# Cordon
+A Web and Android application that allows a parent to set up geofences around certain location.

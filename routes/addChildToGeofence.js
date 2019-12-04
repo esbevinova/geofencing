@@ -6,25 +6,6 @@ const users = data.usersData;
 const geofences = data.geofences;
 
 
-router.get("/", async (req, res) => {
-    //check if user logged in. If not show 401 error otherwise render /addChildToGeofence page
-    //Get all the children for the user
-    if(req.session.authority == true)
-    {
-        var userID = req.session.userID;
-        var userResult = await users.get(userID);
-        if(userResult == null){
-            userResult = ["None"]
-        }
-        res.status(200).render("addChildToGeofence",
-        {
-            userResult : userResult,
-        })
-        return  
-    }
-    res.status(401).render('errorPage', { e: { statusCode: "401", error: "You are not logged in, please login", redirect: "/" } })
-});
-
 //Get geofence to add a child to 
 router.get('/:id', async (req, res) => {
     const { id } = req.params;
@@ -40,7 +21,6 @@ router.get('/:id', async (req, res) => {
     return 
 });
 
-//Add child to geofences
 //Update collections: children, geofences, users
 router.use('/:geofenceId/:id', async (req, res) =>{
     var userId = req.session.userID;

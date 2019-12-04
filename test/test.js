@@ -13,14 +13,14 @@ const chaiAsPromised = require('chai-as-promised');
 chai.use(chaiAsPromised)
 
 //UNIT TESTS
-describe('getGeofence', function() {
+describe('getGeofence', function () {
     it('returns geofence', async function () {
         var result = await geofences.getGeofence('5dbcbab0f8f8319eebe27b68');
         assert.equal(result._id, '5dbcbab0f8f8319eebe27b68');
     });
 });
 
-//failing
+// //failing
 describe('getMyGeofences', function() {
     it('getMyGeofences', async function () {
         var result = await geofences.getMyGeofences("5db751c5eaa4f643e85bf023");
@@ -28,42 +28,84 @@ describe('getMyGeofences', function() {
     });
 });
 
-describe('getGeofenceByName', function() {
+describe('getGeofenceByName', function () {
     it('getGeofenceByName', async function () {
         var result = await geofences.getGeofenceByName("Home");
         assert.equal(result._id, '5dbcbab0f8f8319eebe27b68');
     });
 });
 
-describe('getParent', function() {
+describe('getParent', function () {
     it('getParent', async function () {
         var result = await users.get("5db751c5eaa4f643e85bf023");
         assert.equal(result._id, '5db751c5eaa4f643e85bf023');
     });
 });
 
+describe('updateUser', function () {
+    it('updateUser', async function () {
+        var result = await users.updateUser("5dc8a60b21286b75e70050ea");
+        assert.equal(result._id, '5dc8a60b21286b75e70050ea');
+    });
+});
+
+describe('signup', function () {
+    it('signup', async function () {
+        var result = await users.signup("test", 'test@gmail.com', 'test', 'Test', 'Test', '123-456-7890');
+        assert.equal(result.firstName, 'Test');
+    });
+});
+
+describe('addChildToUser', function () {
+    it('addChildToUser', async function () {
+        var result = await users.addChildToUser('5dc8a60b21286b75e70050ea', '5dbf91eb64f20be36858fbc2', 'georgey', 'Smith', '111-111-1111');
+        assert.equal(result.phoneNumber, '111-111-1111');
+    });
+});
+
+describe('addGeofenceToChildArray', function () {
+    it('addGeofenceToChildArray', async function () {
+        var result = await users.addGeofenceToChildArray("5dc8a60b21286b75e70050ea", "Home", "732-614-5717");
+        assert.equal(result._id, '5dc8a60b21286b75e70050ea');
+    });
+});
+
+describe('updateParentFCMToken', function () {
+    it('updateParentFCMToken', async function () {
+        var result = await users.updateParentFCMToken("5dc8a60b21286b75e70050ea", "ebSY_Vuxa3Y:APA91bHCFkNzc_h6FdqpqUesAMu7HAxpcK2jGJQVR68sV6Bc1g2EAC1oDHyin236JFHh7Pkssms1wlAynUy-Vf3MnIE6Zz0RH8idkthCMWn6JWj7UBhkMo_YbtEHhmWxSUkryWIdBdfhjsd123456");
+        assert.equal(result._id, '5dc8a60b21286b75e70050ea');
+    });
+});
+
+describe('addTheChildToGeofence', function () {
+    it('addTheChildToGeofence', async function () {
+        var result = await geofences.addTheChildToGeofence('Home', '111-111-1111');
+        assert.equal(result._id, '5dbcbab0f8f8319eebe27b68')
+    })
+})
+
 //need to rename the function
-describe('findUserByEmail', function() {
+describe('findUserByEmail', function () {
     it('returnsUserId', async function () {
         var result = await users.getUserbyfirstName('kat@gmail.com');
         assert.equal(result, '5db751c5eaa4f643e85bf023');
     });
 });
 
-describe('getChildbyPhoneNumber', function() {
+describe('getChildbyPhoneNumber', function () {
     it('returnChildId', async function () {
         var result = await children.getChildbyPhoneNumber('732-614-5717');
         assert.equal(result._id, '5dc1d3ae7125021f285982db');
     });
 });
 
-describe('get child by ID', function() {
+describe('get child by ID', function () {
     it('returnChildId', async function () {
         var result = await children.get('5dc1d3ae7125021f285982db');
         assert.equal(result._id, '5dc1d3ae7125021f285982db');
     });
 });
-
+//comment out all 3 below
 describe('getMyChildren', function(){
     it('all the children', async function () {
         var result = await children.getMyChildren('5db751c5eaa4f643e85bf023')
@@ -91,15 +133,15 @@ describe('addChild', function(){
 //Error Handling
 describe('should throw if no phone number provided', () => {
     it('should catch an error', async () => {
-      await expect(children.getChildbyPhoneNumber('')).to.be.rejectedWith("Phone number not provided")
+        await expect(children.getChildbyPhoneNumber('')).to.be.rejectedWith("Phone number not provided")
     })
-  })
+})
 
 describe('should throw Not Object ID', () => {
     it('should catch an error', async () => {
-      await expect(children.get('fdafsd')).to.be.rejectedWith("Not Object ID")
+        await expect(children.get('fdafsd')).to.be.rejectedWith("Not Object ID")
     })
-  })
+})
 
 describe('should throw No user with that id', () => {
     it('should catch an error', async () => {
@@ -121,40 +163,40 @@ describe('getMyChildren(id)', () => {
 
 describe('updateChildFCMToken(child_id, childToken)', () => {
     it('should throw "NO ID"', async () => {
-        await expect(children.updateChildFCMToken('',"dK4fCdhXqEs:APA91bFvTzLRAJ27kUlFY84KpUB9icMxImB1pbJTXsyuOFfdl0kk3uXbE7wdFYEtjKuaj84BcxMtDBMK3Mc6zN27ZiLVr9NDLvVWmjsAng4cGbfGi70c46J7EFV7A3Gc")).to.be.rejectedWith("NO ID")
+        await expect(children.updateChildFCMToken('', "dK4fCdhXqEs:APA91bFvTzLRAJ27kUlFY84KpUB9icMxImB1pbJTXsyuOFfdl0kk3uXbE7wdFYEtjKuaj84BcxMtDBMK3Mc6zN27ZiLVr9NDLvVWmjsAng4cGbfGi70c46J7EFV7A3Gc")).to.be.rejectedWith("NO ID")
     })
 })
 
 describe('updateChildFCMToken(child_id, childToken)', () => {
     it('should throw "NO TOKEN"', async () => {
-        await expect(children.updateChildFCMToken('5dbf91eb64f20be36858fbc2','')).to.be.rejectedWith("NO TOKEN")
+        await expect(children.updateChildFCMToken('5dbf91eb64f20be36858fbc2', '')).to.be.rejectedWith("NO TOKEN")
     })
 })
 
 describe('updateChildFCMToken(child_id, childToken)', () => {
     it('should throw "could not update successfully"', async () => {
-        await expect(children.updateChildFCMToken('5dbf91eb64f20be36858fbc2','dK4fCdhXqEs:APA91bFvTzLRAJ27kUlFY84KpUB9icMxImB1pbJTXsyuOFfdl0kk3uXbE7wdFYEtjKuaj84BcxMtDBMK3Mc6zN27ZiLVr9NDLvVWmjsAng4cGbfGi70c46J7EFV7A4Bd')).to.be.rejectedWith("could not update successfully")
+        await expect(children.updateChildFCMToken('5dbf91eb64f20be36858fbc2', 'dK4fCdhXqEs:APA91bFvTzLRAJ27kUlFY84KpUB9icMxImB1pbJTXsyuOFfdl0kk3uXbE7wdFYEtjKuaj84BcxMtDBMK3Mc6zN27ZiLVr9NDLvVWmjsAng4cGbfGi70c46J7EFV7A4Bd')).to.be.rejectedWith("could not update successfully")
     })
 })
 
 describe('updateChild(child_id, lastKnownLat, lastKnownLng)', () => {
     it('should throw "Invalid Input."', async () => {
-        await expect(children.updateChild('', '123.123123123','12.123123123123')).to.be.rejectedWith("Invalid Input.")
+        await expect(children.updateChild('', '123.123123123', '12.123123123123')).to.be.rejectedWith("Invalid Input.")
     })
 })
 describe('updateChild(child_id, lastKnownLat, lastKnownLng)', () => {
     it('should throw "You must provide lattitude"', async () => {
-        await expect(children.updateChild('5dbf91eb64f20be36858fbc', '','12.123123123123')).to.be.rejectedWith("You must provide lattitude")
+        await expect(children.updateChild('5dbf91eb64f20be36858fbc', '', '12.123123123123')).to.be.rejectedWith("You must provide lattitude")
     })
 })
 describe('updateChild(child_id, lastKnownLat, lastKnownLng)', () => {
     it('should throw "could not update successfully"', async () => {
-        await expect(children.updateChild('5dbf91eb64f20be36858fbc2', '40.7434999','-74.0268865')).to.be.rejectedWith("could not update successfully")
+        await expect(children.updateChild('5dbf91eb64f20be36858fbc2', '40.7434999', '-74.0268865')).to.be.rejectedWith("could not update successfully")
     })
 })
 describe('updateChild(child_id, lastKnownLat, lastKnownLng)', () => {
     it('should throw "You must provide longtitude"', async () => {
-        await expect(children.updateChild('5dbf91eb64f20be36858fbc2', '123.123123123','')).to.be.rejectedWith("You must provide longtitude")
+        await expect(children.updateChild('5dbf91eb64f20be36858fbc2', '123.123123123', '')).to.be.rejectedWith("You must provide longtitude")
     })
 })
 
@@ -335,24 +377,24 @@ describe('addChild(parentId, firstN, lastN, childPhoneNumber)', () => {
 
 describe('addChild(parentId, firstN, lastN, childPhoneNumber)', () => {
     it('first name throw: Error: 123 is invalid"', async () => {
-        await expect(children.addChild('5dc8a60b21286b75e70050ea', 123, 'lname', '123-123-1234' )).to.be.rejectedWith("Error: 123 is invalid")
+        await expect(children.addChild('5dc8a60b21286b75e70050ea', 123, 'lname', '123-123-1234')).to.be.rejectedWith("Error: 123 is invalid")
     })
 })
 
 describe('addChild(parentId, firstN, lastN, childPhoneNumber)', () => {
     it('last name throw: Error: 123 is invalid"', async () => {
-        await expect(children.addChild('5dc8a60b21286b75e70050ea', 'fname', 123, '123-123-1234' )).to.be.rejectedWith("Error: 123 is invalid")
+        await expect(children.addChild('5dc8a60b21286b75e70050ea', 'fname', 123, '123-123-1234')).to.be.rejectedWith("Error: 123 is invalid")
     })
 })
 
 describe('addChild(parentId, firstN, lastN, childPhoneNumber)', () => {
     it('phone number throw: Error: 123 is invalid"', async () => {
-        await expect(children.addChild('5dc8a60b21286b75e70050ea', 'fname', '1234', 123 )).to.be.rejectedWith("Error: 123 is invalid")
+        await expect(children.addChild('5dc8a60b21286b75e70050ea', 'fname', '1234', 123)).to.be.rejectedWith("Error: 123 is invalid")
     })
 })
 
 //Mobile POST Request Check
-describe("POST /parentData", () =>{
+describe("POST /parentData", () => {
     it("should return parent when the request body is valid", async () => {
         const res = await request(app)
             .post("/parentData")
@@ -364,8 +406,8 @@ describe("POST /parentData", () =>{
     });
 })
 
-describe("POST /authenticateParent", () =>{
-    it("should return id of a parent if body is valid",(done) =>{
+describe("POST /authenticateParent", () => {
+    it("should return id of a parent if body is valid", (done) => {
         const res = request(app)
             .post("/authenticateParent")
             // .set('Accept', 'application/json')
@@ -375,24 +417,24 @@ describe("POST /authenticateParent", () =>{
                 password: "kat",
             })
             .set('Accept', 'application/json')
-            .expect(function(res) {
+            .expect(function (res) {
                 res.body.id = '5db751c5eaa4f643e85bf023';
             })
             .expect(200, {
                 id: '5db751c5eaa4f643e85bf023'
             }, done);
         //https://github.com/visionmedia/supertest
-        
+
         // expect(res.status).to.equal(200)
         // res.body.should.be.a('string');
         // expect(res.body).to.have.property("5db751c5eaa4f643e85bf023");
         // expect(res.body).to.be.an.instanceof(Object).and.to.have.property("5db751c5eaa4f643e85bf023")
         // expect(res.body).to.have.property
-    });  
+    });
 });
 
-describe("POST /parentFCMTokenUpdate", () =>{
-    it("should return ", (done) =>{
+describe("POST /parentFCMTokenUpdate", () => {
+    it("should return ", (done) => {
         const res = request(app)
             .post("/parentFCMTokenUpdate")
             .send({
@@ -401,10 +443,10 @@ describe("POST /parentFCMTokenUpdate", () =>{
             })
             .set('Accept', 'application/json')
             .expect(200, "the token is the same", done);
-    });  
+    });
 });
 
-describe("POST /childData", () =>{
+describe("POST /childData", () => {
     it("should return child's geofences when the request body is valid", async () => {
         const res = await request(app)
             .post("/childData")
@@ -413,11 +455,11 @@ describe("POST /childData", () =>{
             });
         // expect(res.status).to.equal(200)
         expect(res.body).to.be.an.instanceof(Array).and.to.have.property(0)
-        .that.includes.all.keys(["geofenceId", "geofenceName", "formattedAddress", "lat", "lng", "radius", "CreatedAt"])
+            .that.includes.all.keys(["geofenceId", "geofenceName", "formattedAddress", "lat", "lng", "radius", "CreatedAt"])
         //add more tests here
     });
 })
-
+//comment out 2 below
 describe("POST /returnAlertHistory", () =>{
     it("should return returnedAlertHistory array", (done) =>{
         const res = request(app)
@@ -448,8 +490,8 @@ describe("POST /allChildren", () =>{
     });  
 });
 
-describe("POST /childLocationUpdate", () =>{
-    it("should return id of a child if body is valid", (done) =>{
+describe("POST /childLocationUpdate", () => {
+    it("should return id of a child if body is valid", (done) => {
         const res = request(app)
             .post("/childLocationUpdate")
             .send({
@@ -460,11 +502,11 @@ describe("POST /childLocationUpdate", () =>{
             })
             .set('Accept', 'application/json')
             .expect(200, "Location saved", done);
-    });  
+    });
 });
 
-describe("POST /childFCMTokenUpdate", () =>{
-    it("should return the token is the same message", (done) =>{
+describe("POST /childFCMTokenUpdate", () => {
+    it("should return the token is the same message", (done) => {
         const res = request(app)
             .post("/childFCMTokenUpdate")
             .send({
@@ -473,11 +515,11 @@ describe("POST /childFCMTokenUpdate", () =>{
             })
             .set('Accept', 'application/json')
             .expect(200, "the token is the same", done);
-    });  
+    });
 });
 
-describe("POST /authenticateChild", () =>{
-    it("should return id of a child if body is valid", (done) =>{
+describe("POST /authenticateChild", () => {
+    it("should return id of a child if body is valid", (done) => {
         const res = request(app)
             .post("/authenticateChild")
             // .set('Accept', 'application/json')
@@ -488,11 +530,11 @@ describe("POST /authenticateChild", () =>{
                 childPhoneNumber: "732-614-5717"
             })
             .set('Accept', 'application/json')
-            .expect(200,'5dc1d3ae7125021f285982db', done);
-    });  
+            .expect(200, '5dc1d3ae7125021f285982db', done);
+    });
 });
 
-//need to work on it more!!!!!!!!!!!!!!!!!!!!!!!!!
+// //need to work on it more!!!!!!!!!!!!!!!!!!!!!!!!!
 describe("POST /saveGeofenceEventToServer", () =>{
     it("should return array", (done) =>{
         const res = request(app)
@@ -509,115 +551,16 @@ describe("POST /saveGeofenceEventToServer", () =>{
     });  
 });
 
-describe("POST /sendLastKnownLocationToParent", () =>{
-    it("should sendLastKnownLocationToParent", (done) =>{
+describe("POST /sendLastKnownLocationToParent", () => {
+    it("should sendLastKnownLocationToParent", (done) => {
         const res = request(app)
             .post("/sendLastKnownLocationToParent")
             .send({
-                childId:"5dc1d3ae7125021f285982db",
-                parentId:"5db751c5eaa4f643e85bf023"
-             })
+                childId: "5dc1d3ae7125021f285982db",
+                parentId: "5db751c5eaa4f643e85bf023"
+            })
             .set('Accept', 'application/json')
             .expect(200,
-                '{"lastKnownLat":40.7434666,"lastKnownLng":-74.0268975}' , done);
-    });  
+                '{"lastKnownLat":40.7434666,"lastKnownLng":-74.0268975}', done);
+    });
 });
-
-//Rescrictive Access Check
-var testSession = null;
- 
-beforeEach(function () {
-  testSession = session(app);
-});
-
-it('should fail accessing a restricted page', function (done) {
-    testSession.get('/account')
-      .expect(401)
-      .end(done)
-  });
-   
-  it('should log in', function (done) {
-    testSession.post('/loginPage/loginPage')
-      .send({ username: 'kat', password: 'kat' })
-      .expect(200)
-      .end(done);
-  });
-
-  it('should not log in', function (done) {
-    testSession.post('/loginPage/loginPage')
-      .send({ username: 'fdafds', password: 'notkat' })
-      .expect(403)
-      .end(done);
-  });
-
-  it('should render log in page', function (done) {
-    testSession.get('/loginPage/loginPage')
-      .expect(200)
-      .end(done);
-  });
-
-  it('should render sign up page', function (done) {
-    testSession.post('/loginPage/signup')
-      .expect(200)
-      .end(done);
-  });
-
-  it('should not access Account', function (done) {
-    testSession.get('/account')
-      .expect(401)
-      .end(done);
-  });
-
-  it('should not access addChildToGeofence', function (done) {
-    testSession.get('/addChildToGeofence')
-      .expect(401)
-      .end(done);
-  });
-
-  it('should not access addGeofence', function (done) {
-    testSession.get('/addGeofence')
-      .expect(401)
-      .end(done);
-  });
-
-  it('should not access childAdded', function (done) {
-    testSession.get('/childAdded')
-      .expect(401)
-      .end(done);
-  });
-
-  it('should not access geofence', function (done) {
-    testSession.get('/geofence')
-      .expect(401)
-      .end(done);
-  });
-
-  it('should not access homepage', function (done) {
-    testSession.get('/homepage')
-      .expect(401)
-      .end(done);
-  });
-
-  it('should not access singleChild', function (done) {
-    testSession.get('/singleChild/5dbf91eb64f20be36858fbc2')
-      .expect(401)
-      .end(done);
-  });
-
-  it('should not access viewChildren', function (done) {
-    testSession.get('/viewChildren')
-      .expect(401)
-      .end(done);
-  });
-
-describe("account", function(){
-  it('should render Cordon Page', function (done) {
-    testSession.get('/')
-      .expect(200)
-      .end(done);
-  });
-});
-
-
-
-//Need to add test for every function

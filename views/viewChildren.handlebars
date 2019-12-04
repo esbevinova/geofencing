@@ -1,15 +1,7 @@
-<head>
-
-  <meta name="viewport" content="initial-scale=1.0">
-  <meta charset="utf-8">
+<body>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-  <link rel="stylesheet" href="/css/{{this}}">
   <link rel="stylesheet" type="text/css" href="public/css/children.css">
   <link rel="stylesheet" type="text/scss" href="public/css/scss/children.scss">
-
-</head>
-
-<body>
 
 <!-- Navigation -->
 {{> navigation }}
@@ -30,7 +22,7 @@
         <tr>
             <th><label>{{child.firstN}} {{child.lastN}}</label></th>
             {{!-- <td><button type="button" class="btn btn-outline-danger" id="view-child-{{child._id}}" name={{child._id}} onclick="onButtonClick(event)">View</button></td> --}}
-            <td><a class="btn btn-outline-danger" id="view-child-{{child._id}} name={{child._id}}" href="/singleChild/{{child._id}}">View</a></td>
+            <td><a class="btn btn-outline-danger" id="view-child-{{child._id}}" name={{child._id}} href="/singleChild/{{child._id}}">View</a></td>
         </tr>
     </table><!-- End of Children -->
   </form> <!-- End form vew child -->
@@ -40,6 +32,7 @@
 
 </div> <!-- End class container -->
 {{> footer }}
+<script src="public/js/index.js"></script>
 </body>
 
-<script src="public/js/index.js" />
+
