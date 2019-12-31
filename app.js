@@ -292,6 +292,8 @@ app.post("/saveGeofenceEventToServer", async (req, res) => {
       var bearing = parsedJson[i].bearing
       var timestamp = parsedJson[i].timestamp
       var alertId = parsedJson[i].id
+      // var d = new Date(timestamp);
+      // convertedTimestamp = d.setTime( d.getTime() + d.getTimezoneOffset()*60*1000 );
       var convertedTimestamp = new Date(timestamp)
 
       const savedAlert = await children.addGeofenceAlerts(alertId, child_id, geofence_id, latitude, longtitude, accuracy, speed, altitude, bearing, convertedTimestamp)
@@ -319,7 +321,13 @@ app.post("/returnAlertHistory", async (req, res) => {
     if (parentIdFound == receivedParentId){
       var returnedAlertHistory = await children.returnLatestAlerts(parsedReceivedChildId)
       // console.log(returnedAlertHistory)
-      res.json(returnedAlertHistory)
+      if (Object.keys(returnedAlertHistory).length === 0){
+        res.send("no results")
+      }
+      else{
+        res.json(returnedAlertHistory)
+        
+      }
     } else {
       res.send("not a parent")
     }
@@ -340,6 +348,7 @@ app.post("/geofenceEventTriggerNotification", async (req, res) => {
     const parentIdFound = found_child.parentId //get parent Id from the found child
     const findParent= await users.get(parentIdFound) //find parent in users collection
     const foundFCMToken = findParent.fcmToken //get token from the found parent
+    console.log(foundFCMToken)
     
     //add timestamp conversion
     //add a check if fcm token exists or not
@@ -380,6 +389,7 @@ app.post("/childLocationRequestNotification", async (req, res) => {
     const receivedMessage = req.body.task
     const found_child = await children.get(receivedChildId) //find the child in children collection
     const foundChildFCMToken = found_child.fcmToken
+    console.log("childFCMToken" + foundChildFCMToken)
     const parentIdFound = found_child.parentId //get parent Id from the found child
     
     if (parentIdFound == receivedParentId){

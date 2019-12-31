@@ -210,7 +210,7 @@ module.exports ={
                 }},
                 ).toArray()
         var keyArray = returnedAlertHistory.map(function(item) { return item["alerts"]; });
-        var mostRecentAlerts = keyArray.slice(Math.max(keyArray.length - 5, 0))  
+        var mostRecentAlerts = keyArray.slice(Math.max(keyArray.length - 10, 0))  
         var reversedOrder = mostRecentAlerts.reverse() 
         return reversedOrder
     }

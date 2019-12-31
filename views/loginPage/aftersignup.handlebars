@@ -1,20 +1,31 @@
+
+
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7"
-        crossorigin="anonymous">
-  <link rel="stylesheet" href="/css/{{this}}">
+  <meta name="viewport" content="initial-scale=1.0">
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel="stylesheet" href="/public/css/{{this}}">
+  <link rel="stylesheet" type="text/css" href="/public/css/geofenceAdded.css">
+
 </head>
 
 <body>
+  
+<!-- Navigation -->
+{{> navigation }}
 
-    <div class="container">
-        <h1 id="cordon">Cordon</h1>
-    </div>
+  <div class="container">
 
-<div class=afterSignUpBox>
-    <h1>Applicant account created successfully!</h1>
-    <p id="afterSignup">Click <a href="/" id="loginLink">here</a> to go back to the login page</p>
-</div>
+    <div id="geofence-added-successfully">
+      <h1>Applicant account created successfully!</h1>
+   
 
-{{> footer }}
+      <form>
+        <p id="afterSignup">Click <a href="/" id="loginLink">here</a> to go back to the login page</p>
+      </form>
+
+    </div><!-- End div geofence-added-successfully -->
+
+  </div> <!-- End class container -->
+  {{> footer }}
 </body>
